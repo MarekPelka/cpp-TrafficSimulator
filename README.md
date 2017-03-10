@@ -1,3 +1,9 @@
+# cpp-TrafficSimulator
+
+!!! WORK IN PROGRESS !!!
+
+TO DO
+----------
 1. Zaprojektować miasto
 	- Dodawanie ulic
 		- Chodniki
