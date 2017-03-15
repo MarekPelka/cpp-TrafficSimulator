@@ -1,4 +1,4 @@
-Opis klas:
+﻿Opis klas:
 	Position:
 		pozycja x,y w miescie
 		Pola:
@@ -8,20 +8,20 @@ Opis klas:
 	MovingObject:
 		klasa reprezentująca obiekt poruszający się (pojazd, pieszy)
 		Pola:
+			Position
 			speed [m/s]
 			
 	Vehicle : MovingObject
 		Samochód / ciężarówka
 		Pola:
-			Position start
-			Position end
 			width [m]
 			acceleration [m/s^2]
 			slowdown [m/s^2]
+			color	- zalezny od predkosci
+			type 	- osobowy/ciezarowka
 			
 	Pedestrian : MovingObject
 		Pola:
-			Postition
 			name
 			Parking home - identyfikator "domowego" parkingu
 			
@@ -36,6 +36,7 @@ Opis klas:
 		abstrakcyjny wierzcholek grafu
 		Pola:
 			Position
+			id
 	
 	Intersection : Vertex
 		skrzyzowanie 
@@ -47,11 +48,13 @@ Opis klas:
 		Pola:
 			TrafficGenerator
 			capacity
+			Type - domowy/pracowy
 			
 	Plot
 		abstrakcyjne pole w mieście (Budynek/Parking)
 		Pola:
-			Position
+			startPosition
+			endPosition
 			
 	Building : Plot
 		budynek sluzacy do zaslaniania kamery
