@@ -12,7 +12,7 @@ public:
 	CitiController();
 	CitiController(MainWindow *mw);
 	void setMainWindow(MainWindow *mw);
-	void addStreet(Position *start, Position *end, bool twoWay = false);
+	void addStreet(Position start, Position end, bool twoWay = false);
 	std::list<Street*>* getStreets();
 	std::list<QGraphicsItem*> getStreetsGraphics();
 	std::list<Node*>* getNodes();

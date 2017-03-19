@@ -1,17 +1,17 @@
 #include "Node.h"
 Node::Node(int x, int y)
 {
-	position = new Position(x, y);
+	position = Position(x, y);
 	number = 0;
 	name = "";
 }
-Node::Node(Position * p)
+Node::Node(Position p)
 {
 	position = p;
 }
 Position Node::getPosition()
 {
-	return *position;
+	return position;
 }
 int Node::getNumber()
 {

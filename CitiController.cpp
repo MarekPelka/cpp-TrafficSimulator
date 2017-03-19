@@ -18,7 +18,7 @@ void CitiController::setMainWindow(MainWindow * mw)
 	mainWindow = mw;
 }
 
-void CitiController::addStreet(Position *start, Position *end, bool twoWay)
+void CitiController::addStreet(Position start, Position end, bool twoWay)
 {
 	//TO DO: Bad node creation, we do not check if that node already exists
 	Node *a = new Node(start);
