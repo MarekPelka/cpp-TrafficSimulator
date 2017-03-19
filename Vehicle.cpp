@@ -1,5 +1,13 @@
 #include "Vehicle.h"
 
+Vehicle::Vehicle()
+{
+    type = CAR;
+    width = carWidth;
+    acceleration = carAcceleration;
+    slowdown = carSlowdown;
+}
+
 Vehicle::Vehicle(vehicleType typ)
 {
 	type = typ;
@@ -15,4 +23,13 @@ Vehicle::Vehicle(vehicleType typ)
 		acceleration = truckAcceleration;
 		slowdown = truckSlowdown;
 	}
+}
+
+void Vehicle::move(void) {
+	return;
+}
+
+Vehicle::~Vehicle()
+{
+    type = NOTHING;
 }

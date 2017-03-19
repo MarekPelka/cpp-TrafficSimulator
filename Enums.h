@@ -1,6 +1,6 @@
 #pragma once
 enum directions { N, E, W, S };
-enum vehicleType {CAR, TRUCK};
+enum vehicleType {CAR, TRUCK, NOTHING};
 
 const float carWidth = 2;
 const float carAcceleration = 0.5;

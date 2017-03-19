@@ -3,8 +3,8 @@
 
 class MovingObject
 {
-	public:
+    public:
 		int speed;
 		Position position;
-		virtual void move();
+        virtual void move(void) = 0;
 };

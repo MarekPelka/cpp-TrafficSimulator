@@ -3,12 +3,12 @@
 Camera::Camera(Position pos, int angl, directions dir)
 {
 	position = pos;
-	angle = angle;
+    angle = angl;
 	direction = dir;
 }
-std::map <MovingObject, Position> Camera::getView()
+std::map <int, int> Camera::getView()
 {
-	std::map <MovingObject, Position> observation;
+    std::map <int, int> observation;
 	//TODO
 	return observation;
 }

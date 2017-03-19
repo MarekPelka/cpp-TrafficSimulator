@@ -13,6 +13,5 @@ class Camera
 		int angle;
 		directions direction;
 
-		std::map<MovingObject, Position> getView();
-
+        std::map<int, int> getView();
 };
