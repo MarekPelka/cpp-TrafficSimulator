@@ -1,5 +1,9 @@
 #include "Camera.h"
 
+Camera::Camera()
+{
+}
+
 Camera::Camera(Position pos, int angl, directions dir)
 {
 	position = pos;

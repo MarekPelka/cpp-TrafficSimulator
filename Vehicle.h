@@ -8,14 +8,15 @@ class Vehicle : MovingObject
 {
 	public:
         Vehicle();
-        Vehicle(vehicleType type);
+		~Vehicle();
+        Vehicle(vehicleType type, Position pos);
         void move(void);
+		Position getPosition();
+		vehicleType getType();
     private:
 		float width;
 		float acceleration;
 		float slowdown;
 		vehicleType type;
 		std::string color;
-
-        ~Vehicle();
 };

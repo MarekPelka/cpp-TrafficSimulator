@@ -1,9 +1,12 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "CitiController.h"
+#include "VehicleController.h"
 #include "Position.h"
 #include "Street.h"
 #include "Node.h"
+#include "Enums.h"
+#include "Vehicle.h"
 #include <QGraphicsLineItem>
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -13,6 +16,7 @@ MainWindow::MainWindow(QWidget *parent) :
 	ui->setupUi(this);
 
 	CitiController *citiC = new CitiController(this);
+	VehicleController *vehC = new VehicleController(this);
 
 	//TESTING FOR CITI TOPOLOGY
 	Position p1(10, 10);
@@ -31,7 +35,20 @@ MainWindow::MainWindow(QWidget *parent) :
 	{
 		scene->addItem(g);
 	}
+
+	//TESTING VEHICLES
+	Vehicle car(CAR, Position(30,30));
+	Vehicle truck(TRUCK, Position (80,80));
+	vehC->addVehicle(&car);
+	vehC->addVehicle(&truck);
 	
+	QPen pen = QPen(QColor(0, 0, 0), 1, Qt::SolidLine);
+	QBrush brush = QBrush(QColor(184, 36, 238));
+
+	for (QRect* g : vehC->getVehiclesGraphics())
+	{
+		scene->addRect(*g, pen, brush);
+	}
 }
 
 MainWindow::~MainWindow()

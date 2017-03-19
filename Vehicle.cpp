@@ -8,7 +8,7 @@ Vehicle::Vehicle()
     slowdown = carSlowdown;
 }
 
-Vehicle::Vehicle(vehicleType typ)
+Vehicle::Vehicle(vehicleType typ, Position pos)
 {
 	type = typ;
 	if (type == CAR)
@@ -23,10 +23,19 @@ Vehicle::Vehicle(vehicleType typ)
 		acceleration = truckAcceleration;
 		slowdown = truckSlowdown;
 	}
+	position = pos;
 }
 
 void Vehicle::move(void) {
 	return;
+}
+
+Position Vehicle::getPosition() {
+	return position;
+}
+
+vehicleType Vehicle::getType() {
+	return type;
 }
 
 Vehicle::~Vehicle()
