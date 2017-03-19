@@ -23,7 +23,7 @@ MainWindow::MainWindow(QWidget *parent) :
 	citiC->addStreet(p3, p1);
 	
 	//Painting streets
-	//TO DO: There is some weird auto-scaling/positioning -> understend and fix
+	//TODO: There is some weird auto-scaling/positioning -> understend and fix
 	QGraphicsScene* scene = new QGraphicsScene(ui->graphicsView);
 	scene->setBackgroundBrush(Qt::green);
 	ui->graphicsView->setScene(scene);
