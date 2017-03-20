@@ -9,4 +9,5 @@ class Position
 		int x;
 		int y;
 		std::pair <int, int> getCoordinates();
+		bool operator==(const Position &p) { return x == p.x && y == p.y; }
 };

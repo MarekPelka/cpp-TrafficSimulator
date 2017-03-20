@@ -8,10 +8,10 @@ class Camera
 {
 	public:
 		Camera();
-		Camera(Position position, int angle, directions direction);
+		Camera(Position position, int angle, Direction direction);
 		Position position;
 		int angle;
-		directions direction;
+		Direction direction;
 
         std::map<int, int> getView();
 };

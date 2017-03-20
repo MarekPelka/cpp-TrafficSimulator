@@ -1,13 +1,13 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-#include "CitiController.h"
 #include "VehicleController.h"
 #include "Position.h"
-#include "Street.h"
-#include "Node.h"
 #include "Enums.h"
 #include "Vehicle.h"
-#include <QGraphicsLineItem>
+#include <list>
+#include "CityController.h"
+#include "GraphicFab.h"
+#include <QGraphicsItem>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -15,30 +15,30 @@ MainWindow::MainWindow(QWidget *parent) :
 {
 	ui->setupUi(this);
 
-	CitiController *citiC = new CitiController(this);
-	VehicleController *vehC = new VehicleController(this);
+	CityController *cityC = new CityController();
+	VehicleController *vehC = new VehicleController();
 
 	//TESTING FOR CITI TOPOLOGY
 	Position p1(10, 10);
 	Position p2(50, 50);
 	Position p3(10, 50);
-	citiC->addStreet(p1, p2);
-	citiC->addStreet(p2, p3);
-	citiC->addStreet(p3, p1);
+	cityC->addStreet(p1, p2);
+	cityC->addStreet(p2, p3);
+	cityC->addStreet(p3, p1);
 	
 	//Painting streets
 	//TODO: There is some weird auto-scaling/positioning -> understend and fix
 	QGraphicsScene* scene = new QGraphicsScene(ui->graphicsView);
-	scene->setBackgroundBrush(Qt::green);
+	scene->setBackgroundBrush(Qt::darkGreen);
 	ui->graphicsView->setScene(scene);
-	for (QGraphicsItem* g : citiC->getStreetsGraphics())
+	for (QGraphicsItem* g : GraphicFab::getStreetsGraphics(cityC))
 	{
 		scene->addItem(g);
 	}
 
 	//TESTING VEHICLES
 	Vehicle car(CAR, Position(30,30));
-	Vehicle truck(TRUCK, Position (80,80));
+	Vehicle truck(TRUCK, Position (500,80));
 	vehC->addVehicle(&car);
 	vehC->addVehicle(&truck);
 	
