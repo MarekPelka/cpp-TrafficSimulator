@@ -1,5 +1,5 @@
 #pragma once
-enum Direction { N, E, W, S };
+enum Direction { N, E, W, S, NONE};
 enum vehicleType {CAR, TRUCK, NOTHING};
 
 const float carWidth = 2;

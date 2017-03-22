@@ -17,8 +17,8 @@ public:
 	void setMainWindow(MainWindow *mw);
 	void addStreet(Position start, Position end, bool twoWay = false);
 	std::list<Street*> getStreets();
-	//TODO: Move to mainwindow
 	std::list<Node*>* getNodes();
+	std::pair<bool, std::map<Street, Position>> isStreetsCross(Position start, Position end);
 private:
 	MainWindow *mainWindow;
 	std::list<Street*> streets;

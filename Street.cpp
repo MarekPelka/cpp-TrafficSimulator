@@ -1,35 +1,36 @@
 #include "Street.h"
 
-Street::Street()
-{
-}
+Street::Street() {}
 
-Street::Street(Node *nodeFrom, Node *nodeTo, bool sidewalk)
-{
+Street::Street(Node *nodeFrom, Node *nodeTo, bool sidewalk) {
 	this->nodeFrom = nodeFrom;
 	this->nodeTo = nodeTo;
 	this->sidewalk = sidewalk;
-	Position start = this->nodeFrom->getPosition();
-	Position end = this->nodeTo->getPosition();
+	this->direction = getPredictedDirection(this->nodeFrom->getPosition(), this->nodeTo->getPosition());
+}
 
+Direction Street::getDirection() {
+	return this->direction;
+}
+
+Direction Street::getPredictedDirection(Position start, Position end) {
 	if (start.x == end.x)
 		if (start.y > end.y)
-			this->direction = N;
+			return N;
 		else
-			this->direction = S;
-	else if(start.y == end.y)
-		if(start.x > end.x)
-			this->direction = W;
+			return S;
+	else if (start.y == end.y)
+		if (start.x > end.x)
+			return W;
 		else
-			this->direction = E;
+			return E;
+	return NONE;
 }
 
-std::pair<Node*, Node*> Street::getNodes()
-{
-	return {nodeFrom, nodeTo};
+std::pair<Node*, Node*> Street::getNodes() {
+	return{nodeFrom, nodeTo};
 }
 
-std::pair<Position, Position> Street::getStartEndPositions()
-{
-	return{ nodeFrom->getPosition(), nodeTo->getPosition() };
+std::pair<Position, Position> Street::getStartEndPositions() {
+	return{nodeFrom->getPosition(), nodeTo->getPosition()};
 }
