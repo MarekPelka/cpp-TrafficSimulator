@@ -10,7 +10,7 @@ public:
 	Position getPosition();
 	int getNumber();
 	std::string getName();
-private:
+//private:
 	Position position;
 	int number;
 	std::string name;

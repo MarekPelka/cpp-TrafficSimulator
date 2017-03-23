@@ -7,10 +7,20 @@ Street::Street(Node *nodeFrom, Node *nodeTo, bool sidewalk) {
 	this->nodeTo = nodeTo;
 	this->sidewalk = sidewalk;
 	this->direction = getPredictedDirection(this->nodeFrom->getPosition(), this->nodeTo->getPosition());
+	if (this->direction == N || this->direction == S)
+		this->length = abs(getStartEndPositions().first.y - getStartEndPositions().second.y);
+	else if (this->direction == E || this->direction == W)
+		this->length = abs(getStartEndPositions().first.x - getStartEndPositions().second.x);
+	else
+		this->length = -1;
 }
 
 Direction Street::getDirection() {
 	return this->direction;
+}
+
+int Street::getLength() {
+	return length;
 }
 
 Direction Street::getPredictedDirection(Position start, Position end) {
@@ -25,6 +35,14 @@ Direction Street::getPredictedDirection(Position start, Position end) {
 		else
 			return E;
 	return NONE;
+}
+
+void Street::alterStart(Node * n) {
+	nodeFrom = n;
+}
+
+void Street::alterEnd(Node * n) {
+	nodeTo = n;
 }
 
 std::pair<Node*, Node*> Street::getNodes() {

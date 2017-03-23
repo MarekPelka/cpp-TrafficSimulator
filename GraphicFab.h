@@ -2,6 +2,8 @@
 
 #include <list>
 #include <QGraphicsItem>
+#include <QPen>
+#include <string> 
 #include "CityController.h"
 class GraphicFab
 {
