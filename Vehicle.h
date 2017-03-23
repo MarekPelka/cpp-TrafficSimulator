@@ -13,8 +13,9 @@ class Vehicle : MovingObject
         void move(void);
 		Position getPosition();
 		vehicleType getType();
+		void updatePosition(int time);
     private:
-		float width;
+		float length;
 		float acceleration;
 		float slowdown;
 		vehicleType type;
