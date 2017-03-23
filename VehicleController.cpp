@@ -1,5 +1,14 @@
 #include "VehicleController.h"
 
+VehicleController* VehicleController::instance = nullptr;
+
+VehicleController* VehicleController::getInstance()
+{
+	if (!instance)
+		instance = new VehicleController;
+	return instance;
+}
+
 VehicleController::VehicleController()
 {
 
@@ -16,23 +25,27 @@ void VehicleController::setMainWindow(MainWindow * mw)
 	mainWindow = mw;
 }
 
-void VehicleController::addVehicle(Vehicle *vehicle)
+void VehicleController::addVehicle(Vehicle vehicle)
 {
 	vehicles.push_back(vehicle);
 }
 
-std::list<Vehicle*>* VehicleController::getVehicles()
+std::list<Vehicle> VehicleController::getVehicles()
 {
-	return &vehicles;
+	return vehicles;
 }
 
-std::list<QRect*> VehicleController::getVehiclesGraphics()
+void VehicleController::updatePositions(int interval)
 {
-	std::list<QRect*> out = {};
-	for (Vehicle* v : vehicles)
+	std::list<Vehicle> temp;
+	for(Vehicle veh : vehicles)
 	{
-		out.push_back(new QRect(v->getPosition().x, v->getPosition().y,
-			v->getPosition().x + carWidth, v->getPosition().y + carWidth));
+		veh.updatePosition(interval);
+		temp.push_back(veh);
+		//tutaj position jest ladnie zupdatowane
+		//widac tu jest lokalne a nie jest zupdatowana lista
 	}
-	return out;
+	//tutaj wraca do poprzedniej wartosci position po wyjsciu z fora
+	vehicles = temp;
+	mainWindow->updateVehiclesViews();
 }

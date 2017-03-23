@@ -3,9 +3,9 @@
 Vehicle::Vehicle()
 {
     type = CAR;
-    width = carWidth;
-    acceleration = carAcceleration;
-    slowdown = carSlowdown;
+    length = CAR_LENGTH;
+    acceleration = CAR_ACCELERATION;
+    slowdown = CAR_SLOWDOWN;
 }
 
 Vehicle::Vehicle(vehicleType typ, Position pos)
@@ -13,15 +13,15 @@ Vehicle::Vehicle(vehicleType typ, Position pos)
 	type = typ;
 	if (type == CAR)
 	{
-		width = carWidth;
-		acceleration = carAcceleration;
-		slowdown = carSlowdown;
+		length = CAR_LENGTH;
+		acceleration = CAR_ACCELERATION;
+		slowdown = CAR_SLOWDOWN;
 	}
 	else if(type == TRUCK)
 	{
-		width = truckWidth;
-		acceleration = truckAcceleration;
-		slowdown = truckSlowdown;
+		length = TRUCK_LENGTH;
+		acceleration = TRUCK_ACCELERATION;
+		slowdown = TRUCK_SLOWDOWN;
 	}
 	position = pos;
 }
@@ -36,6 +36,13 @@ Position Vehicle::getPosition() {
 
 vehicleType Vehicle::getType() {
 	return type;
+}
+
+void Vehicle::updatePosition(int time) {
+	//TODO matematyka zwiazana z predkoscia o ile trzeba zmienic wspolrzedne samochodu
+	int temp = position.x;
+	temp+=2;
+	position = Position(temp,position.y);
 }
 
 Vehicle::~Vehicle()

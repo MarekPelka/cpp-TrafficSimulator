@@ -41,3 +41,13 @@ std::list<QGraphicsItem*> GraphicFab::getStreetsGraphics(CityController * cityCo
 	}
 	return out;
 }
+
+std::list<QRect*> GraphicFab::getVehiclesGraphics(VehicleController * vehCon)
+{
+	std::list<QRect*> out = {};
+	for (Vehicle v : vehCon->getVehicles())
+	{
+		out.push_back(new QRect(v.getPosition().x, v.getPosition().y, CAR_LENGTH, STREET_WIDTH));
+	}
+	return out;
+}

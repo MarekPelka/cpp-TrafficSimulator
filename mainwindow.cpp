@@ -1,6 +1,5 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-#include "VehicleController.h"
 #include "Position.h"
 #include "Enums.h"
 #include "Vehicle.h"
@@ -16,29 +15,35 @@ MainWindow::MainWindow(QWidget *parent) :
 	ui->setupUi(this);
 
 	CityController *cityC = new CityController();
-	VehicleController *vehC = new VehicleController();
+	VehicleController *vehC = VehicleController::getInstance();
+	vehC->setMainWindow(this);
+
+	sigUpdatePositions.connect(boost::bind(&VehicleController::updatePositions, vehC, _1));
+
+	//timer for vehicle movement
+	timerId = startTimer(1000 / FPS);
 
 	//TESTING FOR CITI TOPOLOGY
 	Position p1(100, 100);
 	Position p2(500, 100);
 	Position p3(500, 500);
 	Position p4(100, 500);
+
 	cityC->addStreet(p1, p2);
 	cityC->addStreet(p2, p3);
 	cityC->addStreet(p3, p4);
 	cityC->addStreet(p4, p1);
 	//Crossing
-
-
 	Position pc3(300, 50);
 	Position pc4(300, 550);
 	cityC->addStreet(pc3, pc4);
 	Position pc1(50, 300);
 	Position pc2(550, 300);
 	cityC->addStreet(pc1, pc2);
+
 	//Painting streets
 	//TODO: There is some weird auto-scaling/positioning -> understend and fix
-	QGraphicsScene* scene = new QGraphicsScene(ui->graphicsView);
+	scene = new QGraphicsScene(ui->graphicsView);
 	scene->setBackgroundBrush(Qt::darkGreen);
 	ui->graphicsView->setScene(scene);
 
@@ -48,21 +53,35 @@ MainWindow::MainWindow(QWidget *parent) :
 	}
 
 	//TESTING VEHICLES
-	//Vehicle car(CAR, Position(30,30));
-	//Vehicle truck(TRUCK, Position (500,80));
-	//vehC->addVehicle(&car);
-	//vehC->addVehicle(&truck);
-	//
-	//QPen pen = QPen(QColor(0, 0, 0), 1, Qt::SolidLine);
-	//QBrush brush = QBrush(QColor(184, 36, 238));
-
-	//for (QRect* g : vehC->getVehiclesGraphics())
-	//{
-	//	scene->addRect(*g, pen, brush);
-	//}
+	Vehicle car(CAR, Position(90,90));
+	vehC->addVehicle(car);
 }
 
 MainWindow::~MainWindow()
 {
+	killTimer(timerId);
     delete ui;
+}
+
+void MainWindow::updateVehiclesViews()
+{
+	VehicleController *vehC = VehicleController::getInstance();
+	std::list<QRect*> vehicleGraphics = GraphicFab::getVehiclesGraphics(vehC);
+	paintVehicles(vehicleGraphics);
+}
+
+void MainWindow::paintVehicles(std::list<QRect*> vehicleGraphics)
+{
+	scene->clear();
+	QPen pen = QPen(QColor(0, 0, 0), 1, Qt::SolidLine);
+	QBrush brush = QBrush(QColor(184, 36, 238));
+	for (QRect* g : vehicleGraphics)
+	{
+		scene->addRect(*g, pen, brush);
+	}
+}
+
+void MainWindow::timerEvent(QTimerEvent *event)
+{
+	sigUpdatePositions(int(1000/FPS));
 }
