@@ -20,14 +20,15 @@ class Vehicle : MovingObject
         Direction getOrientation();
         bool checkSlowdown(Position step);
         bool checkMaxSpeed(Position step);
+        std::list<int> color;
     private:
 		float length;
 		float acceleration;
 		float slowdown;
 		vehicleType type;
-		std::string color;
         bool isMoving = false;
         float speed;
         std::list<Node> nodes;
         Direction orientation;
+        std::list<int> vehicleColor(float speed);
 };

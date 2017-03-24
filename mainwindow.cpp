@@ -57,9 +57,13 @@ MainWindow::MainWindow(QWidget *parent) :
     Node n1(p1);
     Node n2(p2);
     Node n3(p3);
-    std::list<Node> nodes = {n0,n1,n2,n3};
+    std::list<Node> nodes = { n0,n1,n2,n3};
 	Vehicle car(CAR, nodes);
-	vehC->addVehicle(car);
+    nodes.pop_front();
+    Vehicle truck(TRUCK, nodes);
+
+    vehC->addVehicle(car);
+	vehC->addVehicle(truck);
 }
 
 MainWindow::~MainWindow()
@@ -72,19 +76,22 @@ void MainWindow::updateVehiclesViews()
 {
 	VehicleController *vehC = VehicleController::getInstance();
 	std::list<QRect*> vehicleGraphics = GraphicFab::getVehiclesGraphics(vehC);
-	paintVehicles(vehicleGraphics);
+    scene->clear();
+    //for (QRect* g : vehicleGraphics)
+    for(Vehicle veh : vehC->getVehicles())
+    {
+        QPen pen = QPen(QColor(0, 0, 0), 1, Qt::SolidLine);
+        int r = veh.color.front();
+        veh.color.pop_front();
+        int g = veh.color.front();
+        veh.color.pop_front();
+        int b = veh.color.front();
+        veh.color.pop_front();
+        QBrush brush = QBrush(QColor(r,g,b));
+        scene->addRect(*vehicleGraphics.front(), pen, brush);
+        vehicleGraphics.pop_front();
+    }    
     paintStreets();
-}
-
-void MainWindow::paintVehicles(std::list<QRect*> vehicleGraphics)
-{
-	scene->clear();
-	QPen pen = QPen(QColor(0, 0, 0), 1, Qt::SolidLine);
-	QBrush brush = QBrush(QColor(184, 36, 238));
-	for (QRect* g : vehicleGraphics)
-	{
-		scene->addRect(*g, pen, brush);
-	}
 }
 
 void MainWindow::paintStreets()

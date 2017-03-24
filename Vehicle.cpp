@@ -65,6 +65,10 @@ void Vehicle::move(int time) {
         {
             speed += acceleration * time / 1000;
         }
+        else
+        {
+            speed = MAX_SPEED;
+        }
         int temp = speed*time;
         if (position.x != step.x || position.y != step.y)
         {
@@ -176,7 +180,10 @@ bool Vehicle::checkSlowdown(Position step) {
 
 bool Vehicle::checkMaxSpeed(Position step) {
     //TODO check for this street what is max speed
-    return false;
+    if (speed >= MAX_SPEED)
+        return true;
+    else
+        return false;
 }
 
 Position Vehicle::getPosition() {
@@ -188,7 +195,6 @@ vehicleType Vehicle::getType() {
 }
 
 void Vehicle::updatePosition(int time) {
-	//TODO matematyka zwiazana z predkoscia o ile trzeba zmienic wspolrzedne samochodu
     if (isMoving == false && nodes.size() == 0)
     {
        //sedn signal to destroy this vehicle
@@ -196,6 +202,7 @@ void Vehicle::updatePosition(int time) {
     else
     {
         move(time);
+        color = vehicleColor(speed);
     }
 }
 
@@ -207,4 +214,52 @@ Direction Vehicle::getOrientation()
 Vehicle::~Vehicle()
 {
     type = NOTHING;
+}
+
+std::list<int> Vehicle::vehicleColor(float speed)
+{
+    //scaling
+    speed *= 100;
+    speed += 30;
+
+    int r, g, b;
+    double d = 256.0 / 20.0;
+
+    if (speed < 0) { //nadfiolet
+        r = g = b = 0;
+    }
+    else if (speed < 20)
+    {
+        r = 255 - d * speed;
+        g = 0;
+        b = 255;
+    }
+    else if (speed < 40)
+    {
+        r = 0;
+        g = d * (speed - 20);
+        b = 255;
+    }
+    else if (speed < 60)
+    {
+        r = 0;
+        g = 255;
+        b = 255 - d * (speed - 40);
+    }
+    else if (speed < 80)
+    {
+        r = d * (speed - 60);
+        g = 255;
+        b = 0;
+    }
+    else if (speed < 100)
+    {
+        r = 255;
+        g = 255 - d * (speed - 80);
+        b = 0;
+    }
+    else { //podczerwieñ
+        r = g = b = 0;
+    }
+    return std::list<int>{r, g, b};
 }

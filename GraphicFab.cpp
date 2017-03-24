@@ -45,15 +45,24 @@ std::list<QGraphicsItem*> GraphicFab::getStreetsGraphics(CityController * cityCo
 std::list<QRect*> GraphicFab::getVehiclesGraphics(VehicleController * vehCon)
 {
 	std::list<QRect*> out = {};
+    int length = 0;
 	for (Vehicle v : vehCon->getVehicles())
 	{
+        if (v.getType() == CAR)
+        {
+            length = CAR_LENGTH;
+        }
+        else if (v.getType() == TRUCK)
+        {
+            length = TRUCK_LENGTH;
+        }
         if (v.getOrientation() == N || v.getOrientation() == S)
         {
-            out.push_back(new QRect(v.getPosition().x, v.getPosition().y, STREET_WIDTH, CAR_LENGTH));
+            out.push_back(new QRect(v.getPosition().x, v.getPosition().y, STREET_WIDTH, length));
         }
         else if (v.getOrientation() == E || v.getOrientation() == W)
         {
-            out.push_back(new QRect(v.getPosition().x, v.getPosition().y, CAR_LENGTH, STREET_WIDTH));
+            out.push_back(new QRect(v.getPosition().x, v.getPosition().y, length, STREET_WIDTH));
         }
 	}
 	return out;

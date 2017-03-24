@@ -292,5 +292,5 @@ std::list<Node*>* CityController::getNodes() {
 	return &nodes;
 }
 
-bool CityController::isInIntervalX(Position point, Street * range) { }
-bool CityController::isInIntervalY(Position point, Street * range) { }
+bool CityController::isInIntervalX(Position point, Street * range) { return false; }
+bool CityController::isInIntervalY(Position point, Street * range) { return false; }
