@@ -14,7 +14,7 @@ MainWindow::MainWindow(QWidget *parent) :
 {
 	ui->setupUi(this);
 
-	CityController *cityC = new CityController();
+	CityController *cityC = CityController::getInstance();
 	VehicleController *vehC = VehicleController::getInstance();
 	vehC->setMainWindow(this);
 
@@ -47,13 +47,18 @@ MainWindow::MainWindow(QWidget *parent) :
 	scene->setBackgroundBrush(Qt::darkGreen);
 	ui->graphicsView->setScene(scene);
 
-	for (QGraphicsItem* g : GraphicFab::getStreetsGraphics(cityC))
-	{
-		scene->addItem(g);
-	}
+	//for (QGraphicsItem* g : GraphicFab::getStreetsGraphics(cityC))
+	//{
+	//	scene->addItem(g);
+	//}
 
 	//TESTING VEHICLES
-	Vehicle car(CAR, Position(90,90));
+    Node n0(p4);
+    Node n1(p1);
+    Node n2(p2);
+    Node n3(p3);
+    std::list<Node> nodes = {n0,n1,n2,n3};
+	Vehicle car(CAR, nodes);
 	vehC->addVehicle(car);
 }
 
@@ -68,6 +73,7 @@ void MainWindow::updateVehiclesViews()
 	VehicleController *vehC = VehicleController::getInstance();
 	std::list<QRect*> vehicleGraphics = GraphicFab::getVehiclesGraphics(vehC);
 	paintVehicles(vehicleGraphics);
+    paintStreets();
 }
 
 void MainWindow::paintVehicles(std::list<QRect*> vehicleGraphics)
@@ -79,6 +85,15 @@ void MainWindow::paintVehicles(std::list<QRect*> vehicleGraphics)
 	{
 		scene->addRect(*g, pen, brush);
 	}
+}
+
+void MainWindow::paintStreets()
+{
+    CityController *cityC = CityController::getInstance();
+    for (QGraphicsItem* g : GraphicFab::getStreetsGraphics(cityC))
+    {
+        scene->addItem(g);
+    }
 }
 
 void MainWindow::timerEvent(QTimerEvent *event)

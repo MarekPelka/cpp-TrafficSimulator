@@ -22,6 +22,7 @@ public:
 	boost::signals2::signal<void(int)> sigUpdatePositions;
 	void updateVehiclesViews();
 	void paintVehicles(std::list<QRect*> vehicleGraphics);
+    void paintStreets();
 private:
     Ui::MainWindow *ui;
 	int timerId;

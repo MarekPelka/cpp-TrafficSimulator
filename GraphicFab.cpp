@@ -47,7 +47,14 @@ std::list<QRect*> GraphicFab::getVehiclesGraphics(VehicleController * vehCon)
 	std::list<QRect*> out = {};
 	for (Vehicle v : vehCon->getVehicles())
 	{
-		out.push_back(new QRect(v.getPosition().x, v.getPosition().y, CAR_LENGTH, STREET_WIDTH));
+        if (v.getOrientation() == N || v.getOrientation() == S)
+        {
+            out.push_back(new QRect(v.getPosition().x, v.getPosition().y, STREET_WIDTH, CAR_LENGTH));
+        }
+        else if (v.getOrientation() == E || v.getOrientation() == W)
+        {
+            out.push_back(new QRect(v.getPosition().x, v.getPosition().y, CAR_LENGTH, STREET_WIDTH));
+        }
 	}
 	return out;
 }

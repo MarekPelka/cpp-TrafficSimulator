@@ -6,5 +6,5 @@ class MovingObject
     public:
 		int speed;
 		Position position;
-        virtual void move(void) = 0;
+        virtual void move(int) = 0;
 };

@@ -1,5 +1,14 @@
 #include "CityController.h"
 
+CityController* CityController::instance = nullptr;
+
+CityController* CityController::getInstance()
+{
+    if (!instance)
+        instance = new CityController;
+    return instance;
+}
+
 CityController::CityController() {
 	streets = {};
 	nodes = {};
