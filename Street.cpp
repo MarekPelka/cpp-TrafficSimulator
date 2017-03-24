@@ -7,12 +7,10 @@ Street::Street(Node *nodeFrom, Node *nodeTo, bool sidewalk) {
 	this->nodeTo = nodeTo;
 	this->sidewalk = sidewalk;
 	this->direction = getPredictedDirection(this->nodeFrom->getPosition(), this->nodeTo->getPosition());
-	if (this->direction == N || this->direction == S)
-		this->length = abs(getStartEndPositions().first.y - getStartEndPositions().second.y);
-	else if (this->direction == E || this->direction == W)
-		this->length = abs(getStartEndPositions().first.x - getStartEndPositions().second.x);
-	else
-		this->length = -1;
+    this->length = abs(getStartEndPositions().first.y - getStartEndPositions().second.y) >
+            abs(getStartEndPositions().first.x - getStartEndPositions().second.x) ?
+            abs(getStartEndPositions().first.y - getStartEndPositions().second.y) :
+            abs(getStartEndPositions().first.x - getStartEndPositions().second.x);
 }
 
 Direction Street::getDirection() {

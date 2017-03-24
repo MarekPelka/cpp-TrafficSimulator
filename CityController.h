@@ -14,6 +14,8 @@ public:
 	CityController(MainWindow *mw);
 	void setMainWindow(MainWindow *mw);
 	bool addStreet(Position start, Position end, bool twoWay = false);
+    bool isInIntervalX(Position point, Street * range);
+    bool isInIntervalY(Position point, Street * range);
 	std::list<Street*> getStreets();
 	std::list<Node*>* getNodes();
 	std::pair<bool, std::map<Street*, Position>> isStreetsCross(Position start, Position end);

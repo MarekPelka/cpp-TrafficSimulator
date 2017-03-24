@@ -16,6 +16,8 @@ INCLUDEPATH += . \
 LIBS += -L"../../../../../../utils/my_sql/my_sql/lib" \
     -L"../../../../../../utils/postgresql/pgsql/lib" \
     -lshell32
+INCLUDEPATH += C:/boost/boost_1_63_0/
+LIBS += "-LC:/boost/boost_1_63_0/stage/lib/"
 DEPENDPATH += .
 MOC_DIR += ./GeneratedFiles/debug
 OBJECTS_DIR += debug
