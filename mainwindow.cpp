@@ -57,7 +57,7 @@ MainWindow::MainWindow(QWidget *parent) :
     Node n1(p1);
     Node n2(p2);
     Node n3(p3);
-    std::list<Node> nodes = { n0,n1,n2,n3};
+    std::list<Node> nodes = {n0,n1,n2,n3,n0,n1,n2,n3,n0,n1,n2,n3,n0,n1,n2,n3,n0,n1,n2,n3};
 	Vehicle car(CAR, nodes);
     nodes.pop_front();
     Vehicle truck(TRUCK, nodes);
