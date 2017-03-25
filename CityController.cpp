@@ -2,11 +2,10 @@
 
 CityController* CityController::instance = nullptr;
 
-CityController* CityController::getInstance()
-{
-    if (!instance)
-        instance = new CityController;
-    return instance;
+CityController* CityController::getInstance() {
+	if (!instance)
+		instance = new CityController;
+	return instance;
 }
 
 CityController::CityController() {
@@ -27,7 +26,7 @@ void CityController::setMainWindow(MainWindow * mw) {
 bool CityController::addStreet(Position start, Position end, bool twoWay) {
 	//DONE: Bad node creation, we do not check if that node already exists
 	//Check if beginning and end already exists
-    //TODO: Change return of IsCross and isOverlap to std::map(s, pos) -> bool change to map.empty()
+	//TODO: Change return of IsCross and isOverlap to std::map(s, pos) -> bool change to map.empty()
 	Node *s = nullptr, *e = nullptr;
 	for (Node *n : nodes) {
 		if (n->getPosition() == start) {
@@ -66,16 +65,9 @@ bool CityController::addStreet(Position start, Position end, bool twoWay) {
 				return a->position.x < b->position.x;
 		});
 		filterList(&crossingNodes);
-		/*auto comp = [](const Node& a, const Node& b)
-		{
-			if (a.position.x == b.position.x)
-				return a.position.y > b.position.y;
-			else
-				return a.position.x > b.position.x;
-		};*/
-		
+
 		//std::list::sort(crossingNodes.begin(), crossingNodes.end(), comp);
-		
+
 		if (s == nullptr) {
 			s = new Node(start);
 			nodes.push_back(s);
@@ -103,22 +95,22 @@ bool CityController::addStreet(Position start, Position end, bool twoWay) {
 				}
 			}
 		} else if (Street::getPredictedDirection(start, end) == W) {
-				streets.push_back(new Street(s, crossingNodes.back()));
-				if (twoWay)
-					streets.push_back(new Street(crossingNodes.back(), s));
-				streets.push_back(new Street(crossingNodes.front(), e));
-				if (twoWay)
-					streets.push_back(new Street(e, crossingNodes.front()));
-				for (auto it = crossingNodes.end(); it != crossingNodes.begin(); --it) {
+			streets.push_back(new Street(s, crossingNodes.back()));
+			if (twoWay)
+				streets.push_back(new Street(crossingNodes.back(), s));
+			streets.push_back(new Street(crossingNodes.front(), e));
+			if (twoWay)
+				streets.push_back(new Street(e, crossingNodes.front()));
+			for (auto it = crossingNodes.end(); it != crossingNodes.begin(); --it) {
 
-					streets.push_back(new Street(*it, *std::prev(it)));
-					if (twoWay)
-						streets.push_back(new Street(*std::prev(it), *it));
-					if (std::prev(it, 2) == crossingNodes.begin()) // last element
-					{
-						break;
-					}
+				streets.push_back(new Street(*it, *std::prev(it)));
+				if (twoWay)
+					streets.push_back(new Street(*std::prev(it), *it));
+				if (std::prev(it, 2) == crossingNodes.begin()) // last element
+				{
+					break;
 				}
+			}
 		} else if (Street::getPredictedDirection(start, end) == S) {
 			streets.push_back(new Street(s, crossingNodes.front()));
 			if (twoWay)
@@ -175,7 +167,7 @@ bool CityController::addStreet(Position start, Position end, bool twoWay) {
 
 std::pair<bool, std::map<Street*, Position>> CityController::isStreetsCross(Position start, Position end) {
 	Direction d = Street::getPredictedDirection(start, end);
-	std::pair<bool, std::map<Street*, Position>> output;// = new std::pair<bool, Position>();
+	std::pair<bool, std::map<Street*, Position>> output;
 	output.first = false;
 	output.second = {};
 	for (Street *s : streets) {
@@ -187,10 +179,10 @@ std::pair<bool, std::map<Street*, Position>> CityController::isStreetsCross(Posi
 			if (d == N) {
 				if (s->getStartEndPositions().first.y < start.y &&
 					s->getStartEndPositions().first.y > end.y) {
-                    if ((start.x < s->getStartEndPositions().first.x &&
-                        start.x > s->getStartEndPositions().second.x) ||
-                        (start.x > s->getStartEndPositions().first.x &&
-                        start.x < s->getStartEndPositions().second.x)) {
+					if ((start.x < s->getStartEndPositions().first.x &&
+						start.x > s->getStartEndPositions().second.x) ||
+						(start.x > s->getStartEndPositions().first.x &&
+						start.x < s->getStartEndPositions().second.x)) {
 						output.first = true;
 						output.second[s] = Position(start.x, s->getStartEndPositions().first.y);
 					}
@@ -199,10 +191,10 @@ std::pair<bool, std::map<Street*, Position>> CityController::isStreetsCross(Posi
 			} else if (d == E) {
 				if (s->getStartEndPositions().first.x < end.x &&
 					s->getStartEndPositions().first.x > start.x) {
-                    if ((start.y < s->getStartEndPositions().first.y &&
-                        start.y > s->getStartEndPositions().second.y) ||
-                        (start.y > s->getStartEndPositions().first.y &&
-                        start.y < s->getStartEndPositions().second.y)) {
+					if ((start.y < s->getStartEndPositions().first.y &&
+						start.y > s->getStartEndPositions().second.y) ||
+						(start.y > s->getStartEndPositions().first.y &&
+						start.y < s->getStartEndPositions().second.y)) {
 						output.first = true;
 						output.second[s] = Position(s->getStartEndPositions().first.x, start.y);
 					}
@@ -211,10 +203,10 @@ std::pair<bool, std::map<Street*, Position>> CityController::isStreetsCross(Posi
 			} else if (d == W) {
 				if (s->getStartEndPositions().first.x < start.x &&
 					s->getStartEndPositions().first.x > end.x) {
-                    if ((start.y < s->getStartEndPositions().first.y &&
-                        start.y > s->getStartEndPositions().second.y) ||
-                        (start.y > s->getStartEndPositions().first.y &&
-                        start.y < s->getStartEndPositions().second.y)) {
+					if ((start.y < s->getStartEndPositions().first.y &&
+						start.y > s->getStartEndPositions().second.y) ||
+						(start.y > s->getStartEndPositions().first.y &&
+						start.y < s->getStartEndPositions().second.y)) {
 						output.first = true;
 						output.second[s] = Position(s->getStartEndPositions().first.x, start.y);
 					}
@@ -223,10 +215,10 @@ std::pair<bool, std::map<Street*, Position>> CityController::isStreetsCross(Posi
 			} else if (d == S) {
 				if (s->getStartEndPositions().first.y < end.y &&
 					s->getStartEndPositions().first.y > start.y) {
-                    if ((start.x < s->getStartEndPositions().first.x &&
-                        start.x > s->getStartEndPositions().second.x) ||
-                        (start.x > s->getStartEndPositions().first.x &&
-                        start.x < s->getStartEndPositions().second.x)) {
+					if ((start.x < s->getStartEndPositions().first.x &&
+						start.x > s->getStartEndPositions().second.x) ||
+						(start.x > s->getStartEndPositions().first.x &&
+						start.x < s->getStartEndPositions().second.x)) {
 						output.first = true;
 						output.second[s] = Position(start.x, s->getStartEndPositions().first.y);
 					}
@@ -252,18 +244,18 @@ std::pair<bool, std::pair<Position, Position>> CityController::isStreetsOverlap(
 		int computedDir1 = d + 2;
 		if (ccStreetDir == d || ccStreetDir == computedDir1 % 4) {
 			if (start.x == s->getStartEndPositions().first.x) {
-                if ((start.y < s->getStartEndPositions().first.y &&
-                    start.y > s->getStartEndPositions().second.y) ||
-                    (start.y > s->getStartEndPositions().first.y &&
-                    start.y < s->getStartEndPositions().second.y)) {
+				if ((start.y < s->getStartEndPositions().first.y &&
+					start.y > s->getStartEndPositions().second.y) ||
+					(start.y > s->getStartEndPositions().first.y &&
+					start.y < s->getStartEndPositions().second.y)) {
 					output.first = true;
 					output.second = {Position(0, 0), Position(0, 0)};
 				}
 			} else {
-                if ((start.x < s->getStartEndPositions().first.x &&
-                    start.x > s->getStartEndPositions().second.x) ||
-                    (start.x > s->getStartEndPositions().first.x &&
-                    start.x < s->getStartEndPositions().second.x)) {
+				if ((start.x < s->getStartEndPositions().first.x &&
+					start.x > s->getStartEndPositions().second.x) ||
+					(start.x > s->getStartEndPositions().first.x &&
+					start.x < s->getStartEndPositions().second.x)) {
 					output.first = true;
 					output.second = {Position(0, 0), Position(0, 0)};
 				}
@@ -277,10 +269,10 @@ std::pair<bool, std::pair<Position, Position>> CityController::isStreetsOverlap(
 
 void CityController::filterList(std::list<Node *> *list) {
 	auto it = std::unique(list->begin(), list->end(),
-					[](const Node *a, const Node *b)
-					{
-						return a->position.x == b->position.x && a->position.y == b->position.y;
-					});
+						  [](const Node *a, const Node *b)
+	{
+		return a->position.x == b->position.x && a->position.y == b->position.y;
+	});
 	list->erase(it, list->end());
 }
 
@@ -288,9 +280,13 @@ std::list<Street*> CityController::getStreets() {
 	return streets;
 }
 
-std::list<Node*>* CityController::getNodes() {
-	return &nodes;
+std::list<Node*> CityController::getNodes() {
+	return nodes;
 }
 
-bool CityController::isInIntervalX(Position point, Street * range) { return false; }
-bool CityController::isInIntervalY(Position point, Street * range) { return false; }
+bool CityController::isInIntervalX(Position point, Street * range) {
+	return false;
+}
+bool CityController::isInIntervalY(Position point, Street * range) {
+	return false;
+}

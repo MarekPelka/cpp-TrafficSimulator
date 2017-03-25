@@ -10,7 +10,9 @@ const float TRUCK_LENGTH = 60;
 const float TRUCK_ACCELERATION = 0.3;
 const float TRUCK_SLOWDOWN = 1;
 
-const int STREET_WIDTH = 10;
+const int STREET_WIDTH = 12;
+//How much car is slimmer then road
+const int VECH_OFFSET = 2;
 
 const int FPS = 60;
 
