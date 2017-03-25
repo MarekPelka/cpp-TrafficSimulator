@@ -10,7 +10,7 @@ class GraphicFab {
 public:
 	static std::list<QGraphicsItem*> getIntersectionsGraphics(CityController * cityCon);
 	static std::list<QGraphicsItem*> getStreetsGraphics(CityController * cityCon);
-	static std::list<QRect*> getVehiclesGraphics(VehicleController *vehCon);
+	static std::list<QGraphicsRectItem*> getVehiclesGraphics(VehicleController *vehCon);
 private:
 	GraphicFab() {};
 };

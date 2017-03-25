@@ -26,6 +26,9 @@ private:
 	Ui::MainWindow *ui;
 	int timerId;
 	QGraphicsScene *scene;
+	QGraphicsItemGroup * streetGroup;
+	QGraphicsItemGroup * nodeGroup;
+	QGraphicsItemGroup * vechicleGroup;
 protected:
 	void timerEvent(QTimerEvent *event);
 };

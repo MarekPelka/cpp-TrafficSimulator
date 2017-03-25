@@ -51,6 +51,17 @@ MainWindow::MainWindow(QWidget *parent) :
 	scene->setBackgroundBrush(Qt::darkGreen);
 	ui->graphicsView->setScene(scene);
 
+	streetGroup = new QGraphicsItemGroup();
+	nodeGroup = new QGraphicsItemGroup();
+	vechicleGroup = new QGraphicsItemGroup();
+
+	scene->addItem(streetGroup);
+	scene->addItem(nodeGroup);
+	scene->addItem(vechicleGroup);
+
+	paintStreets();
+	paintIntersections();
+
 	//TESTING VEHICLES
 	Node n0(p4);
 	Node n1(p1);
@@ -73,11 +84,10 @@ MainWindow::~MainWindow() {
 void MainWindow::updateVehiclesViews() {
 
 	VehicleController *vehC = VehicleController::getInstance();
-	std::list<QRect*> vehicleGraphics = GraphicFab::getVehiclesGraphics(vehC);
-	scene->clear();
-	paintStreets();
-	paintIntersections();
-	//for (QRect* g : vehicleGraphics)
+	std::list<QGraphicsRectItem*> vehicleGraphics = GraphicFab::getVehiclesGraphics(vehC);
+	scene->removeItem(vechicleGroup);
+	delete vechicleGroup;
+	vechicleGroup = new QGraphicsItemGroup();
 	for (Vehicle veh : vehC->getVehicles()) {
 		QPen pen = QPen(QColor(0, 0, 0), 1, Qt::SolidLine);
 		int r = veh.color.front();
@@ -87,22 +97,25 @@ void MainWindow::updateVehiclesViews() {
 		int b = veh.color.front();
 		veh.color.pop_front();
 		QBrush brush = QBrush(QColor(r, g, b));
-		scene->addRect(*vehicleGraphics.front(), pen, brush);
+		vehicleGraphics.front()->setBrush(brush);
+		vehicleGraphics.front()->setPen(pen);
+		vechicleGroup->addToGroup(vehicleGraphics.front());
 		vehicleGraphics.pop_front();
 	}
+	scene->addItem(vechicleGroup);	
 }
 
 void MainWindow::paintStreets() {
 	CityController *cityC = CityController::getInstance();
 	for (QGraphicsItem* g : GraphicFab::getStreetsGraphics(cityC)) {
-		scene->addItem(g);
+		streetGroup->addToGroup(g);
 	}
 }
 
 void MainWindow::paintIntersections() {
 	CityController *cityC = CityController::getInstance();
 	for (QGraphicsItem* g : GraphicFab::getIntersectionsGraphics(cityC)) {
-		scene->addItem(g);
+		nodeGroup->addToGroup(g);
 	}
 }
 

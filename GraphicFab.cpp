@@ -78,8 +78,8 @@ std::list<QGraphicsItem*> GraphicFab::getIntersectionsGraphics(CityController * 
 	return out;
 }
 
-std::list<QRect*> GraphicFab::getVehiclesGraphics(VehicleController * vehCon) {
-	std::list<QRect*> out = {};
+std::list<QGraphicsRectItem*> GraphicFab::getVehiclesGraphics(VehicleController * vehCon) {
+	std::list<QGraphicsRectItem*> out = {};
 	int length = 0;
 	for (Vehicle v : vehCon->getVehicles()) {
 		if (v.getType() == CAR) {
@@ -88,13 +88,13 @@ std::list<QRect*> GraphicFab::getVehiclesGraphics(VehicleController * vehCon) {
 			length = TRUCK_LENGTH;
 		}
 		if (v.getOrientation() == N) {
-			out.push_back(new QRect(v.getPosition().x + VECH_OFFSET / 2, v.getPosition().y, STREET_WIDTH - VECH_OFFSET, length));
+			out.push_back(new QGraphicsRectItem(v.getPosition().x + VECH_OFFSET / 2, v.getPosition().y, STREET_WIDTH - VECH_OFFSET, length));
 		} else if (v.getOrientation() == E) {
-			out.push_back(new QRect(v.getPosition().x - length, v.getPosition().y + VECH_OFFSET / 2, length, STREET_WIDTH - VECH_OFFSET));
+			out.push_back(new QGraphicsRectItem(v.getPosition().x - length, v.getPosition().y + VECH_OFFSET / 2, length, STREET_WIDTH - VECH_OFFSET));
 		} else if (v.getOrientation() == S) {
-			out.push_back(new QRect(v.getPosition().x - STREET_WIDTH + VECH_OFFSET / 2, v.getPosition().y - length, STREET_WIDTH - VECH_OFFSET, length));
+			out.push_back(new QGraphicsRectItem(v.getPosition().x - STREET_WIDTH + VECH_OFFSET / 2, v.getPosition().y - length, STREET_WIDTH - VECH_OFFSET, length));
 		} else if (v.getOrientation() == W) {
-			out.push_back(new QRect(v.getPosition().x, v.getPosition().y - STREET_WIDTH + VECH_OFFSET / 2, length, STREET_WIDTH - VECH_OFFSET));
+			out.push_back(new QGraphicsRectItem(v.getPosition().x, v.getPosition().y - STREET_WIDTH + VECH_OFFSET / 2, length, STREET_WIDTH - VECH_OFFSET));
 		}
 	}
 	return out;
