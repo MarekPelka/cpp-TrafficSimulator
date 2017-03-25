@@ -9,19 +9,21 @@
 
 class VehicleController
 {
-public:
-	void setMainWindow(MainWindow *mw);
-	void addVehicle(Vehicle vehicle);
-	std::list<Vehicle> getVehicles();
-	void updatePositions(int interval);
+    public:
+        void setMainWindow(MainWindow *mw);
+        void addVehicle(Vehicle vehicle);
+        void deleteVehicle(Vehicle vehicle);
+        std::list<Vehicle> getVehicles();
+        void updatePositions(int interval);
 
-	boost::signals2::signal<void(std::list<QRect*>)> sigRenderVehicles;
-	static VehicleController* getInstance();
-private:
-	VehicleController();
-	VehicleController(MainWindow *mw);
-	static VehicleController* instance;
+        boost::signals2::signal<void(std::list<QRect*>)> sigRenderVehicles;
+        static VehicleController* getInstance();
+    private:
+        VehicleController();
+        VehicleController(MainWindow *mw);
+        static VehicleController* instance;
 
-	MainWindow *mainWindow;
-	std::list<Vehicle> vehicles;
+        MainWindow *mainWindow;
+        std::list<Vehicle> vehicles;
+        bool deleted = false;
 };

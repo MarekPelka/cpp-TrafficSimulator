@@ -1,4 +1,5 @@
 #include "Vehicle.h"
+#include "VehicleController.h"
 
 Vehicle::Vehicle()
 {
@@ -7,24 +8,26 @@ Vehicle::Vehicle()
     acceleration = CAR_ACCELERATION;
     slowdown = CAR_SLOWDOWN;
     speed = 0;
+    orientation = N;
 }
 
 Vehicle::Vehicle(vehicleType typ, Position pos)
 {
-	type = typ;
-	if (type == CAR)
-	{
-		length = CAR_LENGTH;
-		acceleration = CAR_ACCELERATION;
-		slowdown = CAR_SLOWDOWN;
-	}
-	else if(type == TRUCK)
-	{
-		length = TRUCK_LENGTH;
-		acceleration = TRUCK_ACCELERATION;
-		slowdown = TRUCK_SLOWDOWN;
-	}
-	position = pos;
+    type = typ;
+    if (type == CAR)
+    {
+        length = CAR_LENGTH;
+        acceleration = CAR_ACCELERATION;
+        slowdown = CAR_SLOWDOWN;
+    }
+    else if(type == TRUCK)
+    {
+        length = TRUCK_LENGTH;
+        acceleration = TRUCK_ACCELERATION;
+        slowdown = TRUCK_SLOWDOWN;
+    }
+    position = pos;
+    orientation = N;
     speed = 0;
 }
 
@@ -46,6 +49,7 @@ Vehicle::Vehicle(vehicleType typ, std::list<Node> nods)
     position = nods.front().getPosition();
     nods.pop_front();
     nodes = nods;
+    orientation = N;
     speed = 0;
 }
 
@@ -133,7 +137,6 @@ void Vehicle::move(int time) {
     else
     {
         isMoving = false;
-        //wyslac sygnal ze graphicFab moze usunac samochod
     }
 }
 
@@ -179,25 +182,30 @@ bool Vehicle::checkSlowdown(Position step) {
 }
 
 bool Vehicle::checkMaxSpeed(Position step) {
-    //TODO check for this street what is max speed
     if (speed >= MAX_SPEED)
         return true;
     else
         return false;
 }
 
+bool Vehicle::operator==(const Vehicle & v)
+{
+    return type == v.type && speed == v.speed && orientation == v.orientation && position == v.position;
+}
+
 Position Vehicle::getPosition() {
-	return position;
+    return position;
 }
 
 vehicleType Vehicle::getType() {
-	return type;
+    return type;
 }
 
 void Vehicle::updatePosition(int time) {
     if (isMoving == false && nodes.size() == 0)
     {
-       //sedn signal to destroy this vehicle
+        VehicleController *vehC = VehicleController::getInstance();
+        vehC->deleteVehicle(*this);
     }
     else
     {
