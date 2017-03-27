@@ -11,6 +11,9 @@ namespace Ui {
 	class MainWindow;
 }
 
+class QAction;
+class QMenu;
+
 class MainWindow : public QMainWindow {
 	Q_OBJECT
 
@@ -30,7 +33,38 @@ private:
 	QGraphicsItemGroup * nodeGroup;
 	QGraphicsItemGroup * vechicleGroup;
 protected:
-	void timerEvent(QTimerEvent *event);
+    void timerEvent(QTimerEvent *event);
+
+    //dropdown menu
+    void contextMenuEvent(QContextMenuEvent *event) override;
+
+    private slots:
+        void scenario1();
+        void scenario2();
+        void addStreet();
+        void addParking();
+        void addCamera();
+        void addBuilding();
+        void addCar();
+        void addTruck();
+        void about();
+private:
+    void createActions();
+    void createMenus();
+    QMenu *fileMenu;
+    QMenu *objectsMenu;
+    QMenu *vehiclesMenu;
+    QMenu *helpMenu;
+    QAction *scenario1Act;
+    QAction *scenario2Act;
+    QAction *exitAct;
+    QAction *addStreetAct;
+    QAction *addParkingAct;
+    QAction *addCameraAct;
+    QAction *addBuildingAct;
+    QAction *addCarAct;
+    QAction *addTruckAct;
+    QAction *aboutAct;
 };
 
 #endif // MAINWINDOW_H

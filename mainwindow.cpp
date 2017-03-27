@@ -7,12 +7,18 @@
 #include "CityController.h"
 #include "GraphicFab.h"
 #include <QGraphicsItem>
+#include <QtWidgets>
 
 MainWindow::MainWindow(QWidget *parent) :
 	QMainWindow(parent),
 	ui(new Ui::MainWindow) {
 	ui->setupUi(this);
 
+    //dropdown menu
+    createActions();
+    createMenus();
+
+    //initialize controllers
 	CityController *cityC = CityController::getInstance();
 	VehicleController *vehC = VehicleController::getInstance();
 	vehC->setMainWindow(this);
@@ -121,4 +127,109 @@ void MainWindow::paintIntersections() {
 
 void MainWindow::timerEvent(QTimerEvent *event) {
 	sigUpdatePositions(int(1000 / FPS));
+}
+
+void MainWindow::createActions() {
+    scenario1Act = new QAction(tr("&Scenariusz 1"), this);
+    connect(scenario1Act, &QAction::triggered, this, &MainWindow::scenario1);
+
+    scenario2Act = new QAction(tr("&Scenariusz 2"), this);
+    connect(scenario2Act, &QAction::triggered, this, &MainWindow::scenario2);
+
+    exitAct = new QAction(tr("&Koniec"), this);
+    exitAct->setShortcuts(QKeySequence::Close);
+    exitAct->setStatusTip(tr("Zamknij aplikacjê"));
+    connect(exitAct, &QAction::triggered, this, &QWidget::close);
+
+    addStreetAct = new QAction(tr("&Ulica"), this);
+    addStreetAct->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_S));
+    addStreetAct->setStatusTip(tr("Dodaj ulicê"));
+    connect(addStreetAct, &QAction::triggered, this, &MainWindow::addStreet);
+
+    addParkingAct = new QAction(tr("&Parking"), this);
+    addParkingAct->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_P));
+    addParkingAct->setStatusTip(tr("Dodaj parking"));
+    connect(addParkingAct, &QAction::triggered, this, &MainWindow::addParking);
+
+    addCameraAct = new QAction(tr("&Kamera"), this);
+    addCameraAct->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_C));
+    addCameraAct->setStatusTip(tr("Dodaj kamerê"));
+    connect(addCameraAct, &QAction::triggered, this, &MainWindow::addCamera);
+
+    addBuildingAct = new QAction(tr("&Budynek"), this);
+    addBuildingAct->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_B));
+    addBuildingAct->setStatusTip(tr("Dodaj budynek"));
+    connect(addBuildingAct, &QAction::triggered, this, &MainWindow::addBuilding);
+
+    addCarAct = new QAction(tr("&Samochód"), this);
+    addCarAct->setShortcut(QKeySequence(Qt::SHIFT + Qt::Key_C));
+    addCarAct->setStatusTip(tr("Dodaj samochód"));
+    connect(addCarAct, &QAction::triggered, this, &MainWindow::addCar);
+
+    addTruckAct = new QAction(tr("&Ciê¿arówka"), this);
+    addTruckAct->setShortcut(QKeySequence(Qt::SHIFT + Qt::Key_T));
+    addTruckAct->setStatusTip(tr("Dodaj ciê¿arówkê"));
+    connect(addTruckAct, &QAction::triggered, this, &MainWindow::addTruck);
+
+    aboutAct = new QAction(tr("&O Autorach"), this);
+    connect(aboutAct, &QAction::triggered, this, &MainWindow::about);
+}
+
+void MainWindow::createMenus() {
+    fileMenu = menuBar()->addMenu(tr("&Plik"));
+    fileMenu->addAction(scenario1Act);
+    fileMenu->addAction(scenario2Act);
+    fileMenu->addSeparator();
+    fileMenu->addAction(exitAct);
+
+    objectsMenu = menuBar()->addMenu(tr("&Obiekty"));
+    objectsMenu->addAction(addStreetAct);
+    objectsMenu->addAction(addParkingAct);
+    objectsMenu->addAction(addCameraAct);
+    objectsMenu->addAction(addBuildingAct);
+    objectsMenu->addSeparator();
+
+    vehiclesMenu = menuBar()->addMenu(tr("&Pojazdy"));
+    vehiclesMenu->addAction(addCarAct);
+    vehiclesMenu->addAction(addTruckAct);
+    vehiclesMenu->addSeparator();
+
+    helpMenu = menuBar()->addMenu(tr("&O Autorach"));
+    helpMenu->addAction(aboutAct);
+    helpMenu->addSeparator();
+}
+
+void MainWindow::contextMenuEvent(QContextMenuEvent *event) {
+    QMenu menu(this);
+    menu.exec(event->globalPos());
+}
+
+void MainWindow::scenario1() {
+
+}
+void MainWindow::scenario2() {
+
+}
+void MainWindow::addStreet() {
+
+}
+void MainWindow::addParking() {
+
+}
+void MainWindow::addCamera() {
+
+}
+void MainWindow::addBuilding() {
+
+}
+void MainWindow::addCar() {
+
+}
+void MainWindow::addTruck() {
+
+}
+void MainWindow::about() {
+    QMessageBox::about(this, tr("About Menu"),
+        tr("The <b>Menu</b> example shows how to create "
+            "menu-bar menus and context menus."));
 }
