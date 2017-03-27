@@ -10,8 +10,9 @@ public:
 	Position getPosition();
 	int getNumber();
 	std::string getName();
-//private:
 	Position position;
 	int number;
 	std::string name;
+private:
+	static int all_Nodes;
 };

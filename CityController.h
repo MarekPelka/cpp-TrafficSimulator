@@ -6,9 +6,14 @@
 #include "Node.h"
 #include <list>
 #include <map>
+#include <boost/graph/adjacency_list.hpp>
+#include <boost/graph/graph_traits.hpp>
+
+using namespace boost;
 
 class CityController {
 public:
+	
 	void setMainWindow(MainWindow *mw);
 	bool addStreet(Position start, Position end, bool twoWay = false);
 	bool isInIntervalX(Position point, Street * range);
@@ -19,8 +24,10 @@ public:
 	std::pair<bool, std::pair<Position, Position>> isStreetsOverlap(Position start, Position end);
 	static CityController* getInstance();
 private:
+	typedef adjacency_list<vecS, vecS, directedS> Graph_d;
 	CityController();
 	CityController(MainWindow *mw);
+	Graph_d gh;
 	void filterList(std::list<Node *>*);
 	MainWindow *mainWindow;
 	std::list<Street*> streets;

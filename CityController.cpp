@@ -9,6 +9,8 @@ CityController* CityController::getInstance() {
 }
 
 CityController::CityController() {
+	//graph;
+	gh = Graph_d(13);
 	streets = {};
 	nodes = {};
 }
@@ -23,10 +25,11 @@ void CityController::setMainWindow(MainWindow * mw) {
 	mainWindow = mw;
 }
 
+//DONE: Bad node creation, we do not check if that node already exists
+//Check if beginning and end already exists
+//TODO: Change return of IsCross and isOverlap to std::map(s, pos) -> bool change to map.empty()
 bool CityController::addStreet(Position start, Position end, bool twoWay) {
-	//DONE: Bad node creation, we do not check if that node already exists
-	//Check if beginning and end already exists
-	//TODO: Change return of IsCross and isOverlap to std::map(s, pos) -> bool change to map.empty()
+
 	Node *s = nullptr, *e = nullptr;
 	for (Node *n : nodes) {
 		if (n->getPosition() == start) {
@@ -51,11 +54,27 @@ bool CityController::addStreet(Position start, Position end, bool twoWay) {
 			if (cStreetPositions.first == crossingStreet.second ||
 				cStreetPositions.second == crossingStreet.second)
 				continue;
-			Node *middle = new Node(crossingStreet.second);
-			nodes.push_back(middle);
+			Node *middle = nullptr;
+
+			for (Node *n : nodes) {
+				if (n->getPosition() == crossingStreet.second) {
+					middle = n;
+					continue;
+				}
+				if (middle != nullptr)
+					break;
+			} 
+			if (middle == nullptr) {
+				middle = new Node(crossingStreet.second);;
+				nodes.push_back(middle);
+			}
+			//nodes.push_back(middle);
 			crossingNodes.push_back(middle);
 			streets.push_back(new Street(middle, crossingStreet.first->getNodes().second));
+			boost::add_edge(middle->getNumber(), crossingStreet.first->getNodes().second->getNumber(), gh);
 			crossingStreet.first->alterEnd(middle);
+			boost::add_edge(crossingStreet.first->getNodes().first->getNumber(), middle->getNumber(), gh);
+
 		}
 		crossingNodes.sort([](const Node *a, const Node *b)
 		{
@@ -79,16 +98,28 @@ bool CityController::addStreet(Position start, Position end, bool twoWay) {
 		//TODO: Another possibility, if you like using the BOOST_FOREACH macro is to use the BOOST_REVERSE_FOREACH macro introduced in Boost 1.36.0.
 		if (Street::getPredictedDirection(start, end) == E) {
 			streets.push_back(new Street(s, crossingNodes.front()));
-			if (twoWay)
+			boost::add_edge(s->getNumber(), crossingNodes.front()->getNumber(), gh);
+			if (twoWay) {
 				streets.push_back(new Street(crossingNodes.front(), s));
+				boost::add_edge(crossingNodes.front()->getNumber(), s->getNumber(), gh);
+			}
+			
 			streets.push_back(new Street(crossingNodes.back(), e));
-			if (twoWay)
+			boost::add_edge(crossingNodes.back()->getNumber(), e->getNumber(), gh);
+			if (twoWay) {
 				streets.push_back(new Street(e, crossingNodes.back()));
+				boost::add_edge(e->getNumber(), crossingNodes.back()->getNumber(), gh);
+			}
+				
 			for (auto it = crossingNodes.begin(); it != crossingNodes.end(); ++it) {
-
-				streets.push_back(new Street(*it, *std::next(it)));
-				if (twoWay)
-					streets.push_back(new Street(*std::next(it), *it));
+				Node *now = *it;
+				Node *next = *std::next(it);
+				streets.push_back(new Street(now, next));
+				boost::add_edge(now->getNumber(), next->getNumber(), gh);
+				if (twoWay) {
+					streets.push_back(new Street(next, now));
+					boost::add_edge(next->getNumber(), now->getNumber(), gh);
+				}
 				if (std::next(it, 2) == crossingNodes.end()) // last element
 				{
 					break;
@@ -96,33 +127,61 @@ bool CityController::addStreet(Position start, Position end, bool twoWay) {
 			}
 		} else if (Street::getPredictedDirection(start, end) == W) {
 			streets.push_back(new Street(s, crossingNodes.back()));
-			if (twoWay)
+			boost::add_edge(s->getNumber(), e->getNumber(), gh);
+			if (twoWay) {
 				streets.push_back(new Street(crossingNodes.back(), s));
+				boost::add_edge(s->getNumber(), e->getNumber(), gh);
+			}
+				
 			streets.push_back(new Street(crossingNodes.front(), e));
-			if (twoWay)
+			boost::add_edge(s->getNumber(), e->getNumber(), gh);
+			if (twoWay) {
 				streets.push_back(new Street(e, crossingNodes.front()));
+				boost::add_edge(s->getNumber(), e->getNumber(), gh);
+			}
+				
 			for (auto it = crossingNodes.end(); it != crossingNodes.begin(); --it) {
 
-				streets.push_back(new Street(*it, *std::prev(it)));
-				if (twoWay)
-					streets.push_back(new Street(*std::prev(it), *it));
+				Node *now = *it;
+				Node *prev = *std::prev(it);
+				streets.push_back(new Street(now, prev));
+				boost::add_edge(now->getNumber(), prev->getNumber(), gh);
+				if (twoWay) {
+					streets.push_back(new Street(prev, now));
+					boost::add_edge(prev->getNumber(), now->getNumber(), gh);
+				}
+					
 				if (std::prev(it, 2) == crossingNodes.begin()) // last element
 				{
 					break;
 				}
 			}
 		} else if (Street::getPredictedDirection(start, end) == S) {
+
 			streets.push_back(new Street(s, crossingNodes.front()));
-			if (twoWay)
+			boost::add_edge(s->getNumber(), crossingNodes.front()->getNumber(), gh);
+			if (twoWay) {
 				streets.push_back(new Street(crossingNodes.front(), s));
+				boost::add_edge(crossingNodes.front()->getNumber(), s->getNumber(), gh);
+			}
+
 			streets.push_back(new Street(crossingNodes.back(), e));
-			if (twoWay)
+			boost::add_edge(crossingNodes.back()->getNumber(), e->getNumber(), gh);
+			if (twoWay) {
 				streets.push_back(new Street(e, crossingNodes.back()));
+				boost::add_edge(e->getNumber(), crossingNodes.back()->getNumber(), gh);
+			}
+
 			for (auto it = crossingNodes.begin(); it != crossingNodes.end(); ++it) {
 
-				streets.push_back(new Street(*it, *std::next(it)));
-				if (twoWay)
-					streets.push_back(new Street(*std::next(it), *it));
+				Node *now = *it;
+				Node *next = *std::next(it);
+				streets.push_back(new Street(now, next));
+				boost::add_edge(now->getNumber(), next->getNumber(), gh);
+				if (twoWay) {
+					streets.push_back(new Street(next, now));
+					boost::add_edge(next->getNumber(), now->getNumber(), gh);
+				}
 				if (std::next(it, 2) == crossingNodes.end()) // last element
 				{
 					break;
@@ -130,16 +189,28 @@ bool CityController::addStreet(Position start, Position end, bool twoWay) {
 			}
 		} else if (Street::getPredictedDirection(start, end) == N) {
 			streets.push_back(new Street(s, crossingNodes.back()));
-			if (twoWay)
+			boost::add_edge(s->getNumber(), e->getNumber(), gh);
+			if (twoWay) {
 				streets.push_back(new Street(crossingNodes.back(), s));
+				boost::add_edge(s->getNumber(), e->getNumber(), gh);
+			}
+
 			streets.push_back(new Street(crossingNodes.front(), e));
-			if (twoWay)
+			boost::add_edge(s->getNumber(), e->getNumber(), gh);
+			if (twoWay) {
 				streets.push_back(new Street(e, crossingNodes.front()));
+				boost::add_edge(s->getNumber(), e->getNumber(), gh);
+			}
 			for (auto it = crossingNodes.end(); it != crossingNodes.begin(); --it) {
 
-				streets.push_back(new Street(*it, *std::prev(it)));
-				if (twoWay)
-					streets.push_back(new Street(*std::prev(it), *it));
+				Node *now = *it;
+				Node *prev = *std::prev(it);
+				streets.push_back(new Street(now, prev));
+				boost::add_edge(now->getNumber(), prev->getNumber(), gh);
+				if (twoWay) {
+					streets.push_back(new Street(prev, now));
+					boost::add_edge(prev->getNumber(), now->getNumber(), gh);
+				}
 				if (std::prev(it, 2) == crossingNodes.begin()) // last element
 				{
 					break;
@@ -160,8 +231,11 @@ bool CityController::addStreet(Position start, Position end, bool twoWay) {
 	}
 
 	streets.push_back(new Street(s, e));
-	if (twoWay)
+	boost::add_edge(s->getNumber(), e->getNumber(), gh);
+	if (twoWay) {
 		streets.push_back(new Street(e, s));
+		boost::add_edge(e->getNumber(), s->getNumber(), gh);
+	}
 	return true;
 }
 
