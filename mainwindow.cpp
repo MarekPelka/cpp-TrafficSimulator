@@ -7,6 +7,7 @@
 #include "CityController.h"
 #include "GraphicFab.h"
 #include <QGraphicsItem>
+#include <QString>
 #include <QtWidgets>
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -17,6 +18,8 @@ MainWindow::MainWindow(QWidget *parent) :
     //dropdown menu
     createActions();
     createMenus();
+
+    setWindowTitle(QStringLiteral("Symulator ruchu miejskiego"));
 
     //initialize controllers
 	CityController *cityC = CityController::getInstance();
@@ -64,6 +67,14 @@ MainWindow::MainWindow(QWidget *parent) :
 	scene->addItem(streetGroup);
 	scene->addItem(nodeGroup);
 	scene->addItem(vechicleGroup);
+
+    //label with info about current state of insert
+    infoLabel = new QLabel(ui->centralWidget);
+    infoLabel->setAlignment(Qt::AlignBottom);
+    infoLabel->setFrameStyle(QFrame::StyledPanel | QFrame::Sunken);
+    infoLabel->setStyleSheet("QLabel { color : white; }");
+    infoLabel->setGeometry(QRect(20, 20, 120, 20));
+    scene->addWidget(infoLabel);
 
 	paintStreets();
 	paintIntersections();
@@ -138,12 +149,12 @@ void MainWindow::createActions() {
 
     exitAct = new QAction(tr("&Koniec"), this);
     exitAct->setShortcuts(QKeySequence::Close);
-    exitAct->setStatusTip(tr("Zamknij aplikacjê"));
+    exitAct->setStatusTip(QStringLiteral("Zamknij aplikacjê"));
     connect(exitAct, &QAction::triggered, this, &QWidget::close);
 
     addStreetAct = new QAction(tr("&Ulica"), this);
     addStreetAct->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_S));
-    addStreetAct->setStatusTip(tr("Dodaj ulicê"));
+    addStreetAct->setStatusTip(QStringLiteral("Dodaj ulicê"));
     connect(addStreetAct, &QAction::triggered, this, &MainWindow::addStreet);
 
     addParkingAct = new QAction(tr("&Parking"), this);
@@ -153,7 +164,7 @@ void MainWindow::createActions() {
 
     addCameraAct = new QAction(tr("&Kamera"), this);
     addCameraAct->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_C));
-    addCameraAct->setStatusTip(tr("Dodaj kamerê"));
+    addCameraAct->setStatusTip(QStringLiteral("Dodaj kamerê"));
     connect(addCameraAct, &QAction::triggered, this, &MainWindow::addCamera);
 
     addBuildingAct = new QAction(tr("&Budynek"), this);
@@ -161,14 +172,14 @@ void MainWindow::createActions() {
     addBuildingAct->setStatusTip(tr("Dodaj budynek"));
     connect(addBuildingAct, &QAction::triggered, this, &MainWindow::addBuilding);
 
-    addCarAct = new QAction(tr("&Samochód"), this);
+    addCarAct = new QAction(QStringLiteral("&Samochód"), this);
     addCarAct->setShortcut(QKeySequence(Qt::SHIFT + Qt::Key_C));
-    addCarAct->setStatusTip(tr("Dodaj samochód"));
+    addCarAct->setStatusTip(QStringLiteral("Dodaj samochód"));
     connect(addCarAct, &QAction::triggered, this, &MainWindow::addCar);
 
-    addTruckAct = new QAction(tr("&Ciê¿arówka"), this);
+    addTruckAct = new QAction(QStringLiteral("&Ciê¿arówka"), this);
     addTruckAct->setShortcut(QKeySequence(Qt::SHIFT + Qt::Key_T));
-    addTruckAct->setStatusTip(tr("Dodaj ciê¿arówkê"));
+    addTruckAct->setStatusTip(QStringLiteral("Dodaj ciê¿arówkê"));
     connect(addTruckAct, &QAction::triggered, this, &MainWindow::addTruck);
 
     aboutAct = new QAction(tr("&O Autorach"), this);
@@ -211,25 +222,24 @@ void MainWindow::scenario2() {
 
 }
 void MainWindow::addStreet() {
-
+    infoLabel->setText(tr("Dodawanie ulicy"));
 }
 void MainWindow::addParking() {
-
+    infoLabel->setText(tr("Dodawanie parkingu"));
 }
 void MainWindow::addCamera() {
-
+    infoLabel->setText(tr("Dodawanie kamery"));
 }
 void MainWindow::addBuilding() {
-
+    infoLabel->setText(tr("Dodawanie budynku"));
 }
 void MainWindow::addCar() {
-
+    infoLabel->setText(tr("Dodawanie samochodu"));
 }
 void MainWindow::addTruck() {
-
+    infoLabel->setText(QStringLiteral("Dodawanie ciê¿arówki"));
 }
 void MainWindow::about() {
-    QMessageBox::about(this, tr("About Menu"),
-        tr("The <b>Menu</b> example shows how to create "
-            "menu-bar menus and context menus."));
+    QMessageBox::about(this, tr("O Autorach"),
+        QStringLiteral("<b>Autorzy:</b> Micha³ Krzemiñski i Marek Pelka"));
 }

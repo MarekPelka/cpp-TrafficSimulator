@@ -13,6 +13,7 @@ namespace Ui {
 
 class QAction;
 class QMenu;
+class QLabel;
 
 class MainWindow : public QMainWindow {
 	Q_OBJECT
@@ -65,6 +66,8 @@ private:
     QAction *addCarAct;
     QAction *addTruckAct;
     QAction *aboutAct;
+    //label with info about current state of insert
+    QLabel *infoLabel;
 };
 
 #endif // MAINWINDOW_H
