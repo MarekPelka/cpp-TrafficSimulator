@@ -81,6 +81,7 @@ private:
     bool click = false;
     Position startPos;
     Position endPos;
+    bool checkClosest(Node node, Position position);
 };
 
 #endif // MAINWINDOW_H

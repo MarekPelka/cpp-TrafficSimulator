@@ -12,9 +12,6 @@ MainWindow::MainWindow(QWidget *parent) :
 	ui(new Ui::MainWindow) {
 	ui->setupUi(this);
 
-    startPos = Position(0, 0);
-    endPos = Position(0, 0);
-
     //dropdown menu
     createActions();
     createMenus();
@@ -93,33 +90,57 @@ void MainWindow::paintIntersections() {
 	}
 }
 
-std::list<Node> MainWindow::nodesPath(Position start, Position end)
-{
-    //TODO function that from start-end returns list of Nodes
-    //chceck which Node is closest to the startPos
-    //check which Node is closest to the endPos
-    //djikstra for path
+std::list<Node> MainWindow::nodesPath(Position start, Position end) {
     std::list<Node> nodes;
+    CityController *cityC = CityController::getInstance();
+    std::list<Node*> allNodes = cityC->getNodes();
+    
+    // finding start node
+    for (Node* node : allNodes) {
+        if (checkClosest(*node, start))
+        {
+            nodes.push_front(*node);
+        }
+    }
+    //finding end node
+    for (Node* node : allNodes) {
+        if (checkClosest(*node, end))
+        {
+            nodes.push_back(*node);
+        }
+    }
 
-    //TESTING VEHICLES
-    Node n0(Position(100, 500));
-    Node n1(Position(100, 100));
-    Node n2(Position(500, 100));
-    Node n3(Position(500, 500));
-    nodes = { n0,n1,n2,n3,n0,n1,n2,n3,n0,n1,n2,n3,n0,n1,n2,n3,n0,n1,n2,n3 };
+    //TODO djikstra to return nodes that are between start and end
     return nodes;
+}
+
+bool MainWindow::checkClosest(Node node, Position position)
+{
+    if (position.x < node.getPosition().x + CLOSEST_NODE
+        && position.x > node.getPosition().x - CLOSEST_NODE
+        && position.y < node.getPosition().y + CLOSEST_NODE
+        && position.y > node.getPosition().y - CLOSEST_NODE)
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
 }
 
 void MainWindow::timerEvent(QTimerEvent *event) {
 	sigUpdatePositions(int(1000 / FPS));
 }
+
 void MainWindow::mousePressEvent(QMouseEvent *event) {
     QString status = infoLabel->text();
     VehicleController *vehC = VehicleController::getInstance();
     std::list<Node> nodes;
     if (status.size() != 0) {
         QPoint point(event->pos());
-        Position position(point.rx(), point.ry());
+        //TODO X coordinate is shift about 50px, -50 to rescale
+        Position position(point.x()-50, point.y());
         if(status == "Ulica") {
 
         }
@@ -157,7 +178,7 @@ void MainWindow::mousePressEvent(QMouseEvent *event) {
     }
 }
 void MainWindow::mouseReleaseEvent(QMouseEvent *event) {
-    int i = 0;
+
 }
 
 void MainWindow::createActions() {

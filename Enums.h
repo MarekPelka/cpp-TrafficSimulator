@@ -18,3 +18,5 @@ const int FPS = 60;
 
 const int BRAKING_DISTANCE = 50;
 const float MAX_SPEED = 0.5; //[px/ms]
+
+const int CLOSEST_NODE = 20;
