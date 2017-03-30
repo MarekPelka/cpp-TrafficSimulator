@@ -40,7 +40,6 @@ private:
 protected:
     void timerEvent(QTimerEvent *event);
     void mousePressEvent(QMouseEvent *event) override;
-    void mouseReleaseEvent(QMouseEvent *event) override;
 
     //dropdown menu
     void contextMenuEvent(QContextMenuEvent *event) override;
@@ -81,7 +80,9 @@ private:
     bool click = false;
     Position startPos;
     Position endPos;
+    QImage image;
     bool checkClosest(Node node, Position position);
+    bool checkIfIntersectStreet(Position position, int radius);
 };
 
 #endif // MAINWINDOW_H

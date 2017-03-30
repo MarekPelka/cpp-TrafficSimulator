@@ -1,5 +1,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+#include "Building.h"
+#include "Camera.h"
 #include "Enums.h"
 #include "CityController.h"
 #include "GraphicFab.h"
@@ -39,12 +41,14 @@ MainWindow::MainWindow(QWidget *parent) :
 	scene->addItem(vechicleGroup);
 
     //label with info about current state of insert
-    infoLabel = new QLabel(ui->centralWidget);
+    infoLabel = new QLabel(ui->graphicsView);
     infoLabel->setAlignment(Qt::AlignBottom);
     infoLabel->setFrameStyle(QFrame::StyledPanel | QFrame::Sunken);
     infoLabel->setStyleSheet("QLabel { color : white; }");
     infoLabel->setGeometry(QRect(20, 20, 80, 20));
-    scene->addWidget(infoLabel);
+    //scene->addWidget(infoLabel);
+
+    infoLabel->setFocusPolicy(Qt::NoFocus);
 }
 
 MainWindow::~MainWindow() {
@@ -134,6 +138,8 @@ void MainWindow::timerEvent(QTimerEvent *event) {
 }
 
 void MainWindow::mousePressEvent(QMouseEvent *event) {
+    bool stat = ui->graphicsView->hasFocus();
+    bool stati = scene->hasFocus();
     QString status = infoLabel->text();
     VehicleController *vehC = VehicleController::getInstance();
     std::list<Node> nodes;
@@ -145,13 +151,31 @@ void MainWindow::mousePressEvent(QMouseEvent *event) {
 
         }
         else if (status == "Budynek") {
-
+            if (!checkIfIntersectStreet(position, BUILDING_SIZE)) {
+                Building building(position);
+                //TODO add to controller to store
+                QRect buildingRect(position.x, position.y, BUILDING_SIZE, BUILDING_SIZE);
+                //RGB grey color
+                QBrush brush = QBrush(QColor(152, 152, 152));
+                //black border solid
+                QPen pen = QPen(QColor(0, 0, 0), 1, Qt::SolidLine);
+                scene->addRect(buildingRect, pen, brush);
+            }
         }
         else if (status == "Parking") {
 
         }
         else if (status == "Kamera") {
-
+            if (checkIfIntersectStreet(position, CAMERA_SIZE)) {
+                Camera camera(position);
+                //TODO add camera to controller to store
+                QRect cam(position.x, position.y, CAMERA_SIZE, CAMERA_SIZE);
+                //RGB red color
+                QBrush brush = QBrush(QColor(255, 0, 0));
+                //black border solid
+                QPen pen = QPen(QColor(0, 0, 0), 1, Qt::SolidLine);
+                scene->addEllipse(cam, pen, brush);
+            }
         }
         else if (status == QStringLiteral("Samochód") && click == false) {
             click = true;
@@ -176,9 +200,6 @@ void MainWindow::mousePressEvent(QMouseEvent *event) {
             click = false;
         }
     }
-}
-void MainWindow::mouseReleaseEvent(QMouseEvent *event) {
-
 }
 
 void MainWindow::createActions() {
@@ -309,4 +330,11 @@ void MainWindow::addTruck() {
 void MainWindow::about() {
     QMessageBox::about(this, tr("O Autorach"),
         QStringLiteral("<b>Autorzy:</b> Micha³ Krzemiñski i Marek Pelka"));
+}
+
+bool MainWindow::checkIfIntersectStreet(Position position, int radius)
+{
+    //TODO get graph edges
+    //for range all streets and check id building intersect
+    return false;
 }

@@ -20,3 +20,7 @@ const int BRAKING_DISTANCE = 50;
 const float MAX_SPEED = 0.5; //[px/ms]
 
 const int CLOSEST_NODE = 20;
+
+const int BUILDING_SIZE = 30;
+
+const int CAMERA_SIZE = 10;
