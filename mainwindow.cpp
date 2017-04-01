@@ -1,5 +1,5 @@
 #include "mainwindow.h"
-#include "ui_mainwindow.h"
+#include "GeneratedFiles\ui_mainwindow.h"
 #include "Building.h"
 #include "Camera.h"
 #include "Enums.h"
@@ -23,8 +23,6 @@ MainWindow::MainWindow(QWidget *parent) :
     //initialize controllers
 	VehicleController *vehC = VehicleController::getInstance();
 	vehC->setMainWindow(this);
-
-	sigUpdatePositions.connect(boost::bind(&VehicleController::updatePositions, vehC, _1));
 
 	//Painting streets
 	//TODO: There is some weird auto-scaling/positioning -> understend and fix
@@ -134,7 +132,8 @@ bool MainWindow::checkClosest(Node node, Position position)
 }
 
 void MainWindow::timerEvent(QTimerEvent *event) {
-	sigUpdatePositions(int(1000 / FPS));
+    VehicleController *vehC = VehicleController::getInstance();
+	vehC->updatePositions(int(1000 / FPS));
 }
 
 void MainWindow::mousePressEvent(QMouseEvent *event) {

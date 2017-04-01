@@ -4,8 +4,6 @@
 
 #include <QMainWindow>
 #include <QGraphicsScene>
-#include <boost/signals2/signal.hpp>
-#include <boost/bind.hpp>
 #include <list>
 #include "Position.h"
 #include "Vehicle.h"
@@ -25,7 +23,6 @@ public:
 	explicit MainWindow(QWidget *parent = 0);
 	~MainWindow();
 
-	boost::signals2::signal<void(int)> sigUpdatePositions;
 	void updateVehiclesViews();
 	void paintStreets();
 	void paintIntersections();

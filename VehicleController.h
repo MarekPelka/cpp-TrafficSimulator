@@ -4,8 +4,6 @@
 #include "MainWindow.h"
 #include <list>
 #include <QDebug>
-#include <boost/signals2/signal.hpp>
-#include <boost/bind.hpp>
 
 class VehicleController
 {
@@ -16,7 +14,6 @@ class VehicleController
         std::list<Vehicle> getVehicles();
         void updatePositions(int interval);
 
-        boost::signals2::signal<void(std::list<QRect*>)> sigRenderVehicles;
         static VehicleController* getInstance();
     private:
         VehicleController();
