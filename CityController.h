@@ -1,5 +1,4 @@
 #pragma once
-#include "mainwindow.h"
 #include "Position.h"
 #include "Street.h"
 #include "Enums.h"
@@ -15,26 +14,29 @@ using namespace boost;
 class CityController {
 public:
 
-	void setMainWindow(MainWindow *mw);
+	static CityController* getInstance();
+	
+	static bool isInIntervalX(Position point, Street * range);
+	static bool isInIntervalY(Position point, Street * range);
+	bool isStreetExist(Node * start, Node * end);
 	bool addStreet(Position start, Position end, bool twoWay = false);
-	bool isInIntervalX(Position point, Street * range);
-	bool isInIntervalY(Position point, Street * range);
+	//bool isStreetsCross(Position start, Position end);
+	Node* findNode(Position p);
+	Node* findAndCraeteNode(Position p);
 	std::list<Street*> getStreets();
 	std::list<Node*> getNodes();
-	std::list<Node*> getWay(Position start, Position End);
-	std::pair<bool, std::map<Street*, Position>> isStreetsCross(Position start, Position end);
-	std::pair<bool, std::pair<Position, Position>> isStreetsOverlap(Position start, Position end);
-	static CityController* getInstance();
+	std::list<std::list<Node*>> getWay(Node * start);
+	std::list<Node*> findNeighbors(Node * n);
+	std::map<Street*, Position> isStreetsCross(Position start, Position end);
+	bool isStreetsOverlap(Position start, Position end);
+	
 private:
-	Node* findNode(Position p);
-	void createStreet(Node * start, Node * end, bool twoWay);
-	typedef adjacency_list<boost::vecS, boost::hash_setS, boost::directedS, uint32_t, uint32_t, boost::no_property> Graph_d;
+	
 	CityController();
-	CityController(MainWindow *mw);
-	Graph_d gh;
+	static CityController* instance;
+	bool handleCrossSteets(Position start, Position end, bool twoWay, std::map<Street*, Position> map);
+	void createStreet(Node * start, Node * end, bool twoWay);
 	void filterList(std::list<Node *>*);
-	MainWindow *mainWindow;
 	std::list<Street*> streets;
 	std::list<Node*> nodes;
-	static CityController* instance;
 };
