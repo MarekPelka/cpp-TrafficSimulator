@@ -64,15 +64,13 @@ BOOST_AUTO_TEST_CASE(Test_isIntervalY) {
 	BOOST_CHECK_EQUAL(CityController::isInIntervalY(Position(501, 501), &street), false);
 }
 
-BOOST_AUTO_TEST_CASE(Test_addStreet) {
+BOOST_AUTO_TEST_CASE(Test_addSingleStreet) {
 	// TODO: Your test code here
 	CityController *cityC = CityController::getInstance();
 	Position p1(100, 100);
 	Position p2(500, 100);
 
-	/*if (add(2, 2) != 4)
-		BOOST_ERROR("Ouch...");*/
-	//if (!cityC->addStreet(p1, p2)) throw "Error creating street!";
+	if (!cityC->addStreet(p1, p2)) throw "Error creating street!";
 
 	auto list = cityC->getStreets();
 	BOOST_REQUIRE(list.size() == 1);
@@ -80,4 +78,104 @@ BOOST_AUTO_TEST_CASE(Test_addStreet) {
 	BOOST_CHECK(list.front()->getDirection() == E);
 	BOOST_CHECK(list.front()->getStartEndPositions().first == p1);
 	BOOST_CHECK(list.front()->getStartEndPositions().second == p2);
+}
+
+BOOST_AUTO_TEST_CASE(Test_addMultiStreet) {
+	// TODO: Your test code here
+	CityController *cityC = CityController::getInstance();
+	Position p1(100, 100);
+	Position p2(500, 100);
+	Position p3(500, 500);
+	Position p4(100, 500);
+
+	cityC->addStreet(p1, p2);
+	cityC->addStreet(p2, p3);
+	cityC->addStreet(p3, p4);
+	cityC->addStreet(p4, p1);
+
+	cityC->addStreet(p2, p1);
+	cityC->addStreet(p3, p2);
+	cityC->addStreet(p4, p3);
+	cityC->addStreet(p1, p4);
+
+	auto list = cityC->getStreets();
+	BOOST_REQUIRE(list.size() == 8);
+	BOOST_CHECK(cityC->getNodes().size() == 4);
+}
+
+BOOST_AUTO_TEST_CASE(Test_streetCrossing) {
+	// TODO: Your test code here
+	CityController *cityC = CityController::getInstance();
+	//Crossing
+	Position pc3(300, 50);
+	Position pc4(300, 550);
+	cityC->addStreet(pc3, pc4);
+	Position pc1(50, 300);
+	Position pc2(550, 300);
+	cityC->addStreet(pc1, pc2);
+
+	auto list = cityC->getStreets();
+	BOOST_REQUIRE(list.size() == 4);
+	BOOST_CHECK(cityC->getNodes().size() == 5);
+}
+
+BOOST_AUTO_TEST_CASE(Test_city) {
+	// TODO: Your test code here
+	CityController *cityC = CityController::getInstance();
+	Position p1(100, 100);
+	Position p2(500, 100);
+	Position p3(500, 500);
+	Position p4(100, 500);
+
+	cityC->addStreet(p1, p2);
+	cityC->addStreet(p2, p3);
+	cityC->addStreet(p3, p4);
+	cityC->addStreet(p4, p1);
+
+	cityC->addStreet(p2, p1);
+	cityC->addStreet(p3, p2);
+	cityC->addStreet(p4, p3);
+	cityC->addStreet(p1, p4);
+	//Crossing
+	Position pc3(300, 50);
+	Position pc4(300, 550);
+	cityC->addStreet(pc3, pc4);
+	Position pc1(50, 300);
+	Position pc2(550, 300);
+	cityC->addStreet(pc1, pc2);
+
+	auto list = cityC->getStreets();
+	BOOST_REQUIRE(list.size() == 24);
+	BOOST_CHECK(cityC->getNodes().size() == 13);
+}
+
+BOOST_AUTO_TEST_CASE(Test_streetOverlap) {
+	// TODO: Your test code here
+	CityController *cityC = CityController::getInstance();
+	Position p1(100, 100);
+	Position p2(500, 100);
+	Position p3(700, 100);
+	if (!cityC->addStreet(p1, p2)) throw "Error creating street!";
+
+	auto list = cityC->getStreets();
+	BOOST_REQUIRE(list.size() == 1);
+	BOOST_CHECK(cityC->isStreetsOverlap(Position(300, 100), p3));
+}
+
+BOOST_AUTO_TEST_CASE(Test_streetCross) {
+	// TODO: Your test code here
+	CityController *cityC = CityController::getInstance();
+	Position p1(100, 100);
+	Position p2(500, 100);
+
+	if (!cityC->addStreet(p1, p2)) throw "Error creating street!";
+
+	auto list = cityC->getStreets();
+	BOOST_REQUIRE(list.size() == 1);
+	BOOST_CHECK(!cityC->isStreetsCross(Position(300, 50), Position(300, 150)).empty());
+}
+
+BOOST_AUTO_TEST_CASE(Test_BFS) {
+	// There are problems with BFS
+	BOOST_CHECK_EQUAL(true, false);
 }
