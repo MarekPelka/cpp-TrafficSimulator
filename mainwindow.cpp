@@ -307,7 +307,12 @@ void MainWindow::scenario1() {
     paintIntersections();
 }
 void MainWindow::scenario2() {
-
+	CityController *cityC = CityController::getInstance();
+	VehicleController *vehC = VehicleController::getInstance();
+	auto list = cityC->getWay(cityC->findNode(Position(100, 500)));
+	list.pop_back();
+	Vehicle car(CAR, list.back());
+	vehC->addVehicle(car);
 }
 void MainWindow::addStreet() {
     infoLabel->setText(tr("Ulica"));

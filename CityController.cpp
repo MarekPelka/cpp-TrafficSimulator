@@ -240,12 +240,12 @@ std::list<Node*> CityController::getNodes() {
 
 std::list<std::list<Node*>> CityController::getWay(Node * start)
 {
-	std::list<Node*> path;
-	std::list<Node*> neighbors;
+	std::list<Node*> path = {};
+	std::list<Node*> neighbors = {};
 	std::list<Node*> listOfWhiteNodes(nodes);
-	std::list<Node*> listOfGrayNodes;
-	std::list<Node*> listOfBlackNodes;
-	std::list<std::list<Node*>> found;
+	std::list<Node*> listOfGrayNodes = {};
+	std::list<Node*> listOfBlackNodes = {};
+	std::list<std::list<Node*>> found = {};
 
 	if (start == NULL)
 		return found;
@@ -287,12 +287,16 @@ std::list<std::list<Node*>> CityController::getWay(Node * start)
 
 std::list<Node*> CityController::findNeighbors(Node * n)
 {
-	std::list<Node*> neighborNodes;
-	auto nodeConnections = std::find_if(streets.begin(), streets.end(),[n](Street * m) -> bool { return m->getNodes().first == n; });
+	std::list<Node*> neighborNodes = {};
+	for (Street * s : streets)
+		if (s->getNodes().first == n)
+			neighborNodes.push_back(s->getNodes().second);
+	
+	/*auto nodeConnections = std::find_if(streets.begin(), streets.end(),[n](Street * m) -> bool { return m->getNodes().first == n; });
 	for (auto it = nodeConnections; it != streets.end(); ++it) {
 		Street * s = *it;
 		neighborNodes.push_back(s->getNodes().second);
-	}
+	}*/
 	return neighborNodes;
 }
 

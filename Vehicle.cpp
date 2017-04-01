@@ -53,6 +53,29 @@ Vehicle::Vehicle(vehicleType typ, std::list<Node> nods)
     speed = 0;
 }
 
+Vehicle::Vehicle(vehicleType typ, std::list<Node*> nods)
+{
+	type = typ;
+	if (type == CAR)
+	{
+		length = CAR_LENGTH;
+		acceleration = CAR_ACCELERATION;
+		slowdown = CAR_SLOWDOWN;
+	}
+	else if (type == TRUCK)
+	{
+		length = TRUCK_LENGTH;
+		acceleration = TRUCK_ACCELERATION;
+		slowdown = TRUCK_SLOWDOWN;
+	}
+	position = nods.front()->getPosition();
+	nods.pop_front();
+	for(auto n : nods)
+		nodes.push_back(*n);
+	orientation = N;
+	speed = 0;
+}
+
 void Vehicle::move(int time) {
     if (nodes.size() != 0)
     {

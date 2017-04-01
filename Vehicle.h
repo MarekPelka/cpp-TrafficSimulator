@@ -12,6 +12,7 @@ class Vehicle : MovingObject
         ~Vehicle();
         Vehicle(vehicleType type, Position pos);
         Vehicle(vehicleType type, std::list<Node> nodes);
+		Vehicle(vehicleType type, std::list<Node*> nodes);
         void move(int time);
         Position getPosition();
         vehicleType getType();
