@@ -3,7 +3,7 @@
 #include "Vehicle.h"
 #include "MainWindow.h"
 #include <list>
-#include <QDebug>
+#include "boost/regex.hpp"
 
 class VehicleController
 {

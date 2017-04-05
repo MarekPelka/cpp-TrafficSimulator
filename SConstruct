@@ -3,12 +3,11 @@ import platform, os
 baseEnv = Environment()
 
 if(platform.system() == "Linux"):
-   baseEnv.Append( CPPFLAGS = '-Wall -pedantic -pthread -Wno-long-long' )
-   baseEnv.Append( LINKFLAGS = '-Wall -pthread' )
-   baseEnv.Append( CPPPATH = ['/usr/include/python3.5'] )
-   baseEnv.Append( LIBPATH = ['/usr/lib/python3.5'] )
-   baseEnv.Append( LIBS = [ 'boost_python3' ] )
-   qtdir = ""
+   baseEnv.Append( CPPFLAGS = '-std=c++11 -fPIC' )
+   #baseEnv.Append( LINKFLAGS = '-Wall -pthread' )
+   baseEnv.Append( CPPPATH = ['/usr/include/boost'] )
+   baseEnv.Append( LIBPATH = ['/usr/lib/x86_64-linux-gnu'] )
+   qtdir = '/usr/lib/x86_64-linux-gnu'
 
 elif(platform.system() == "Windows"):
    baseEnv.Append( CPPPATH = [ 'C:/Boost/boost_1_63_0'] )
@@ -20,7 +19,7 @@ else:
 
 qtEnv = baseEnv.Clone()
 # Set QT5DIR and PKG_CONFIG_PATH
-#qtEnv['ENV']['PKG_CONFIG_PATH'] = os.path.join(qtdir, 'lib/pkgconfig')
+qtEnv['ENV']['PKG_CONFIG_PATH'] = os.path.join(qtdir, 'lib/pkgconfig')
 qtEnv['QT5DIR'] = qtdir
 # Add qt5 tool
 qtEnv.Tool('qt5')

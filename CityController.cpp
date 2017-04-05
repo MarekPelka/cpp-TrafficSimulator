@@ -309,8 +309,10 @@ void CityController::filterList(std::list<Node *> *list) {
 }
 
 bool CityController::isStreetsOverlap(Position start, Position end) {
-
-	Street temp(&Node(start), &Node(end));
+    //TODO scons sie tu przyczepil wiec temporary poprawa
+	Node* startNode = new Node(start);
+	Node* endNode = new Node(end);
+	Street temp(startNode, endNode);
 	if (Street::getPredictedDirection(start, end) == N || Street::getPredictedDirection(start, end) == S)
 		for (Street * s : streets) {
 			if (s->getStartEndPositions().first == end && s->getStartEndPositions().second == start)

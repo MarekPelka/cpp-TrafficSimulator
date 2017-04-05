@@ -1,5 +1,5 @@
-#include "mainwindow.h"
-#include "GeneratedFiles\ui_mainwindow.h"
+#include "MainWindow.h"
+#include "GeneratedFiles/ui_mainwindow.h"
 #include "Building.h"
 #include "Camera.h"
 #include "Enums.h"
