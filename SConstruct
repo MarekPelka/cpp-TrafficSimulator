@@ -1,46 +1,31 @@
-import sys
-import glob
-import os
+import platform, os
 
-# Tries to detect the path to the installation of Qt with
-# the highest version number
-def detectLatestQtDir():
-    if sys.platform.startswith("linux"):
-        # Simple check: inspect only '/usr/local/Trolltech'
-        paths = glob.glob('/usr/local/Trolltech/*')
-        if len(paths):
-            paths.sort()
-            return paths[-1]
-        else:
-            return ""
-    else:
-        # Simple check: inspect only 'C:\Qt'
-        paths = glob.glob('C:\\Qt\\5.8\\msvc2015_64*')
-        if len(paths):
-            paths.sort()
-            return paths[-1]
-        else:
-            return os.environ.get("QTDIR","")
-
-# Detect Qt version
-qtdir = detectLatestQtDir()
-
-# Create base environment
 baseEnv = Environment()
 
-# Clone Qt environment
+if(platform.system() == "Linux"):
+   baseEnv.Append( CPPFLAGS = '-Wall -pedantic -pthread -Wno-long-long' )
+   baseEnv.Append( LINKFLAGS = '-Wall -pthread' )
+   baseEnv.Append( CPPPATH = ['/usr/include/python3.5'] )
+   baseEnv.Append( LIBPATH = ['/usr/lib/python3.5'] )
+   baseEnv.Append( LIBS = [ 'boost_python3' ] )
+   qtdir = ""
+
+elif(platform.system() == "Windows"):
+   baseEnv.Append( CPPPATH = [ 'C:/Boost/boost_1_63_0'] )
+   baseEnv.Append( LIBPATH = [ 'C:/Boost/boost_1_63_0/stage/lib'] )
+   qtdir = 'C:/Qt/5.8/msvc2015_64/'
+
+else:
+   print platform.system() + " not supported"
+
 qtEnv = baseEnv.Clone()
 # Set QT5DIR and PKG_CONFIG_PATH
 #qtEnv['ENV']['PKG_CONFIG_PATH'] = os.path.join(qtdir, 'lib/pkgconfig')
 qtEnv['QT5DIR'] = qtdir
 # Add qt5 tool
 qtEnv.Tool('qt5')
-#...further customization of qt env
 
 # Export environments
 Export('baseEnv qtEnv')
-
-# Your other stuff...
-# ...including the call to your SConscripts
 
 SConscript('SConscript')
