@@ -1,6 +1,6 @@
 #pragma once
-#include "Enums.h"
-#include "Position.h"
+#include "src/Enums.h"
+#include "src/models/Position.h"
 
 class Building
 {

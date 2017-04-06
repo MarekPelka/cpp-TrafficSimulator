@@ -1,13 +1,13 @@
 #include "stdafx.h"
-#include "../TrafficSimulator/Node.h"
-#include "../TrafficSimulator/Street.h"
-#include "../TrafficSimulator/Position.h"
-#include "../TrafficSimulator/CityController.h"
-#include "../TrafficSimulator/Node.cpp"
-#include "../TrafficSimulator/Street.cpp"
-#include "../TrafficSimulator/Position.cpp"
-#include "../TrafficSimulator/CityController.cpp"
-#include "../TrafficSimulator/Enums.h"
+#include "../cpp-TrafficSimulator/src/models/Node.h"
+#include "../cpp-TrafficSimulator/src/models/Street.h"
+#include "../cpp-TrafficSimulator/src/models/Position.h"
+#include "../cpp-TrafficSimulator/src/viewmodels/CityController.h"
+#include "../cpp-TrafficSimulator/src/models/Node.cpp"
+#include "../cpp-TrafficSimulator/src/models/Street.cpp"
+#include "../cpp-TrafficSimulator/src/models/Position.cpp"
+#include "../cpp-TrafficSimulator/src/viewmodels/CityController.cpp"
+#include "../cpp-TrafficSimulator/src/Enums.h"
 #include <list>
 
 #include <boost/test/unit_test.hpp>

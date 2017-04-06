@@ -1,9 +1,9 @@
 #pragma once
 #include <iostream>
 #include <list>
-#include "Enums.h"
-#include "MovingObject.h"
-#include "Node.h"
+#include "src/Enums.h"
+#include "src/models/MovingObject.h"
+#include "src/models/Node.h"
 
 class Vehicle : MovingObject
 {

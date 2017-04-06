@@ -1,6 +1,6 @@
 #pragma once
-#include "Position.h"
-#include "Vehicle.h"
+#include "src/models/Position.h"
+#include "src/models/Vehicle.h"
 #include "MainWindow.h"
 #include <list>
 #include "boost/regex.hpp"

@@ -1,8 +1,8 @@
 #pragma once
-#include "Position.h"
-#include "Street.h"
-#include "Enums.h"
-#include "Node.h"
+#include "src/models/Position.h"
+#include "src/models/Street.h"
+#include "src/Enums.h"
+#include "src/models/Node.h"
 #include <list>
 #include <map>
 #include <algorithm>
