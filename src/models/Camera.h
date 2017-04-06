@@ -1,8 +1,8 @@
 #pragma once
 #include <map>
-#include "src/Enums.h"
-#include "src/models/Position.h"
-#include "src/models/MovingObject.h"
+#include "../Enums.h"
+#include "Position.h"
+#include "MovingObject.h"
 
 class Camera
 {

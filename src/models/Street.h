@@ -1,7 +1,7 @@
 #pragma once
-#include "src/models/Position.h"
-#include "src/models/Node.h"
-#include "src/Enums.h"
+#include "Position.h"
+#include "Node.h"
+#include "../Enums.h"
 #include <utility>
 
 class Street

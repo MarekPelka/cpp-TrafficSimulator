@@ -3,7 +3,7 @@ import platform, os
 baseEnv = Environment()
 
 if(platform.system() == "Linux"):
-   baseEnv.Append( CPPFLAGS = '-std=c++11 -fPIC' )
+   baseEnv.Append( CPPFLAGS = '-std=c++11 -fPIC -finput-charset=iso-8859-2' )
    #baseEnv.Append( LINKFLAGS = '-Wall -pthread' )
    baseEnv.Append( CPPPATH = ['/usr/include/boost'] )
    baseEnv.Append( LIBPATH = ['/usr/lib/x86_64-linux-gnu'] )

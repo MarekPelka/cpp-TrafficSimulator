@@ -1,10 +1,10 @@
 #include "MainWindow.h"
-#include "GeneratedFiles/ui_mainwindow.h"
-#include "src/models/Building.h"
-#include "src/models/Camera.h"
-#include "src/Enums.h"
-#include "src/viewmodels/CityController.h"
-#include "src/viewmodels/GraphicFab.h"
+#include "../../GeneratedFiles/ui_mainwindow.h"
+#include "../models/Building.h"
+#include "../models/Camera.h"
+#include "../Enums.h"
+#include "CityController.h"
+#include "GraphicFab.h"
 #include <QGraphicsItem>
 #include <QString>
 #include <QtWidgets>

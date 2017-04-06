@@ -1,5 +1,5 @@
-#include "src/models/Vehicle.h"
-#include "src/viewmodels/VehicleController.h"
+#include "Vehicle.h"
+#include "../viewmodels/VehicleController.h"
 
 Vehicle::Vehicle()
 {

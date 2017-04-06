@@ -5,8 +5,8 @@
 #include <QMainWindow>
 #include <QGraphicsScene>
 #include <list>
-#include "src\models\Position.h"
-#include "src\models\Vehicle.h"
+#include "../models/Position.h"
+#include "../models/Vehicle.h"
 
 namespace Ui {
 	class MainWindow;
