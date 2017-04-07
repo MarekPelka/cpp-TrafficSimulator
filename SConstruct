@@ -27,4 +27,8 @@ qtEnv.Tool('qt5')
 # Export environments
 Export('baseEnv qtEnv')
 
+tests = ARGUMENTS.get('tests', 1)
+if int(tests):
+	baseEnv.Program( source = Glob('tests/*.cpp'), target = 'Tests' )
+
 SConscript('SConscript')
