@@ -3,13 +3,15 @@ import platform, os
 baseEnv = Environment()
 
 if(platform.system() == "Linux"):
-   baseEnv.Append( CPPFLAGS = '-std=c++11 -fPIC -finput-charset=iso-8859-2' )
-   #baseEnv.Append( LINKFLAGS = '-Wall -pthread' )
+   baseEnv.Append( CPPFLAGS = '-std=c++11 -fPIC -finput-charset=iso-8859-2 -Wall -pedantic -pthread' )
+   baseEnv.Append( LINKFLAGS = '-Wall -pthread' )
    baseEnv.Append( CPPPATH = ['/usr/include/boost'] )
    baseEnv.Append( LIBPATH = ['/usr/lib/x86_64-linux-gnu'] )
+   baseEnv.Append( LIBS = ['boost_unit_test_framework'] )
    qtdir = '/usr/lib/x86_64-linux-gnu'
 
 elif(platform.system() == "Windows"):
+   baseEnv.Append( CPPFLAGS = ' /EHsc /MD /D "WIN32" /D "_CONSOLE" /W4' )
    baseEnv.Append( CPPPATH = [ 'C:/Boost/boost_1_63_0'] )
    baseEnv.Append( LIBPATH = [ 'C:/Boost/boost_1_63_0/stage/lib'] )
    qtdir = 'C:/Qt/5.8/msvc2015_64/'
@@ -30,5 +32,4 @@ Export('baseEnv qtEnv')
 tests = ARGUMENTS.get('tests', 1)
 if int(tests):
 	baseEnv.Program( source = Glob('tests/*.cpp'), target = 'Tests' )
-
 SConscript('SConscript')
