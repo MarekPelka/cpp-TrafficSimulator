@@ -1,7 +1,4 @@
-//#include "stdafx.h"
-#define BOOST_TEST_MODULE custom_main
-#define BOOST_TEST_NO_MAIN
-#define BOOST_TEST_ALTERNATIVE_INIT_API
+#define BOOST_TEST_MODULE Tests
 #include "../src/models/Node.h"
 #include "../src/models/Street.h"
 #include "../src/models/Position.h"
@@ -15,7 +12,6 @@
 
 #include <boost/test/included/unit_test.hpp>
 
-namespace utf = boost::unit_test;
 /*
 CityController *cityC = CityController::getInstance();
 Position p1(100, 100);
@@ -182,9 +178,4 @@ BOOST_AUTO_TEST_CASE(Test_streetCross) {
 BOOST_AUTO_TEST_CASE(Test_BFS) {
 	// There are problems with BFS
 	BOOST_CHECK_EQUAL(true, false);
-}
-
-int main(int argc, char* argv[], char* envp[])
-{
-  return utf::unit_test_main(init_unit_test, argc, argv);
 }
