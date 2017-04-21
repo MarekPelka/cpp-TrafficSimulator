@@ -22,16 +22,22 @@ int Street::getLength() {
 }
 
 Direction Street::getPredictedDirection(Position start, Position end) {
-	if (start.x == end.x)
-		if (start.y > end.y)
-			return N;
-		else
-			return S;
-	else if (start.y == end.y)
-		if (start.x > end.x)
-			return W;
-		else
-			return E;
+    if (start.x == end.x) {
+        if (start.y > end.y) {
+            return N;
+        }
+        else {
+            return S;
+        }
+    }
+    else if (start.y == end.y) {
+        if (start.x > end.x) {
+            return W;
+        }
+        else {
+            return E;
+        }
+    }
 	return NONE;
 }
 

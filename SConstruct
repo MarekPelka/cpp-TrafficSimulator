@@ -11,7 +11,7 @@ if(platform.system() == "Linux"):
    qtdir = '/usr/lib/x86_64-linux-gnu'
 
 elif(platform.system() == "Windows"):
-   baseEnv.Append( CPPFLAGS = ' /EHsc /MD /D "WIN32" /D "_CONSOLE" /W4' )
+   baseEnv.Append( CPPFLAGS = ' /EHsc /MD /D "WIN32" /D "_WINDOWS" /W4' )
    baseEnv.Append( CPPPATH = [ 'C:/Boost/boost_1_63_0'] )
    baseEnv.Append( LIBPATH = [ 'C:/Boost/boost_1_63_0/stage/lib'] )
    qtdir = 'C:/Qt/5.8/msvc2015_64/'

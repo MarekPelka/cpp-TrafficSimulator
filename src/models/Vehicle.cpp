@@ -199,6 +199,11 @@ bool Vehicle::checkSlowdown(Position step) {
             }
             break;
         }
+        case NONE:
+        {
+            //Do nothing
+            break;
+        }
         }
     }
     return false;
