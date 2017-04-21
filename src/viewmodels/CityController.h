@@ -25,6 +25,7 @@ public:
 	std::list<Node*> findNeighbors(Node * n);
 	std::map<Street*, Position> isStreetsCross(Position start, Position end);
 	bool isStreetsOverlap(Position start, Position end);
+    void clearController();
 	
 private:
 	

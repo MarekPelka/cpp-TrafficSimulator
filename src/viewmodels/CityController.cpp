@@ -336,6 +336,11 @@ bool CityController::isStreetsOverlap(Position start, Position end) {
 	return false;
 }
 
+void CityController::clearController() {
+    streets.clear();
+    nodes.clear();
+}
+
 /*
 public List<List<String>> findPaths(Node client, bool onlyClients)
 {
