@@ -19,17 +19,17 @@ class Vehicle : MovingObject
         void updatePosition(int time);
         Direction getOrientation();
         bool checkSlowdown(Position step);
-        bool checkMaxSpeed(Position step);
+        bool checkMaxSpeed();
         std::list<int> color;
         bool isMoving = false;
         bool operator==(const Vehicle &v);
     private:
-        float length;
-        float acceleration;
-        float slowdown;
+        int length;
+        double acceleration;
+        double slowdown;
         vehicleType type;
-        float speed;
+        double speed;
         std::list<Node> nodes;
         Direction orientation;
-        std::list<int> vehicleColor(float speed);
+        std::list<int> vehicleColor(double veh_speed);
 };

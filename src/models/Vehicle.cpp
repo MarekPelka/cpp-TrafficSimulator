@@ -88,7 +88,7 @@ void Vehicle::move(int time) {
                 speed -= slowdown * time / 1000;
             }
         }
-        else if (!checkMaxSpeed(step))
+        else if (!checkMaxSpeed())
         {
             speed += acceleration * time / 1000;
         }
@@ -204,7 +204,7 @@ bool Vehicle::checkSlowdown(Position step) {
     return false;
 }
 
-bool Vehicle::checkMaxSpeed(Position step) {
+bool Vehicle::checkMaxSpeed() {
     if (speed >= MAX_SPEED)
         return true;
     else
@@ -247,46 +247,46 @@ Vehicle::~Vehicle()
     type = NOTHING;
 }
 
-std::list<int> Vehicle::vehicleColor(float speed)
+std::list<int> Vehicle::vehicleColor(double veh_speed)
 {
     //scaling
-    speed *= 100;
-    speed += 30;
+    veh_speed *= 100;
+    veh_speed += 30;
 
     int r, g, b;
     double d = 256.0 / 20.0;
 
-    if (speed < 0) { //nadfiolet
+    if (veh_speed < 0) { //nadfiolet
         r = g = b = 0;
     }
-    else if (speed < 20)
+    else if (veh_speed < 20)
     {
-        r = 255 - d * speed;
+        r = 255 - d * veh_speed;
         g = 0;
         b = 255;
     }
-    else if (speed < 40)
+    else if (veh_speed < 40)
     {
         r = 0;
-        g = d * (speed - 20);
+        g = d * (veh_speed - 20);
         b = 255;
     }
-    else if (speed < 60)
+    else if (veh_speed < 60)
     {
         r = 0;
         g = 255;
-        b = 255 - d * (speed - 40);
+        b = 255 - d * (veh_speed - 40);
     }
-    else if (speed < 80)
+    else if (veh_speed < 80)
     {
-        r = d * (speed - 60);
+        r = d * (veh_speed - 60);
         g = 255;
         b = 0;
     }
-    else if (speed < 100)
+    else if (veh_speed < 100)
     {
         r = 255;
-        g = 255 - d * (speed - 80);
+        g = 255 - d * (veh_speed - 80);
         b = 0;
     }
     else { //podczerwieñ

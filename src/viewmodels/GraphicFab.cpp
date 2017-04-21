@@ -25,7 +25,7 @@ std::list<QGraphicsItem*> GraphicFab::getStreetsGraphics(CityController * cityCo
 		//text->setPlainText(str);
 		//text->setDefaultTextColor(Color);
 		//out.push_back(text);
-		QGraphicsRectItem *rect;
+		QGraphicsRectItem *rect = nullptr;
 		if (s->getDirection() == N) {
 			rect = new QGraphicsRectItem(eX, eY, STREET_WIDTH, abs(sY - eY));
 		} else if (s->getDirection() == E) {
@@ -35,12 +35,14 @@ std::list<QGraphicsItem*> GraphicFab::getStreetsGraphics(CityController * cityCo
 		} else if (s->getDirection() == W) {
 			rect = new QGraphicsRectItem(eX, eY - STREET_WIDTH, abs(sX - eX), STREET_WIDTH);
 		}
-		pen.setStyle(Qt::SolidLine);
-		pen.setColor(Qt::gray);
-		rect->setPen(pen);
-		rect->setBrush(QBrush(Qt::gray));
-		out.push_back(rect);
-		out.push_back(line);
+        if (rect) {
+            pen.setStyle(Qt::SolidLine);
+            pen.setColor(Qt::gray);
+            rect->setPen(pen);
+            rect->setBrush(QBrush(Qt::gray));
+            out.push_back(rect);
+            out.push_back(line);
+        }
 	}
 	return out;
 }

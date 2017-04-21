@@ -137,8 +137,6 @@ void MainWindow::timerEvent(QTimerEvent *event) {
 }
 
 void MainWindow::mousePressEvent(QMouseEvent *event) {
-    bool stat = ui->graphicsView->hasFocus();
-    bool stati = scene->hasFocus();
     QString status = infoLabel->text();
     VehicleController *vehC = VehicleController::getInstance();
     std::list<Node> nodes;
