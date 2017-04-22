@@ -26,7 +26,7 @@ public:
 	void updateVehiclesViews();
 	void paintStreets();
 	void paintIntersections();
-    std::list<Node> nodesPath(Position start, Position end);
+    std::list<Node*> nodesPath(Position start, Position end);
 private:
 	Ui::MainWindow *ui;
 	int timerId;

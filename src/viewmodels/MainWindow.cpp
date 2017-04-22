@@ -1,5 +1,5 @@
 #include "MainWindow.h"
-#include "../../GeneratedFiles/ui_mainwindow.h"
+#include "../GeneratedFiles/ui_mainwindow.h"
 #include "../models/Building.h"
 #include "../models/Camera.h"
 #include "../Enums.h"
@@ -92,26 +92,33 @@ void MainWindow::paintIntersections() {
 	}
 }
 
-std::list<Node> MainWindow::nodesPath(Position start, Position end) {
-    std::list<Node> nodes;
+std::list<Node*> MainWindow::nodesPath(Position start, Position end) {
+	std::list<Node*> nodes = {};
     CityController *cityC = CityController::getInstance();
     std::list<Node*> allNodes = cityC->getNodes();
-    
-    // finding start node
+	Node* s = NULL;
+	Node* e = NULL;
+    //finding start node
     for (Node* node : allNodes) {
         if (checkClosest(*node, start))
         {
-            nodes.push_front(*node);
+			s = node;
         }
     }
     //finding end node
     for (Node* node : allNodes) {
         if (checkClosest(*node, end))
         {
-            nodes.push_back(*node);
+			e = node;
         }
     }
-
+	if(s == NULL || e == NULL)
+		return nodes;
+	for (std::list<Node*> w : cityC->getWay(s))
+	{
+		if (w.back() == e)
+			nodes = w;
+	}
     //TODO djikstra to return nodes that are between start and end
     return nodes;
 }
@@ -139,7 +146,7 @@ void MainWindow::timerEvent(QTimerEvent *event) {
 void MainWindow::mousePressEvent(QMouseEvent *event) {
     QString status = infoLabel->text();
     VehicleController *vehC = VehicleController::getInstance();
-    std::list<Node> nodes;
+    std::list<Node*> nodes;
     if (status.size() != 0) {
         QPoint point(event->pos());
         //TODO X coordinate is shift about 50px, -50 to rescale
@@ -181,9 +188,12 @@ void MainWindow::mousePressEvent(QMouseEvent *event) {
         else if (status == QStringLiteral("Samochód") && click == true) {
             endPos = position;
             nodes = nodesPath(startPos, endPos);
-            Vehicle car(CAR, nodes);
-            vehC->addVehicle(car);
-            click = false;
+			if (!nodes.empty())
+			{
+				Vehicle car(CAR, nodes);
+				vehC->addVehicle(car);
+			}
+			click = false;
         }
         else if (status == QStringLiteral("Ciê¿arówka") && click == false) {
             click = true;
@@ -192,9 +202,12 @@ void MainWindow::mousePressEvent(QMouseEvent *event) {
         else if (status == QStringLiteral("Ciê¿arówka") && click == true) {
             endPos = position;
             nodes = nodesPath(startPos, endPos);
-            Vehicle truck(TRUCK, nodes);
-            vehC->addVehicle(truck);
-            click = false;
+			if (!nodes.empty())
+			{
+				Vehicle truck(TRUCK, nodes);
+				vehC->addVehicle(truck);
+			}
+			click = false;
         }
     }
 }
