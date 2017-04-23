@@ -1,5 +1,5 @@
 #include "MainWindow.h"
-#include "../GeneratedFiles/ui_mainwindow.h"
+#include "../../GeneratedFiles/ui_mainwindow.h"
 #include "../models/Building.h"
 #include "../models/Camera.h"
 #include "../Enums.h"
@@ -166,8 +166,7 @@ void MainWindow::mousePressEvent(QMouseEvent *event) {
     std::list<Node*> nodes;
     if (status.size() != 0) {
         QPoint point(event->pos());
-        //TODO X coordinate is shift about 50px, -50 to rescale
-        Position position(point.x()-50, point.y());
+        Position position(point.x(), point.y());
         if(status == "Ulica") {
 
         }
