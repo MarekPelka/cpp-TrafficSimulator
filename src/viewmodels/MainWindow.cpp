@@ -66,20 +66,20 @@ void MainWindow::updateVehiclesViews() {
 	delete vechicleGroup;
 	vechicleGroup = new QGraphicsItemGroup();
 	for (Vehicle veh : vehC->getVehicles()) {
-		QPen pen = QPen(QColor(0, 0, 0), 1, Qt::SolidLine);
-		//TODO MICHA problems with list
-		/*int r = veh.color.front();
-		veh.color.pop_front();
-		int g = veh.color.front();
-		veh.color.pop_front();
-		int b = veh.color.front();
-		veh.color.pop_front();*/
-		//QBrush brush = QBrush(QColor(r, g, b));
-		QBrush brush = QBrush(QColor(100, 100, 200));
-		vehicleGraphics.front()->setBrush(brush);
-		vehicleGraphics.front()->setPen(pen);
-		vechicleGroup->addToGroup(vehicleGraphics.front());
-		vehicleGraphics.pop_front();
+        if (veh.color.size() != 0) {
+		    QPen pen = QPen(QColor(0, 0, 0), 1, Qt::SolidLine);
+            int r = veh.color.front();
+            veh.color.pop_front();
+            int g = veh.color.front();
+            veh.color.pop_front();
+            int b = veh.color.front();
+            veh.color.pop_front();
+            QBrush brush = QBrush(QColor(r, g, b));
+            vehicleGraphics.front()->setBrush(brush);
+            vehicleGraphics.front()->setPen(pen);
+            vechicleGroup->addToGroup(vehicleGraphics.front());
+            vehicleGraphics.pop_front();
+        }
 	}
 	scene->addItem(vechicleGroup);	
 	//scene->addItem(parkingGroup);
