@@ -238,6 +238,11 @@ std::list<Node*> CityController::getNodes() {
 	return nodes;
 }
 
+std::list<Node*> CityController::getParkings()
+{
+	return parkings;
+}
+
 std::list<std::list<Node*>> CityController::getWay(Node * start)
 {
 	std::list<Node*> path = {};
@@ -283,6 +288,15 @@ std::list<std::list<Node*>> CityController::getWay(Node * start)
 	}
 
 	return found;
+}
+
+std::list<Node*> CityController::findWay(Node * start, Node * end)
+{
+	for (auto w : getWay(start)) {
+		if (w.back() == end)
+			return w;
+	}
+	return std::list<Node*>();
 }
 
 std::list<Node*> CityController::findNeighbors(Node * n)
@@ -339,6 +353,28 @@ bool CityController::isStreetsOverlap(Position start, Position end) {
 void CityController::clearController() {
     streets.clear();
     nodes.clear();
+}
+
+bool CityController::downgradeFromParking(Node * n)
+{
+	if (!n->getIsParking())
+		return false;
+	else {
+		n->setIsParking(false);
+		parkings.remove(n);
+		return true;
+	}
+}
+
+bool CityController::upgradeToParking(Node * n)
+{
+	if (n->getIsParking())
+		return false;
+	else {
+		n->setIsParking(true);
+		parkings.push_back(n);
+		return true;
+	}
 }
 
 /*

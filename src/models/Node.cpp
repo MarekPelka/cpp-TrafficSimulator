@@ -25,3 +25,13 @@ std::string Node::getName()
 {
 	return name;
 }
+
+bool Node::getIsParking()
+{
+	return isParking;
+}
+
+void Node::setIsParking(bool p)
+{
+	this->isParking = p;
+}

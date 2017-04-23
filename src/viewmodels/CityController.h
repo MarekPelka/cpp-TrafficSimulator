@@ -21,12 +21,16 @@ public:
 	Node* findAndCraeteNode(Position p);
 	std::list<Street*> getStreets();
 	std::list<Node*> getNodes();
+	std::list<Node*> getParkings();
 	std::list<std::list<Node*>> getWay(Node * start);
+	std::list<Node*> findWay(Node * start, Node * end);
 	std::list<Node*> findNeighbors(Node * n);
 	std::map<Street*, Position> isStreetsCross(Position start, Position end);
 	bool isStreetsOverlap(Position start, Position end);
     void clearController();
 	
+	bool upgradeToParking(Node * n);
+	bool downgradeFromParking(Node * n);
 private:
 	
 	CityController();
@@ -36,4 +40,5 @@ private:
 	void filterList(std::list<Node *>*);
 	std::list<Street*> streets;
 	std::list<Node*> nodes;
+	std::list<Node*> parkings;
 };

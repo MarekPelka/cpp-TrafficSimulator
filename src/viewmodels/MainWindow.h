@@ -25,6 +25,7 @@ public:
 
 	void updateVehiclesViews();
 	void paintStreets();
+	void paintParkings();
 	void paintIntersections();
     std::list<Node*> nodesPath(Position start, Position end);
 private:
@@ -32,6 +33,7 @@ private:
 	int timerId;
 	QGraphicsScene *scene;
 	QGraphicsItemGroup * streetGroup;
+	QGraphicsItemGroup * parkingGroup;
 	QGraphicsItemGroup * nodeGroup;
 	QGraphicsItemGroup * vechicleGroup;
 protected:
@@ -75,6 +77,7 @@ private:
 
     //start and end positions for vehicle adding and flag
     bool click = false;
+	bool randomMovement = false;
     Position startPos;
     Position endPos;
     QImage image;

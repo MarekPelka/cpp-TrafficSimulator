@@ -37,7 +37,7 @@ public:
         graphicsView = new QGraphicsView(centralWidget);
         graphicsView->setObjectName(QStringLiteral("graphicsView"));
         graphicsView->setGeometry(QRect(0, 0, 700, 550));
-        MainWindow->setCentralWidget(centralWidget);
+        MainWindow->setCentralWidget(graphicsView);
 
         retranslateUi(MainWindow);
 

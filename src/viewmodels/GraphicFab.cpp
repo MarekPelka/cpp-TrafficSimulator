@@ -80,6 +80,25 @@ std::list<QGraphicsItem*> GraphicFab::getIntersectionsGraphics(CityController * 
 	return out;
 }
 
+std::list<QGraphicsItem*> GraphicFab::getParkingGraphics(CityController * cityCon)
+{
+	std::list<QGraphicsItem*> out = {};
+	int X, Y;
+	for (Node* n : cityCon->getParkings()) {
+		X = n->getPosition().x;
+		Y = n->getPosition().y;
+
+		QPen pen(Qt::SolidLine);
+		pen.setColor(Qt::black);
+		QGraphicsRectItem *rect = new QGraphicsRectItem(X - STREET_WIDTH * PARKING_SIZE_MULTIPLIER, Y - STREET_WIDTH * PARKING_SIZE_MULTIPLIER, STREET_WIDTH * 2 * PARKING_SIZE_MULTIPLIER, STREET_WIDTH * 2 * PARKING_SIZE_MULTIPLIER);
+		rect->setBrush(QBrush(Qt::black));
+		rect->setPen(pen);
+
+		out.push_back(rect);
+	}
+	return out;
+}
+
 std::list<QGraphicsRectItem*> GraphicFab::getVehiclesGraphics(VehicleController * vehCon) {
 	std::list<QGraphicsRectItem*> out = {};
 	int length = 0;

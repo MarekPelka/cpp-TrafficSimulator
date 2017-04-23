@@ -13,6 +13,9 @@ public:
 	Position position;
 	int number;
 	std::string name;
+	bool getIsParking();
+	void setIsParking(bool p);
 private:
+	bool isParking = false;
 	static int all_Nodes;
 };

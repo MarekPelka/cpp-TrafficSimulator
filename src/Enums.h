@@ -24,3 +24,7 @@ const int CLOSEST_NODE = 20;
 const int BUILDING_SIZE = 30;
 
 const int CAMERA_SIZE = 10;
+
+const double PROBABILITY_SPAWN = 0.2;
+const double PERCENTAGE_OF_TRUCKS = 0.1;
+const double PARKING_SIZE_MULTIPLIER = 2;

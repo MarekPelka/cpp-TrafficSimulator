@@ -4,6 +4,7 @@
 #include "../models/Camera.h"
 #include "../Enums.h"
 #include "CityController.h"
+#include "ParkingController.h"
 #include "GraphicFab.h"
 #include <QGraphicsItem>
 #include <QString>
@@ -31,12 +32,15 @@ MainWindow::MainWindow(QWidget *parent) :
 	ui->graphicsView->setScene(scene);
 
 	streetGroup = new QGraphicsItemGroup();
+	parkingGroup = new QGraphicsItemGroup();
 	nodeGroup = new QGraphicsItemGroup();
 	vechicleGroup = new QGraphicsItemGroup();
-
+	parkingGroup->setZValue(100);
+	//Order is important
 	scene->addItem(streetGroup);
 	scene->addItem(nodeGroup);
 	scene->addItem(vechicleGroup);
+	scene->addItem(parkingGroup);
 
     //label with info about current state of insert
     infoLabel = new QLabel(ui->graphicsView);
@@ -63,25 +67,36 @@ void MainWindow::updateVehiclesViews() {
 	vechicleGroup = new QGraphicsItemGroup();
 	for (Vehicle veh : vehC->getVehicles()) {
 		QPen pen = QPen(QColor(0, 0, 0), 1, Qt::SolidLine);
-		int r = veh.color.front();
+		//TODO MICHA problems with list
+		/*int r = veh.color.front();
 		veh.color.pop_front();
 		int g = veh.color.front();
 		veh.color.pop_front();
 		int b = veh.color.front();
-		veh.color.pop_front();
-		QBrush brush = QBrush(QColor(r, g, b));
+		veh.color.pop_front();*/
+		//QBrush brush = QBrush(QColor(r, g, b));
+		QBrush brush = QBrush(QColor(100, 100, 200));
 		vehicleGraphics.front()->setBrush(brush);
 		vehicleGraphics.front()->setPen(pen);
 		vechicleGroup->addToGroup(vehicleGraphics.front());
 		vehicleGraphics.pop_front();
 	}
 	scene->addItem(vechicleGroup);	
+	//scene->addItem(parkingGroup);
 }
 
 void MainWindow::paintStreets() {
 	CityController *cityC = CityController::getInstance();
 	for (QGraphicsItem* g : GraphicFab::getStreetsGraphics(cityC)) {
 		streetGroup->addToGroup(g);
+	}
+}
+
+void MainWindow::paintParkings()
+{
+	CityController *cityC = CityController::getInstance();
+	for (QGraphicsItem* g : GraphicFab::getParkingGraphics(cityC)) {
+		parkingGroup->addToGroup(g);
 	}
 }
 
@@ -141,6 +156,8 @@ bool MainWindow::checkClosest(Node node, Position position)
 void MainWindow::timerEvent(QTimerEvent *event) {
     VehicleController *vehC = VehicleController::getInstance();
 	vehC->updatePositions(int(1000 / FPS));
+	if(randomMovement)
+		ParkingController::getInstance()->randomSpawnVechicle(FPS);
 }
 
 void MainWindow::mousePressEvent(QMouseEvent *event) {
@@ -219,7 +236,7 @@ void MainWindow::createActions() {
     scenario1Act = new QAction(tr("&Scenariusz 1"), this);
     connect(scenario1Act, &QAction::triggered, this, &MainWindow::scenario1);
 
-    scenario2Act = new QAction(tr("&Scenariusz 2"), this);
+    scenario2Act = new QAction(tr("&Ruch losowy"), this);
     connect(scenario2Act, &QAction::triggered, this, &MainWindow::scenario2);
 
     exitAct = new QAction(tr("&Koniec"), this);
@@ -306,23 +323,36 @@ void MainWindow::scenario1() {
     cityC->addStreet(p4, p3);
     cityC->addStreet(p1, p4);
     //Crossing
-    Position pc3(300, 50);
-    Position pc4(300, 550);
+    Position pc3(300, 0);
+    Position pc4(300, 600);
     cityC->addStreet(pc3, pc4);
-    Position pc1(50, 300);
-    Position pc2(550, 300);
+    Position pc1(0, 300);
+    Position pc2(600, 300);
     cityC->addStreet(pc1, pc2);
 
+	cityC->upgradeToParking(cityC->findNode(Position(100, 100)));
+	cityC->upgradeToParking(cityC->findNode(Position(500, 500)));
+	cityC->upgradeToParking(cityC->findNode(Position(300, 300)));
+
+	Position p11(50, 50);
+	Position p12(50, 550);
+	Position p13(550, 550);
+	Position p14(550, 50);
+
+	cityC->addStreet(p11, p12, true);
+	cityC->addStreet(p12, p13, true);
+	cityC->addStreet(p13, p14, true);
+	cityC->addStreet(p14, p11, true);
+
+	cityC->upgradeToParking(cityC->findNode(Position(50, 550)));
+	cityC->upgradeToParking(cityC->findNode(Position(550, 50)));
+
     paintStreets();
-    paintIntersections();
+	paintIntersections();
+	paintParkings();
 }
 void MainWindow::scenario2() {
-	CityController *cityC = CityController::getInstance();
-	VehicleController *vehC = VehicleController::getInstance();
-	auto list = cityC->getWay(cityC->findNode(Position(100, 500)));
-	list.pop_back();
-	Vehicle car(CAR, list.back());
-	vehC->addVehicle(car);
+	randomMovement = !randomMovement;
 }
 void MainWindow::addStreet() {
     infoLabel->setText(tr("Ulica"));
