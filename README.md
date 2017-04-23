@@ -1,55 +1,21 @@
-# cpp-TrafficSimulator
+linux ubuntu 16.04 packages installation and building project:
 
-!!! WORK IN PROGRESS !!!
+- if boost libraries not installed:
+	sudo apt-get install libboost-all-dev
+- if scons not installed:
+	sudo apt-get install scons
+- Qt installation:
+	sudo apt-get install qt5-default
+-to build full project with tests:
+	scons
+-to build project without tests:
+	scons tests=0
+- to run main application:
+	./TrafficSimulator
+- to run tests:
+	./Tests
 
-TO DO
-----------
-1. Zaprojektować miasto
-	- Dodawanie ulic
-		- Chodniki
-		- Skrzyżowania
-			- O: Światła
-		- Ulice zabronione dla ciężarówek
-	- Budynków
-	- Parkingów
-	- Kamer
-	- O: Realistyczny rozkład ruchu miejskiego wg pory dnia
-2. Samochody
-	- Cięzarówki i Osobowe
-		- Inne przyśpieszenia
-		- Vmax dla danej ulicy
-		- Długość
-	- Przyśpieszanie, zwalnianie
-	- Skręty n skrzyżowaniach
-	- Max speed dla ulicy
-	- O: Hamowanie przed przeszkodami - światła, inne wariaty
-	- Kolory dlaa przędkości
-3. Skrzyżowania
-	- 5 typów skrzyrzowań
-		- ograniczenia prędkości w zależności od skrętów
-		- O: światła
-		- O: Pasy dla pieszych na skrzyrzowaniach
-
-	- 4 typy skrętów - inne prędkości
-4. Kamery
-	- w dowolnym miejscu
-	- kąt widzenia, dokładność, kierunek obserwacji
-	- budynki zasłaniają widok
-	- próbkowane co 1s
-	- podaje współrzędne zaobserwowanego obiektu
-5. Piesi
-	- Chodzą po chodnikach
-	- Stała predkość + zatrzymywanie
-	- O: Zwracaja uwage na swiatła
-	- Poruszaja sie od korpo do korpo
-6. Budynki
-	- Przesłaniają kamery
-	- Współrzędne
-7. Parkingi
-	- Węzły w grafie
-	- Punkty końcowe
-	- Dwa typy: Domowe i Pracowe
-	- Określone rozmiary
-	- Zajętość
-	- O: Rozkład losowości chęći przyjazdu (Wiecej osób do centrum)
-	- !Odpowwiedzialy za stworzenie samochodu i pieszych!
+Application scenario:
+1. select scenariusz1 from Plik menu to generate city
+2. select Ruch losowy from Plik menu to generate vehicle movement in city
+3. select start from Plik menu to start animation
