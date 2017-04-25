@@ -9,32 +9,36 @@
 #include "../src/viewmodels/CityController.cpp"
 #include "../src/Enums.h"
 #include <list>
+#include <memory>
 
 #include <boost/test/included/unit_test.hpp>
+
+typedef std::shared_ptr<Node> PNode;
+typedef std::shared_ptr<Street> PStreet;
 
 #define private public
 #define protected public
 
 BOOST_AUTO_TEST_CASE(Test_isIntervalX) {
-	Node s(Position(100, 100));
-	Node e(Position(500, 500));
-	Street street(&s, &e);
-	BOOST_CHECK_EQUAL(CityController::isInIntervalX(Position(100, 100), &street), true);
-	BOOST_CHECK_EQUAL(CityController::isInIntervalX(Position(250, 250), &street), true);
-	BOOST_CHECK_EQUAL(CityController::isInIntervalX(Position(500, 500), &street), true);
-	BOOST_CHECK_EQUAL(CityController::isInIntervalX(Position(99, 99), &street), false);
-	BOOST_CHECK_EQUAL(CityController::isInIntervalX(Position(501, 501), &street), false);
+	PNode s = std::make_shared<Node>(Position(100, 100));
+	PNode e = std::make_shared<Node>(Position(500, 500));
+	PStreet street = std::make_shared<Street>(s, e);
+	BOOST_CHECK_EQUAL(CityController::isInIntervalX(Position(100, 100), street), true);
+	BOOST_CHECK_EQUAL(CityController::isInIntervalX(Position(250, 250), street), true);
+	BOOST_CHECK_EQUAL(CityController::isInIntervalX(Position(500, 500), street), true);
+	BOOST_CHECK_EQUAL(CityController::isInIntervalX(Position(99, 99), street), false);
+	BOOST_CHECK_EQUAL(CityController::isInIntervalX(Position(501, 501), street), false);
 }
 
 BOOST_AUTO_TEST_CASE(Test_isIntervalY) {
-	Node s(Position(100, 100));
-	Node e(Position(500, 500));
-	Street street(&s, &e);
-	BOOST_CHECK_EQUAL(CityController::isInIntervalY(Position(100, 100), &street), true);
-	BOOST_CHECK_EQUAL(CityController::isInIntervalY(Position(250, 250), &street), true);
-	BOOST_CHECK_EQUAL(CityController::isInIntervalY(Position(500, 500), &street), true);
-	BOOST_CHECK_EQUAL(CityController::isInIntervalY(Position(99, 99), &street), false);
-	BOOST_CHECK_EQUAL(CityController::isInIntervalY(Position(501, 501), &street), false);
+    PNode s = std::make_shared<Node>(Position(100, 100));
+    PNode e = std::make_shared<Node>(Position(500, 500));
+    PStreet street = std::make_shared<Street>(s, e);
+	BOOST_CHECK_EQUAL(CityController::isInIntervalY(Position(100, 100), street), true);
+	BOOST_CHECK_EQUAL(CityController::isInIntervalY(Position(250, 250), street), true);
+	BOOST_CHECK_EQUAL(CityController::isInIntervalY(Position(500, 500), street), true);
+	BOOST_CHECK_EQUAL(CityController::isInIntervalY(Position(99, 99), street), false);
+	BOOST_CHECK_EQUAL(CityController::isInIntervalY(Position(501, 501), street), false);
 }
 
 BOOST_AUTO_TEST_CASE(Test_addSingleStreet) {
