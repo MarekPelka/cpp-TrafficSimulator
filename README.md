@@ -1,10 +1,17 @@
-#	Linux ubuntu 16.04
-Packages installation and building project:
-- if boost libraries not installed:
+#	cpp-TrafficSimulator
+##	Instalation
+###	Windows 10
+####	Requaired programs:
+- Compiled BOOST libraries located in `C:/Boost/boost_1_63_0`;
+- `SCONS`
+- Qt compiler located in `C:/Qt/5.8/msvc2015_64`;
+###	Linux ubuntu 16.04
+####	Packages installation and building project:
+- If boost libraries not installed:
 	```
 	sudo apt-get install libboost-all-dev
 	```
-- if scons not installed:
+- If scons not installed:
 	```
 	sudo apt-get install scons
 	```
@@ -12,19 +19,19 @@ Packages installation and building project:
 	```
 	sudo apt-get install qt5-default
 	```
--to build full project with tests:
+- To build full project with tests:
 	```
 	scons
 	```
--to build project without tests:
+- To build project without tests:
 	```
 	scons tests=0
 	```
-- to run main application:
+- To run main application:
 	```
 	./TrafficSimulator
 	```
-- to run tests:
+- To run tests:
 	```
 	./Tests
 	```
