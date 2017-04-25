@@ -1,7 +1,7 @@
 #	cpp-TrafficSimulator
-##	Instalation
+##	Installation
 ###	Windows 10
-####	Requaired programs:
+####	Required programs:
 - Compiled BOOST libraries located in `C:/Boost/boost_1_63_0`;
 - `SCONS`
 - Qt compiler located in `C:/Qt/5.8/msvc2015_64`;
