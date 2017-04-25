@@ -1,15 +1,15 @@
 #pragma once
 #include "MainWindow.h"
+#include <memory>
 
-class CameraController
-{
+class CameraController {
 public:
-    void setMainWindow(MainWindow *mw);
+    void setMainWindow(std::shared_ptr<MainWindow> mw);
     static CameraController* getInstance();
 private:
     CameraController();
-    CameraController(MainWindow *mw);
+    CameraController(std::shared_ptr<MainWindow> mw);
     static CameraController* instance;
 
-    MainWindow *mainWindow;
+    std::shared_ptr<MainWindow> mainWindow;
 };

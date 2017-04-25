@@ -3,25 +3,26 @@
 #include "Node.h"
 #include "../Enums.h"
 #include <utility>
+#include <memory>
 
-class Street
-{
+typedef std::shared_ptr<Node> PNode;
+
+class Street {
 public:
-	Street();
-	Street(Node *nodeFrom, Node *nodeTo, bool sidewalk = false);
-	std::pair <Node*, Node*> getNodes();
-	std::pair <Position, Position> getStartEndPositions();
+    Street();
+    Street(PNode nodeFrom, PNode nodeTo, bool sidewalk = false);
+    std::pair <PNode, PNode> getNodes();
+    std::pair <Position, Position> getStartEndPositions();
     Direction getDirection();
-	int getLength();
+    int getLength();
     static Direction getPredictedDirection(Position start, Position end);
 
-	void alterStart(Node *n);
-	void alterEnd(Node *n);
+    void alterStart(PNode n);
+    void alterEnd(PNode n);
 private:
-	Direction direction;
-	Node *nodeFrom;
-	Node *nodeTo;
-	bool sidewalk;
-	int length;
-	
+    Direction direction;
+    PNode nodeFrom;
+    PNode nodeTo;
+    bool sidewalk;
+    int length;
 };

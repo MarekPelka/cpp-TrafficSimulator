@@ -1,10 +1,9 @@
 #pragma once
 #include "Position.h"
 
-class MovingObject
-{
-    public:
-		int speed;
-		Position position;
-        virtual void move(int) = 0;
+class MovingObject {
+public:
+    int speed;
+    Position position;
+    virtual void move(int) = 0;
 };

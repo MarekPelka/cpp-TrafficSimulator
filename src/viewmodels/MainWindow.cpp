@@ -10,10 +10,12 @@
 #include <QString>
 #include <QtWidgets>
 
+typedef std::shared_ptr<Node> PNode;
+
 MainWindow::MainWindow(QWidget *parent) :
-	QMainWindow(parent),
-	ui(new Ui::MainWindow) {
-	ui->setupUi(this);
+    QMainWindow(parent),
+    ui(new Ui::MainWindow) {
+    ui->setupUi(this);
 
     //dropdown menu
     createActions();
@@ -22,25 +24,25 @@ MainWindow::MainWindow(QWidget *parent) :
     setWindowTitle(QStringLiteral("Symulator ruchu miejskiego"));
 
     //initialize controllers
-	VehicleController *vehC = VehicleController::getInstance();
-	vehC->setMainWindow(this);
+    VehicleController *vehC = VehicleController::getInstance();
+    vehC->setMainWindow(std::shared_ptr<MainWindow>(this));
 
-	//Painting streets
-	//TODO: There is some weird auto-scaling/positioning -> understend and fix
-	scene = new QGraphicsScene(ui->graphicsView);
-	scene->setBackgroundBrush(Qt::darkGreen);
-	ui->graphicsView->setScene(scene);
+    //Painting streets
+    //TODO: There is some weird auto-scaling/positioning -> understend and fix
+    scene = new QGraphicsScene(ui->graphicsView);
+    scene->setBackgroundBrush(Qt::darkGreen);
+    ui->graphicsView->setScene(scene);
 
-	streetGroup = new QGraphicsItemGroup();
-	parkingGroup = new QGraphicsItemGroup();
-	nodeGroup = new QGraphicsItemGroup();
-	vechicleGroup = new QGraphicsItemGroup();
-	parkingGroup->setZValue(100);
-	//Order is important
-	scene->addItem(streetGroup);
-	scene->addItem(nodeGroup);
-	scene->addItem(vechicleGroup);
-	scene->addItem(parkingGroup);
+    streetGroup = new QGraphicsItemGroup();
+    parkingGroup = new QGraphicsItemGroup();
+    nodeGroup = new QGraphicsItemGroup();
+    vechicleGroup = new QGraphicsItemGroup();
+    parkingGroup->setZValue(100);
+    //Order is important
+    scene->addItem(streetGroup);
+    scene->addItem(nodeGroup);
+    scene->addItem(vechicleGroup);
+    scene->addItem(parkingGroup);
 
     //label with info about current state of insert
     infoLabel = new QLabel(ui->graphicsView);
@@ -54,20 +56,20 @@ MainWindow::MainWindow(QWidget *parent) :
 }
 
 MainWindow::~MainWindow() {
-	killTimer(timerId);
-	delete ui;
+    killTimer(timerId);
+    delete ui;
 }
 
 void MainWindow::updateVehiclesViews() {
 
-	VehicleController *vehC = VehicleController::getInstance();
-	std::list<QGraphicsRectItem*> vehicleGraphics = GraphicFab::getVehiclesGraphics(vehC);
-	scene->removeItem(vechicleGroup);
-	delete vechicleGroup;
-	vechicleGroup = new QGraphicsItemGroup();
-	for (Vehicle veh : vehC->getVehicles()) {
+    VehicleController *vehC = VehicleController::getInstance();
+    std::list<QGraphicsRectItem*> vehicleGraphics = GraphicFab::getVehiclesGraphics(vehC);
+    scene->removeItem(vechicleGroup);
+    delete vechicleGroup;
+    vechicleGroup = new QGraphicsItemGroup();
+    for (Vehicle veh : vehC->getVehicles()) {
         if (veh.color.size() != 0) {
-		    QPen pen = QPen(QColor(0, 0, 0), 1, Qt::SolidLine);
+            QPen pen = QPen(QColor(0, 0, 0), 1, Qt::SolidLine);
             int r = veh.color.front();
             veh.color.pop_front();
             int g = veh.color.front();
@@ -80,100 +82,93 @@ void MainWindow::updateVehiclesViews() {
             vechicleGroup->addToGroup(vehicleGraphics.front());
             vehicleGraphics.pop_front();
         }
-	}
-	scene->addItem(vechicleGroup);	
-	//scene->addItem(parkingGroup);
+    }
+    scene->addItem(vechicleGroup);
+    //scene->addItem(parkingGroup);
 }
 
 void MainWindow::paintStreets() {
-	CityController *cityC = CityController::getInstance();
-	for (QGraphicsItem* g : GraphicFab::getStreetsGraphics(cityC)) {
-		streetGroup->addToGroup(g);
-	}
+    CityController *cityC = CityController::getInstance();
+    for (QGraphicsItem* g : GraphicFab::getStreetsGraphics(cityC)) {
+        streetGroup->addToGroup(g);
+    }
 }
 
-void MainWindow::paintParkings()
-{
-	CityController *cityC = CityController::getInstance();
-	for (QGraphicsItem* g : GraphicFab::getParkingGraphics(cityC)) {
-		parkingGroup->addToGroup(g);
-	}
+void MainWindow::paintParkings() {
+    CityController *cityC = CityController::getInstance();
+    for (QGraphicsItem* g : GraphicFab::getParkingGraphics(cityC)) {
+        parkingGroup->addToGroup(g);
+    }
 }
 
 void MainWindow::paintIntersections() {
-	CityController *cityC = CityController::getInstance();
-	for (QGraphicsItem* g : GraphicFab::getIntersectionsGraphics(cityC)) {
-		nodeGroup->addToGroup(g);
-	}
+    CityController *cityC = CityController::getInstance();
+    for (QGraphicsItem* g : GraphicFab::getIntersectionsGraphics(cityC)) {
+        nodeGroup->addToGroup(g);
+    }
 }
 
-std::list<Node*> MainWindow::nodesPath(Position start, Position end) {
-	std::list<Node*> nodes = {};
+std::list<PNode> MainWindow::nodesPath(Position start, Position end) {
+    std::list<PNode> nodes = {};
     CityController *cityC = CityController::getInstance();
-    std::list<Node*> allNodes = cityC->getNodes();
-	Node* s = NULL;
-	Node* e = NULL;
+    std::list<PNode> allNodes = cityC->getNodes();
+    PNode s = NULL;
+    PNode e = NULL;
     //finding start node
-    for (Node* node : allNodes) {
-        if (checkClosest(*node, start))
-        {
-			s = node;
+    for (PNode node : allNodes) {
+        if (checkClosest(*node, start)) {
+            s = node;
         }
     }
     //finding end node
-    for (Node* node : allNodes) {
-        if (checkClosest(*node, end))
-        {
-			e = node;
+    for (PNode node : allNodes) {
+        if (checkClosest(*node, end)) {
+            e = node;
         }
     }
-	if(s == NULL || e == NULL)
-		return nodes;
-	for (std::list<Node*> w : cityC->getWay(s))
-	{
-		if (w.back() == e)
-			nodes = w;
-	}
-    //TODO djikstra to return nodes that are between start and end
+    if (s == NULL || e == NULL)
+        return nodes;
+    for (std::list<PNode> w : cityC->getWay(s)) {
+        if (w.back() == e)
+            nodes = w;
+    }
     return nodes;
 }
 
-bool MainWindow::checkClosest(Node node, Position position)
-{
+bool MainWindow::checkClosest(Node node, Position position) {
     if (position.x < node.getPosition().x + CLOSEST_NODE
         && position.x > node.getPosition().x - CLOSEST_NODE
         && position.y < node.getPosition().y + CLOSEST_NODE
-        && position.y > node.getPosition().y - CLOSEST_NODE)
-    {
+        && position.y > node.getPosition().y - CLOSEST_NODE) {
         return true;
     }
-    else
-    {
+    else {
         return false;
     }
 }
 
 void MainWindow::timerEvent(QTimerEvent *event) {
     VehicleController *vehC = VehicleController::getInstance();
-	vehC->updatePositions(int(1000 / FPS));
-	if(randomMovement)
-		ParkingController::getInstance()->randomSpawnVechicle(FPS);
+    vehC->updatePositions(int(1000 / FPS));
+    if (randomMovement) {
+        ParkingController::getInstance()->randomSpawnVechicle(FPS);
+    }
 }
 
 void MainWindow::mousePressEvent(QMouseEvent *event) {
     QString status = infoLabel->text();
     VehicleController *vehC = VehicleController::getInstance();
-    std::list<Node*> nodes;
+    std::list<PNode> nodes;
     if (status.size() != 0) {
-        QPoint point(event->pos());
+        QPointF point = ui->graphicsView->mapToParent(event->pos());
         Position position(point.x(), point.y());
-        if(status == "Ulica") {
-
+        if (status == "Ulica") {
+            //TODO
         }
         else if (status == "Budynek") {
             if (!checkIfIntersectStreet(position, BUILDING_SIZE)) {
                 Building building(position);
-                //TODO add to controller to store
+                //TODO add to controller
                 QRect buildingRect(position.x, position.y, BUILDING_SIZE, BUILDING_SIZE);
                 //RGB grey color
                 QBrush brush = QBrush(QColor(152, 152, 152));
@@ -183,12 +178,12 @@ void MainWindow::mousePressEvent(QMouseEvent *event) {
             }
         }
         else if (status == "Parking") {
-
+            //TODO
         }
         else if (status == "Kamera") {
             if (checkIfIntersectStreet(position, CAMERA_SIZE)) {
                 Camera camera(position);
-                //TODO add camera to controller to store
+                //TODO add camera to controller
                 QRect cam(position.x, position.y, CAMERA_SIZE, CAMERA_SIZE);
                 //RGB red color
                 QBrush brush = QBrush(QColor(255, 0, 0));
@@ -204,12 +199,11 @@ void MainWindow::mousePressEvent(QMouseEvent *event) {
         else if (status == QStringLiteral("Samochód") && click == true) {
             endPos = position;
             nodes = nodesPath(startPos, endPos);
-			if (!nodes.empty())
-			{
-				Vehicle car(CAR, nodes);
-				vehC->addVehicle(car);
-			}
-			click = false;
+            if (!nodes.empty()) {
+                Vehicle car(CAR, nodes);
+                vehC->addVehicle(car);
+            }
+            click = false;
         }
         else if (status == QStringLiteral("Ciê¿arówka") && click == false) {
             click = true;
@@ -218,12 +212,11 @@ void MainWindow::mousePressEvent(QMouseEvent *event) {
         else if (status == QStringLiteral("Ciê¿arówka") && click == true) {
             endPos = position;
             nodes = nodesPath(startPos, endPos);
-			if (!nodes.empty())
-			{
-				Vehicle truck(TRUCK, nodes);
-				vehC->addVehicle(truck);
-			}
-			click = false;
+            if (!nodes.empty()) {
+                Vehicle truck(TRUCK, nodes);
+                vehC->addVehicle(truck);
+            }
+            click = false;
         }
     }
 }
@@ -329,29 +322,29 @@ void MainWindow::scenario1() {
     Position pc2(600, 300);
     cityC->addStreet(pc1, pc2);
 
-	cityC->upgradeToParking(cityC->findNode(Position(100, 100)));
-	cityC->upgradeToParking(cityC->findNode(Position(500, 500)));
-	cityC->upgradeToParking(cityC->findNode(Position(300, 300)));
+    cityC->upgradeToParking(cityC->findNode(Position(100, 100)));
+    cityC->upgradeToParking(cityC->findNode(Position(500, 500)));
+    cityC->upgradeToParking(cityC->findNode(Position(300, 300)));
 
-	Position p11(50, 50);
-	Position p12(50, 550);
-	Position p13(550, 550);
-	Position p14(550, 50);
+    Position p11(50, 50);
+    Position p12(50, 550);
+    Position p13(550, 550);
+    Position p14(550, 50);
 
-	cityC->addStreet(p11, p12, true);
-	cityC->addStreet(p12, p13, true);
-	cityC->addStreet(p13, p14, true);
-	cityC->addStreet(p14, p11, true);
+    cityC->addStreet(p11, p12, true);
+    cityC->addStreet(p12, p13, true);
+    cityC->addStreet(p13, p14, true);
+    cityC->addStreet(p14, p11, true);
 
-	cityC->upgradeToParking(cityC->findNode(Position(50, 550)));
-	cityC->upgradeToParking(cityC->findNode(Position(550, 50)));
+    cityC->upgradeToParking(cityC->findNode(Position(50, 550)));
+    cityC->upgradeToParking(cityC->findNode(Position(550, 50)));
 
     paintStreets();
-	paintIntersections();
-	paintParkings();
+    paintIntersections();
+    paintParkings();
 }
 void MainWindow::scenario2() {
-	randomMovement = !randomMovement;
+    randomMovement = !randomMovement;
 }
 void MainWindow::addStreet() {
     infoLabel->setText(tr("Ulica"));

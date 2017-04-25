@@ -2,23 +2,23 @@
 
 Street::Street() {}
 
-Street::Street(Node *nodeFrom, Node *nodeTo, bool sidewalk) {
-	this->nodeFrom = nodeFrom;
-	this->nodeTo = nodeTo;
-	this->sidewalk = sidewalk;
-	this->direction = getPredictedDirection(this->nodeFrom->getPosition(), this->nodeTo->getPosition());
+Street::Street(PNode nodeFrom, PNode nodeTo, bool sidewalk) {
+    this->nodeFrom = nodeFrom;
+    this->nodeTo = nodeTo;
+    this->sidewalk = sidewalk;
+    this->direction = getPredictedDirection(this->nodeFrom->getPosition(), this->nodeTo->getPosition());
     this->length = abs(getStartEndPositions().first.y - getStartEndPositions().second.y) >
-            abs(getStartEndPositions().first.x - getStartEndPositions().second.x) ?
-            abs(getStartEndPositions().first.y - getStartEndPositions().second.y) :
-            abs(getStartEndPositions().first.x - getStartEndPositions().second.x);
+        abs(getStartEndPositions().first.x - getStartEndPositions().second.x) ?
+        abs(getStartEndPositions().first.y - getStartEndPositions().second.y) :
+        abs(getStartEndPositions().first.x - getStartEndPositions().second.x);
 }
 
 Direction Street::getDirection() {
-	return this->direction;
+    return this->direction;
 }
 
 int Street::getLength() {
-	return length;
+    return length;
 }
 
 Direction Street::getPredictedDirection(Position start, Position end) {
@@ -38,21 +38,21 @@ Direction Street::getPredictedDirection(Position start, Position end) {
             return E;
         }
     }
-	return NONE;
+    return NONE;
 }
 
-void Street::alterStart(Node * n) {
-	nodeFrom = n;
+void Street::alterStart(PNode n) {
+    nodeFrom = n;
 }
 
-void Street::alterEnd(Node * n) {
-	nodeTo = n;
+void Street::alterEnd(PNode n) {
+    nodeTo = n;
 }
 
-std::pair<Node*, Node*> Street::getNodes() {
-	return{nodeFrom, nodeTo};
+std::pair<PNode, PNode> Street::getNodes() {
+    return{ nodeFrom, nodeTo };
 }
 
 std::pair<Position, Position> Street::getStartEndPositions() {
-	return{nodeFrom->getPosition(), nodeTo->getPosition()};
+    return{ nodeFrom->getPosition(), nodeTo->getPosition() };
 }

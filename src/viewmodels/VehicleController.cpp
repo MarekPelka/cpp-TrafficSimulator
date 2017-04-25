@@ -2,40 +2,30 @@
 
 VehicleController* VehicleController::instance = nullptr;
 
-VehicleController* VehicleController::getInstance()
-{
+VehicleController* VehicleController::getInstance() {
     if (!instance)
         instance = new VehicleController;
     return instance;
 }
 
-VehicleController::VehicleController()
-{
+VehicleController::VehicleController() {}
 
-}
-
-VehicleController::VehicleController(MainWindow * mw)
-{
+VehicleController::VehicleController(std::shared_ptr<MainWindow> mw) {
     mainWindow = mw;
     vehicles = {};
 }
 
-void VehicleController::setMainWindow(MainWindow * mw)
-{
+void VehicleController::setMainWindow(std::shared_ptr<MainWindow> mw) {
     mainWindow = mw;
 }
 
-void VehicleController::addVehicle(Vehicle vehicle)
-{
+void VehicleController::addVehicle(Vehicle vehicle) {
     vehicles.push_back(vehicle);
 }
 
-void VehicleController::deleteVehicle(Vehicle vehicle)
-{
-    for (std::list<Vehicle>::iterator iter = vehicles.begin(); iter != vehicles.end(); iter++)
-    {
-        if (*iter == vehicle)
-        {
+void VehicleController::deleteVehicle(Vehicle vehicle) {
+    for (std::list<Vehicle>::iterator iter = vehicles.begin(); iter != vehicles.end(); iter++) {
+        if (*iter == vehicle) {
             vehicles.remove(vehicle);
             deleted = true;
             break;
@@ -43,23 +33,18 @@ void VehicleController::deleteVehicle(Vehicle vehicle)
     }
 }
 
-std::list<Vehicle> VehicleController::getVehicles()
-{
+std::list<Vehicle> VehicleController::getVehicles() {
     return vehicles;
 }
 
-void VehicleController::updatePositions(int interval)
-{
-    for(std::list<Vehicle>::iterator iter = vehicles.begin(); iter != vehicles.end();)
-    {
+void VehicleController::updatePositions(int interval) {
+    for (std::list<Vehicle>::iterator iter = vehicles.begin(); iter != vehicles.end();) {
         iter->updatePosition(interval);
-        if (deleted)
-        {
+        if (deleted) {
             deleted = false;
             break;
         }
-        else
-        {
+        else {
             ++iter;
         }
     }

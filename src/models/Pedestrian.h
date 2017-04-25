@@ -1,7 +1,6 @@
 #pragma once
 #include "MovingObject.h"
 
-class Pedestrian : MovingObject
-{
+class Pedestrian : MovingObject {
 
 };

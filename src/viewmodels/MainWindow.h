@@ -5,37 +5,39 @@
 #include <QMainWindow>
 #include <QGraphicsScene>
 #include <list>
+#include <memory>
 #include "../models/Position.h"
 #include "../models/Vehicle.h"
 
 namespace Ui {
-	class MainWindow;
+    class MainWindow;
 }
 
 class QAction;
 class QMenu;
 class QLabel;
 
+typedef std::shared_ptr<Node> PNode;
 class MainWindow : public QMainWindow {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	explicit MainWindow(QWidget *parent = 0);
-	~MainWindow();
+    explicit MainWindow(QWidget *parent = 0);
+    ~MainWindow();
 
-	void updateVehiclesViews();
-	void paintStreets();
-	void paintParkings();
-	void paintIntersections();
-    std::list<Node*> nodesPath(Position start, Position end);
+    void updateVehiclesViews();
+    void paintStreets();
+    void paintParkings();
+    void paintIntersections();
+    std::list<PNode> nodesPath(Position start, Position end);
 private:
-	Ui::MainWindow *ui;
-	int timerId;
-	QGraphicsScene *scene;
-	QGraphicsItemGroup * streetGroup;
-	QGraphicsItemGroup * parkingGroup;
-	QGraphicsItemGroup * nodeGroup;
-	QGraphicsItemGroup * vechicleGroup;
+    Ui::MainWindow *ui;
+    int timerId;
+    QGraphicsScene *scene;
+    QGraphicsItemGroup * streetGroup;
+    QGraphicsItemGroup * parkingGroup;
+    QGraphicsItemGroup * nodeGroup;
+    QGraphicsItemGroup * vechicleGroup;
 protected:
     void timerEvent(QTimerEvent *event);
     void mousePressEvent(QMouseEvent *event) override;
@@ -44,16 +46,16 @@ protected:
     void contextMenuEvent(QContextMenuEvent *event) override;
 
     private slots:
-        void start();
-        void scenario1();
-        void scenario2();
-        void addStreet();
-        void addParking();
-        void addCamera();
-        void addBuilding();
-        void addCar();
-        void addTruck();
-        void about();
+    void start();
+    void scenario1();
+    void scenario2();
+    void addStreet();
+    void addParking();
+    void addCamera();
+    void addBuilding();
+    void addCar();
+    void addTruck();
+    void about();
 private:
     void createActions();
     void createMenus();
@@ -77,7 +79,7 @@ private:
 
     //start and end positions for vehicle adding and flag
     bool click = false;
-	bool randomMovement = false;
+    bool randomMovement = false;
     Position startPos;
     Position endPos;
     QImage image;

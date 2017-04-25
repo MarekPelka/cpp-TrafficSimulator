@@ -2,8 +2,7 @@
 #include "../Enums.h"
 #include "Position.h"
 
-class Building
-{
+class Building {
 public:
     Building();
     Building(Position position);

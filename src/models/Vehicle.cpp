@@ -1,8 +1,7 @@
 #include "Vehicle.h"
 #include "../viewmodels/VehicleController.h"
 
-Vehicle::Vehicle()
-{
+Vehicle::Vehicle() {
     type = CAR;
     length = CAR_LENGTH;
     acceleration = CAR_ACCELERATION;
@@ -11,17 +10,14 @@ Vehicle::Vehicle()
     orientation = N;
 }
 
-Vehicle::Vehicle(vehicleType typ, Position pos)
-{
+Vehicle::Vehicle(vehicleType typ, Position pos) {
     type = typ;
-    if (type == CAR)
-    {
+    if (type == CAR) {
         length = CAR_LENGTH;
         acceleration = CAR_ACCELERATION;
         slowdown = CAR_SLOWDOWN;
     }
-    else if(type == TRUCK)
-    {
+    else if (type == TRUCK) {
         length = TRUCK_LENGTH;
         acceleration = TRUCK_ACCELERATION;
         slowdown = TRUCK_SLOWDOWN;
@@ -31,17 +27,14 @@ Vehicle::Vehicle(vehicleType typ, Position pos)
     speed = 0;
 }
 
-Vehicle::Vehicle(vehicleType typ, std::list<Node> nods)
-{
+Vehicle::Vehicle(vehicleType typ, std::list<Node> nods) {
     type = typ;
-    if (type == CAR)
-    {
+    if (type == CAR) {
         length = CAR_LENGTH;
         acceleration = CAR_ACCELERATION;
         slowdown = CAR_SLOWDOWN;
     }
-    else if (type == TRUCK)
-    {
+    else if (type == TRUCK) {
         length = TRUCK_LENGTH;
         acceleration = TRUCK_ACCELERATION;
         slowdown = TRUCK_SLOWDOWN;
@@ -53,148 +46,120 @@ Vehicle::Vehicle(vehicleType typ, std::list<Node> nods)
     speed = 0;
 }
 
-Vehicle::Vehicle(vehicleType typ, std::list<Node*> nods)
-{
-	type = typ;
-	if (type == CAR)
-	{
-		length = CAR_LENGTH;
-		acceleration = CAR_ACCELERATION;
-		slowdown = CAR_SLOWDOWN;
-	}
-	else if (type == TRUCK)
-	{
-		length = TRUCK_LENGTH;
-		acceleration = TRUCK_ACCELERATION;
-		slowdown = TRUCK_SLOWDOWN;
-	}
-	position = nods.front()->getPosition();
-	nods.pop_front();
-	for(auto n : nods)
-		nodes.push_back(*n);
-	orientation = N;
-	speed = 0;
+Vehicle::Vehicle(vehicleType typ, std::list<PNode> nods) {
+    type = typ;
+    if (type == CAR) {
+        length = CAR_LENGTH;
+        acceleration = CAR_ACCELERATION;
+        slowdown = CAR_SLOWDOWN;
+    }
+    else if (type == TRUCK) {
+        length = TRUCK_LENGTH;
+        acceleration = TRUCK_ACCELERATION;
+        slowdown = TRUCK_SLOWDOWN;
+    }
+    position = nods.front()->getPosition();
+    nods.pop_front();
+    for (auto n : nods)
+        nodes.push_back(*n);
+    orientation = N;
+    speed = 0;
 }
 
 void Vehicle::move(int time) {
-    if (nodes.size() != 0)
-    {
+    if (nodes.size() != 0) {
         isMoving = true;
         Position step = nodes.front().getPosition();
-        if (checkSlowdown(step))
-        {
-            if (speed - slowdown*time / 1000 > 0)
-            {
+        if (checkSlowdown(step)) {
+            if (speed - slowdown*time / 1000 > 0) {
                 speed -= slowdown * time / 1000;
             }
         }
-        else if (!checkMaxSpeed())
-        {
+        else if (!checkMaxSpeed()) {
             speed += acceleration * time / 1000;
         }
-        else
-        {
+        else {
             speed = MAX_SPEED;
         }
         int temp = speed*time;
-        if (position.x != step.x || position.y != step.y)
-        {
-            if (position.x < step.x)
-            {
+        if (position.x != step.x || position.y != step.y) {
+            if (position.x < step.x) {
                 orientation = E;
-                if (temp + position.x > step.x)
-                {
+                if (temp + position.x > step.x) {
                     temp = step.x;
                 }
-                else
-                {
+                else {
                     temp += position.x;
                 }
                 position = Position(temp, position.y);
             }
-            else if (position.x > step.x)
-            {
+            else if (position.x > step.x) {
                 orientation = W;
-                if (position.x - temp < step.x)
-                {
+                if (position.x - temp < step.x) {
                     temp = step.x;
                 }
-                else
-                {
+                else {
                     temp = position.x - temp;
                 }
                 position = Position(temp, position.y);
             }
-            else if (position.y < step.y)
-            {
+            else if (position.y < step.y) {
                 orientation = S;
-                if (temp + position.y > step.y)
-                {
+                if (temp + position.y > step.y) {
                     temp = step.y;
                 }
-                else
-                {
+                else {
                     temp += position.y;
                 }
                 position = Position(position.x, temp);
             }
-            else if (position.y > step.y)
-            {
+            else if (position.y > step.y) {
                 orientation = N;
-                if (position.y - temp < step.y)
-                {
+                if (position.y - temp < step.y) {
                     temp = step.y;
                 }
-                else
-                {
+                else {
                     temp = position.y - temp;
                 }
                 position = Position(position.x, temp);
             }
         }
-        else
-        {
+        else {
             nodes.pop_front();
         }
     }
-    else
-    {
+    else {
         isMoving = false;
     }
 }
 
 bool Vehicle::checkSlowdown(Position step) {
-    if (nodes.size() == 1)
-    {
+    if (nodes.size() == 1) {
         switch (orientation) {
         case N:
         {
-            if (position.y - BRAKING_DISTANCE < step.y)
-            {
+            if (position.y - BRAKING_DISTANCE < step.y) {
                 return true;
             }
             break;
         }
         case S:
         {
-            if (position.y + BRAKING_DISTANCE > step.y)
-            {
+            if (position.y + BRAKING_DISTANCE > step.y) {
                 return true;
             }
             break;
         }
         case E:
         {
-            if (position.x + BRAKING_DISTANCE > step.x)
-            {
+            if (position.x + BRAKING_DISTANCE > step.x) {
                 return true;
             }
             break;
         }
         case W:
         {
-            if (position.x - BRAKING_DISTANCE < step.x)
-            {
+            if (position.x - BRAKING_DISTANCE < step.x) {
                 return true;
             }
             break;
@@ -216,8 +181,7 @@ bool Vehicle::checkMaxSpeed() {
         return false;
 }
 
-bool Vehicle::operator==(const Vehicle & v)
-{
+bool Vehicle::operator==(const Vehicle & v) {
     return type == v.type && speed == v.speed && orientation == v.orientation && position == v.position;
 }
 
@@ -230,30 +194,25 @@ vehicleType Vehicle::getType() {
 }
 
 void Vehicle::updatePosition(int time) {
-    if (isMoving == false && nodes.size() == 0)
-    {
+    if (isMoving == false && nodes.size() == 0) {
         VehicleController *vehC = VehicleController::getInstance();
         vehC->deleteVehicle(*this);
     }
-    else
-    {
+    else {
         move(time);
         color = vehicleColor(speed);
     }
 }
 
-Direction Vehicle::getOrientation()
-{
+Direction Vehicle::getOrientation() {
     return orientation;
 }
 
-Vehicle::~Vehicle()
-{
+Vehicle::~Vehicle() {
     type = NOTHING;
 }
 
-std::list<int> Vehicle::vehicleColor(double veh_speed)
-{
+std::list<int> Vehicle::vehicleColor(double veh_speed) {
     //scaling
     veh_speed *= 100;
     veh_speed += 30;
@@ -264,32 +223,27 @@ std::list<int> Vehicle::vehicleColor(double veh_speed)
     if (veh_speed < 0) { //nadfiolet
         r = g = b = 0;
     }
-    else if (veh_speed < 20)
-    {
+    else if (veh_speed < 20) {
         r = 255 - d * veh_speed;
         g = 0;
         b = 255;
     }
-    else if (veh_speed < 40)
-    {
+    else if (veh_speed < 40) {
         r = 0;
         g = d * (veh_speed - 20);
         b = 255;
     }
-    else if (veh_speed < 60)
-    {
+    else if (veh_speed < 60) {
         r = 0;
         g = 255;
         b = 255 - d * (veh_speed - 40);
     }
-    else if (veh_speed < 80)
-    {
+    else if (veh_speed < 80) {
         r = d * (veh_speed - 60);
         g = 255;
         b = 0;
     }
-    else if (veh_speed < 100)
-    {
+    else if (veh_speed < 100) {
         r = 255;
         g = 255 - d * (veh_speed - 80);
         b = 0;

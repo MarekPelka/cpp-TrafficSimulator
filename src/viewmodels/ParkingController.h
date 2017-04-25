@@ -6,14 +6,12 @@
 #include <memory>
 #include <math.h> 
 class ParkingController {
-	//typedef std::shared_ptr<Parking> PParking;
 public:
-	static ParkingController* getInstance();
-
-	void randomSpawnVechicle(double probability);
-
+    static ParkingController* getInstance();
+    void randomSpawnVechicle(double probability);
 private:
-	ParkingController();
-	static ParkingController* instance;
-	//std::list<PParking> parkings;
+    ParkingController();
+    static ParkingController* instance;
+    //TO CONSIDER
+    //std::list<PParking> parkings;
 };
