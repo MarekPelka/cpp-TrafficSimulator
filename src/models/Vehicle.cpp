@@ -10,7 +10,7 @@ Vehicle::Vehicle() {
     orientation = N;
 }
 
-Vehicle::Vehicle(vehicleType typ, Position pos) {
+Vehicle::Vehicle(VehicleType typ, Position pos) {
     type = typ;
     if (type == CAR) {
         length = CAR_LENGTH;
@@ -27,7 +27,7 @@ Vehicle::Vehicle(vehicleType typ, Position pos) {
     speed = 0;
 }
 
-Vehicle::Vehicle(vehicleType typ, std::list<Node> nods) {
+Vehicle::Vehicle(VehicleType typ, std::list<Node> nods) {
     type = typ;
     if (type == CAR) {
         length = CAR_LENGTH;
@@ -46,7 +46,7 @@ Vehicle::Vehicle(vehicleType typ, std::list<Node> nods) {
     speed = 0;
 }
 
-Vehicle::Vehicle(vehicleType typ, std::list<PNode> nods) {
+Vehicle::Vehicle(VehicleType typ, std::list<PNode> nods) {
     type = typ;
     if (type == CAR) {
         length = CAR_LENGTH;
@@ -189,7 +189,7 @@ Position Vehicle::getPosition() {
     return position;
 }
 
-vehicleType Vehicle::getType() {
+VehicleType Vehicle::getType() {
     return type;
 }
 

@@ -1,6 +1,6 @@
 #pragma once
 enum Direction { N, E, S, W, NONE};
-enum vehicleType {CAR, TRUCK, NOTHING};
+enum VehicleType {CAR, TRUCK, NOTHING};
 
 const int CAR_LENGTH = 10;
 const double CAR_ACCELERATION = 0.5;

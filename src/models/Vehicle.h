@@ -12,12 +12,12 @@ class Vehicle : MovingObject {
 public:
     Vehicle();
     ~Vehicle();
-    Vehicle(vehicleType type, Position pos);
-    Vehicle(vehicleType type, std::list<Node> nodes);
-    Vehicle(vehicleType type, std::list<PNode> nodes);
+    Vehicle(VehicleType type, Position pos);
+    Vehicle(VehicleType type, std::list<Node> nodes);
+    Vehicle(VehicleType type, std::list<PNode> nodes);
     void move(int time);
     Position getPosition();
-    vehicleType getType();
+    VehicleType getType();
     void updatePosition(int time);
     Direction getOrientation();
     bool checkSlowdown(Position step);
@@ -29,7 +29,7 @@ private:
     int length;
     double acceleration;
     double slowdown;
-    vehicleType type;
+    VehicleType type;
     double speed;
     std::list<Node> nodes;
     Direction orientation;
