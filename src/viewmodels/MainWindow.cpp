@@ -287,6 +287,9 @@ void MainWindow::createMenus() {
     helpMenu = menuBar()->addMenu(tr("&O Autorach"));
     helpMenu->addAction(aboutAct);
     helpMenu->addSeparator();
+
+    //to show menu on linux
+    menuBar()->setNativeMenuBar(false);
 }
 
 void MainWindow::contextMenuEvent(QContextMenuEvent *event) {
