@@ -1,0 +1,27 @@
+TASKI:
+
+Nie jest podzielone na osoby =>
+	sam wybierasz jakiego taska chcesz robic i dopisujesz na dole do swojego imienia
+
+poprawki 2 etap:
+	menu zeby bylo zawsze widoczne
+	obejsc na windowsie zeby nie wysylac .dll qt
+	testy poprawic
+	vehicleType -> VehicleType
+	wyrzucic pragma once
+	warningi z rzutowaniem
+	funkcja hadleCrossStreets pofragmentowac
+development 3 etap:
+	sprawdzic wycieki pamieci i wydajnosc
+	poprawne mapowanie klikania myszka, interakcja uzytkownika
+	budowanie miasta przez uzytkownika (ulice, chodniki, budynki)
+	ulice zabronione dla ciê¿arówek
+	dodawanie kamer gui
+	implementacja obiektu kamera z generowaniem obserwacji
+	dodac chodniki do gui
+	dodac obiekt pieszych poruszajacych sie po ulicach od parkingu do parkingu
+
+Taski:
+Micha³:
+
+Marek:
