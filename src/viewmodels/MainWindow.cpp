@@ -36,12 +36,12 @@ MainWindow::MainWindow(QWidget *parent) :
     streetGroup = new QGraphicsItemGroup();
     parkingGroup = new QGraphicsItemGroup();
     nodeGroup = new QGraphicsItemGroup();
-    vechicleGroup = new QGraphicsItemGroup();
+    vehicleGroup = new QGraphicsItemGroup();
     parkingGroup->setZValue(100);
     //Order is important
     scene->addItem(streetGroup);
     scene->addItem(nodeGroup);
-    scene->addItem(vechicleGroup);
+    scene->addItem(vehicleGroup);
     scene->addItem(parkingGroup);
 
     //label with info about current state of insert
@@ -64,9 +64,9 @@ void MainWindow::updateVehiclesViews() {
 
     VehicleController *vehC = VehicleController::getInstance();
     std::list<QGraphicsRectItem*> vehicleGraphics = GraphicFab::getVehiclesGraphics(vehC);
-    scene->removeItem(vechicleGroup);
-    delete vechicleGroup;
-    vechicleGroup = new QGraphicsItemGroup();
+    scene->removeItem(vehicleGroup);
+    delete vehicleGroup;
+    vehicleGroup = new QGraphicsItemGroup();
     for (Vehicle veh : vehC->getVehicles()) {
         if (veh.color.size() != 0) {
             QPen pen = QPen(QColor(0, 0, 0), 1, Qt::SolidLine);
@@ -79,11 +79,11 @@ void MainWindow::updateVehiclesViews() {
             QBrush brush = QBrush(QColor(r, g, b));
             vehicleGraphics.front()->setBrush(brush);
             vehicleGraphics.front()->setPen(pen);
-            vechicleGroup->addToGroup(vehicleGraphics.front());
+            vehicleGroup->addToGroup(vehicleGraphics.front());
             vehicleGraphics.pop_front();
         }
     }
-    scene->addItem(vechicleGroup);
+    scene->addItem(vehicleGroup);
     //scene->addItem(parkingGroup);
 }
 
@@ -151,7 +151,7 @@ void MainWindow::timerEvent(QTimerEvent *event) {
     VehicleController *vehC = VehicleController::getInstance();
     vehC->updatePositions(int(1000 / FPS));
     if (randomMovement) {
-        ParkingController::getInstance()->randomSpawnVechicle(FPS);
+        ParkingController::getInstance()->randomSpawnVehicle(FPS);
     }
 }
 

@@ -193,14 +193,16 @@ VehicleType Vehicle::getType() {
     return type;
 }
 
-void Vehicle::updatePosition(int time) {
+bool Vehicle::updatePosition(int time) {
     if (isMoving == false && nodes.size() == 0) {
-        VehicleController *vehC = VehicleController::getInstance();
-        vehC->deleteVehicle(*this);
+        //vehicle to delete
+        return false;
     }
     else {
+        //vehicle still moving
         move(time);
         color = vehicleColor(speed);
+        return true;
     }
 }
 

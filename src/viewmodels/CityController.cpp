@@ -350,6 +350,7 @@ bool CityController::isStreetsOverlap(Position start, Position end) {
 void CityController::clearController() {
     streets.clear();
     nodes.clear();
+    parkings.clear();
 }
 
 bool CityController::downgradeFromParking(PNode n) {

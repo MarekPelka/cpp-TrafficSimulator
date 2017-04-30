@@ -8,7 +8,7 @@
 class ParkingController {
 public:
     static ParkingController* getInstance();
-    void randomSpawnVechicle(double probability);
+    void randomSpawnVehicle(double probability);
 private:
     ParkingController();
     static ParkingController* instance;

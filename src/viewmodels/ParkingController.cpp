@@ -12,7 +12,7 @@ ParkingController * ParkingController::getInstance() {
     return instance;
 }
 
-void ParkingController::randomSpawnVechicle(double probability) {
+void ParkingController::randomSpawnVehicle(double probability) {
     CityController * cityC = CityController::getInstance();
     VehicleController *vehC = VehicleController::getInstance();
     std::list<PNode> parkingList = cityC->getParkings();
@@ -22,7 +22,7 @@ void ParkingController::randomSpawnVechicle(double probability) {
         double random_value = std::rand();
         double roll = double(random_value / RAND_MAX);
         if (roll < PROBABILITY_SPAWN / probability) {
-            // vechicle spawn
+            // vehicle spawn
             double destination = std::rand() % 1000;
             destination = destination / 1000;
             int endNumber = round(destination * (parkingList.size() - 1));

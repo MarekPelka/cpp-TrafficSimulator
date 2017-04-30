@@ -37,7 +37,7 @@ private:
     QGraphicsItemGroup * streetGroup;
     QGraphicsItemGroup * parkingGroup;
     QGraphicsItemGroup * nodeGroup;
-    QGraphicsItemGroup * vechicleGroup;
+    QGraphicsItemGroup * vehicleGroup;
 protected:
     void timerEvent(QTimerEvent *event);
     void mousePressEvent(QMouseEvent *event) override;

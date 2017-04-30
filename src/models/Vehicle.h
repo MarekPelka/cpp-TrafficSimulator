@@ -18,7 +18,7 @@ public:
     void move(int time);
     Position getPosition();
     VehicleType getType();
-    void updatePosition(int time);
+    bool updatePosition(int time);
     Direction getOrientation();
     bool checkSlowdown(Position step);
     bool checkMaxSpeed();

@@ -9,17 +9,15 @@ class VehicleController {
 public:
     void setMainWindow(std::shared_ptr<MainWindow> mw);
     void addVehicle(Vehicle vehicle);
-    void deleteVehicle(Vehicle vehicle);
     std::list<Vehicle> getVehicles();
     void updatePositions(int interval);
+    void clearController();
 
     static VehicleController* getInstance();
 private:
     VehicleController();
-    VehicleController(std::shared_ptr<MainWindow> mainWindow);
     static VehicleController* instance;
 
     std::shared_ptr<MainWindow> mainWindow;
     std::list<Vehicle> vehicles;
-    bool deleted = false;
 };
