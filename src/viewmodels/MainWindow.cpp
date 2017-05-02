@@ -3,6 +3,7 @@
 #include "../models/Building.h"
 #include "../models/Camera.h"
 #include "../Enums.h"
+#include "CameraController.h"
 #include "CityController.h"
 #include "ParkingController.h"
 #include "GraphicFab.h"
@@ -26,6 +27,9 @@ MainWindow::MainWindow(QWidget *parent) :
     //initialize controllers
     VehicleController *vehC = VehicleController::getInstance();
     vehC->setMainWindow(std::shared_ptr<MainWindow>(this));
+
+    CameraController *camC = CameraController::getInstance();
+    camC->setMainWindow(std::shared_ptr<MainWindow>(this));
 
     //Painting streets
     //TODO: There is some weird auto-scaling/positioning -> understend and fix
@@ -150,6 +154,10 @@ bool MainWindow::checkClosest(Node node, Position position) {
 void MainWindow::timerEvent(QTimerEvent *event) {
     VehicleController *vehC = VehicleController::getInstance();
     vehC->updatePositions(int(1000 / FPS));
+
+    CameraController *camC = CameraController::getInstance();
+    camC->updateObservations();
+
     if (randomMovement) {
         ParkingController::getInstance()->randomSpawnVehicle(FPS);
     }
@@ -181,16 +189,16 @@ void MainWindow::mousePressEvent(QMouseEvent *event) {
             //TODO
         }
         else if (status == "Kamera") {
-            if (checkIfIntersectStreet(position, CAMERA_SIZE)) {
+            //if (checkIfIntersectStreet(position, CAMERA_SIZE)) {
                 Camera camera(position);
-                //TODO add camera to controller
+                CameraController::getInstance()->addCamera(camera);
                 QRect cam(position.x, position.y, CAMERA_SIZE, CAMERA_SIZE);
                 //RGB red color
                 QBrush brush = QBrush(QColor(255, 0, 0));
                 //black border solid
                 QPen pen = QPen(QColor(0, 0, 0), 1, Qt::SolidLine);
                 scene->addEllipse(cam, pen, brush);
-            }
+            //}
         }
         else if (status == QStringLiteral("Samochód") && click == false) {
             click = true;

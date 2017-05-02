@@ -1,5 +1,8 @@
 #pragma once
+#define _USE_MATH_DEFINES
+#include <list>
 #include <map>
+#include <math.h>
 #include "../Enums.h"
 #include "Position.h"
 #include "MovingObject.h"
@@ -13,12 +16,17 @@ public:
     int getAngle();
     void setDirection(Direction direction);
     Direction getDirection();
-
+    void clearObservation();
+    void updateObservation();
+    std::list<std::pair<int,int>> getView();
+    bool operator==(const Camera &v);
 private:
-    Position position;
-    int angle = 0;
-    Direction direction = N;
+    double getAngleBetweenPoints(Position p1, Position p2);
+    bool checkIfInZone(double angle);
+    double distanceBetweenPoints(Position p1, Position p2);
 
-    //return observation - position of objects in eyeshot
-    std::map<int, int> getView();
+    Position position;
+    int angle;
+    Direction direction;
+    std::list<std::pair<int, int>> observation;
 };

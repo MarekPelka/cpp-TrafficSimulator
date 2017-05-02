@@ -28,3 +28,5 @@ const int CAMERA_SIZE = 10;
 const double PROBABILITY_SPAWN = 2;
 const double PERCENTAGE_OF_TRUCKS = 0.1;
 const double PARKING_SIZE_MULTIPLIER = 2;
+
+const double CAMERA_PRECISION = 2500; //in meters
