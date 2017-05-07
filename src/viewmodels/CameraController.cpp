@@ -27,8 +27,17 @@ void CameraController::deleteCamera(Camera camera) {
     cameras.remove(camera);
 }
 
+void CameraController::addBuilding(Building building) {
+    buildings.push_back(building);
+}
+
+void CameraController::deleteBuilding(Building building) {
+    buildings.remove(building);
+}
+
 void CameraController::clearController() {
     cameras.clear();
+    buildings.clear();
 }
 
 void CameraController::updateObservations() {

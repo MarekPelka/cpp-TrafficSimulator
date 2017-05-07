@@ -166,17 +166,42 @@ void MainWindow::timerEvent(QTimerEvent *event) {
 void MainWindow::mousePressEvent(QMouseEvent *event) {
     QString status = infoLabel->text();
     VehicleController *vehC = VehicleController::getInstance();
+    CityController *cityC = CityController::getInstance();
     std::list<PNode> nodes;
     if (status.size() != 0) {
         QPointF point = ui->graphicsView->mapToScene(event->pos());
         Position position(point.x(), point.y() - LABEL_HEIGHT);
-        if (status == "Ulica") {
-            //TODO
+
+        if (status == "Ulica" && click == false) {
+            PNode first = nullptr;
+            for (PNode node : cityC->getNodes()) {
+                if (checkClosest(*node, position)) {
+                    first = node;
+                    break;
+                }
+            }
+            if (first) {
+                click = true;
+                startPos = first->getPosition();
+            }
+        }
+        else if (status == "Ulica" && click == true) {
+            endPos = position;
+            if (atan2(startPos.y - endPos.y, startPos.x - endPos.x) * 180 / M_PI > 45) {
+                endPos = Position(startPos.x, endPos.y);
+            }
+            else {
+                endPos = Position(endPos.x, startPos.y);
+            }
+            cityC->addStreet(startPos, endPos);
+            //TO CONSIDER add diffrently paint
+            paintStreets();
+            click = false;
         }
         else if (status == "Budynek") {
             if (!checkIfIntersectStreet(position, BUILDING_SIZE)) {
                 Building building(position);
-                //TODO add to controller
+                CameraController::getInstance()->addBuilding(building);
                 QRect buildingRect(position.x, position.y, BUILDING_SIZE, BUILDING_SIZE);
                 //RGB grey color
                 QBrush brush = QBrush(QColor(152, 152, 152));
@@ -186,19 +211,28 @@ void MainWindow::mousePressEvent(QMouseEvent *event) {
             }
         }
         else if (status == "Parking") {
-            //TODO
+            PNode toUpgrade = nullptr;
+            for (PNode node : cityC->getNodes()) {
+                if (checkClosest(*node, position)) {
+                    toUpgrade = node;
+                    break;
+                }
+            }
+            if (toUpgrade) {
+                cityC->upgradeToParking(toUpgrade);
+            }
+            //TO CONSIDER add diffrently paint
+            paintParkings();
         }
         else if (status == "Kamera") {
-            //if (checkIfIntersectStreet(position, CAMERA_SIZE)) {
-                Camera camera(position);
-                CameraController::getInstance()->addCamera(camera);
-                QRect cam(position.x, position.y, CAMERA_SIZE, CAMERA_SIZE);
-                //RGB red color
-                QBrush brush = QBrush(QColor(255, 0, 0));
-                //black border solid
-                QPen pen = QPen(QColor(0, 0, 0), 1, Qt::SolidLine);
-                scene->addEllipse(cam, pen, brush);
-            //}
+            Camera camera(position);
+            CameraController::getInstance()->addCamera(camera);
+            QRect cam(position.x, position.y, CAMERA_SIZE, CAMERA_SIZE);
+            //RGB red color
+            QBrush brush = QBrush(QColor(255, 0, 0));
+            //black border solid
+            QPen pen = QPen(QColor(0, 0, 0), 1, Qt::SolidLine);
+            scene->addEllipse(cam, pen, brush);
         }
         else if (status == QStringLiteral("Samochód") && click == false) {
             click = true;
@@ -382,7 +416,6 @@ void MainWindow::about() {
 
 bool MainWindow::checkIfIntersectStreet(Position position, int radius)
 {
-    //TODO get graph edges
-    //for range all streets and check id building intersect
+    //TODO add building only if not intersecting some street
     return false;
 }

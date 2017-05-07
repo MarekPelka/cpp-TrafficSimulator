@@ -46,7 +46,7 @@ bool CityController::addStreet(Position start, Position end, bool twoWay) {
 
     if (isStreetExist(s, e)) return false;
 
-    if (isStreetsOverlap(start, end)) return false;
+    if (isStreetsOverlap(start, end) && e != nullptr) return false;
 
     std::map<PStreet, Position> cross = isStreetsCross(start, end);
     if (cross.empty()) {
