@@ -53,7 +53,7 @@ MainWindow::MainWindow(QWidget *parent) :
     infoLabel->setAlignment(Qt::AlignBottom);
     infoLabel->setFrameStyle(QFrame::StyledPanel | QFrame::Sunken);
     infoLabel->setStyleSheet("QLabel { color : white; }");
-    infoLabel->setGeometry(QRect(20, 20, 80, 20));
+    infoLabel->setGeometry(QRect(20, 20, 80, LABEL_HEIGHT));
     //scene->addWidget(infoLabel);
 
     infoLabel->setFocusPolicy(Qt::NoFocus);
@@ -168,8 +168,8 @@ void MainWindow::mousePressEvent(QMouseEvent *event) {
     VehicleController *vehC = VehicleController::getInstance();
     std::list<PNode> nodes;
     if (status.size() != 0) {
-        QPointF point = ui->graphicsView->mapToParent(event->pos());
-        Position position(point.x(), point.y());
+        QPointF point = ui->graphicsView->mapToScene(event->pos());
+        Position position(point.x(), point.y() - LABEL_HEIGHT);
         if (status == "Ulica") {
             //TODO
         }
