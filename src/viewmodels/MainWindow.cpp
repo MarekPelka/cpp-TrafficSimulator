@@ -195,6 +195,7 @@ void MainWindow::mousePressEvent(QMouseEvent *event) {
             }
             cityC->addStreet(startPos, endPos);
             //TO CONSIDER add diffrently paint
+            paintIntersections();
             paintStreets();
             click = false;
         }
