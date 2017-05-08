@@ -2,6 +2,7 @@
 #include "../../GeneratedFiles/ui_mainwindow.h"
 #include "../models/Building.h"
 #include "../models/Camera.h"
+#include "../views/CameraPopup.h"
 #include "../Enums.h"
 #include "CameraController.h"
 #include "CityController.h"
@@ -22,14 +23,17 @@ MainWindow::MainWindow(QWidget *parent) :
     createActions();
     createMenus();
 
+    CameraPopup *popup = CameraPopup::getInstance();
+    popup->setMainWindow(std::shared_ptr<MainWindow>(this));
+    popup->setWindowFlags(Qt::Popup);
+    popup->setParent(this);
+    popup->move(0,300);
+    popup->hide();
+
     setWindowTitle(QStringLiteral("Symulator ruchu miejskiego"));
 
     //initialize controllers
-    VehicleController *vehC = VehicleController::getInstance();
-    vehC->setMainWindow(std::shared_ptr<MainWindow>(this));
-
-    CameraController *camC = CameraController::getInstance();
-    camC->setMainWindow(std::shared_ptr<MainWindow>(this));
+    VehicleController::getInstance()->setMainWindow(std::shared_ptr<MainWindow>(this));
 
     //Painting streets
     //TODO: There is some weird auto-scaling/positioning -> understend and fix
@@ -61,6 +65,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
 MainWindow::~MainWindow() {
     killTimer(timerId);
+    CameraPopup::getInstance()->setParent(nullptr);
     delete ui;
 }
 
@@ -226,14 +231,7 @@ void MainWindow::mousePressEvent(QMouseEvent *event) {
             paintParkings();
         }
         else if (status == "Kamera") {
-            Camera camera(position);
-            CameraController::getInstance()->addCamera(camera);
-            QRect cam(position.x, position.y, CAMERA_SIZE, CAMERA_SIZE);
-            //RGB red color
-            QBrush brush = QBrush(QColor(255, 0, 0));
-            //black border solid
-            QPen pen = QPen(QColor(0, 0, 0), 1, Qt::SolidLine);
-            scene->addEllipse(cam, pen, brush);
+            CameraPopup::getInstance()->CameraPopupShow(position);
         }
         else if (status == QStringLiteral("Samochód") && click == false) {
             click = true;
@@ -413,6 +411,30 @@ void MainWindow::addTruck() {
 void MainWindow::about() {
     QMessageBox::about(this, tr("O Autorach"),
         QStringLiteral("<b>Autorzy:</b> Micha³ Krzemiñski i Marek Pelka"));
+}
+
+void MainWindow::cameraPopupHide(Position pos, int angle, QString direction) {
+    Direction dir=NONE;
+    if (direction == 'N') {
+        dir = N;
+    }
+    else if (direction == 'S') {
+        dir = S;
+    }
+    else if (direction == 'E') {
+        dir = E;
+    }
+    else if (direction == 'W') {
+        dir = W;
+    }
+    Camera camera(pos, angle, dir);
+    CameraController::getInstance()->addCamera(camera);
+    QRect cam(pos.x, pos.y, CAMERA_SIZE, CAMERA_SIZE);
+    //RGB red color
+    QBrush brush = QBrush(QColor(255, 0, 0));
+    //black border solid
+    QPen pen = QPen(QColor(0, 0, 0), 1, Qt::SolidLine);
+    scene->addEllipse(cam, pen, brush);
 }
 
 bool MainWindow::checkIfIntersectStreet(Position position, int radius)

@@ -29,7 +29,9 @@ public:
     void paintStreets();
     void paintParkings();
     void paintIntersections();
+    void cameraPopupHide(Position pos, int angle, QString direction);
     std::list<PNode> nodesPath(Position start, Position end);
+
 private:
     Ui::MainWindow *ui;
     int timerId;
@@ -78,11 +80,10 @@ private:
     QLabel *infoLabel;
 
     //start and end positions for vehicle adding and flag
-    bool click = false;
-    bool randomMovement = false;
     Position startPos;
     Position endPos;
-    QImage image;
+    bool click = false;
+    bool randomMovement = false;
     bool checkClosest(Node node, Position position);
     bool checkIfIntersectStreet(Position position, int radius);
 };
