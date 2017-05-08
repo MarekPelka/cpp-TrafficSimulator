@@ -29,6 +29,6 @@ const double PROBABILITY_SPAWN = 2;
 const double PERCENTAGE_OF_TRUCKS = 0.1;
 const double PARKING_SIZE_MULTIPLIER = 2;
 
-const double CAMERA_PRECISION = 2500; //in meters
+const double CAMERA_PRECISION = 10000; //in meters
 
 const int LABEL_HEIGHT = 20;

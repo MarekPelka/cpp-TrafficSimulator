@@ -1,7 +1,6 @@
 #pragma once
 #include "../models/Building.h"
 #include "../models/Camera.h"
-#include "MainWindow.h"
 #include <list>
 #include <memory>
 #include <thread>
@@ -9,7 +8,6 @@
 
 class CameraController {
 public:
-    void setMainWindow(std::shared_ptr<MainWindow> mw);
     static CameraController* getInstance();
     void addCamera(Camera camera);
     void addBuilding(Building building);
@@ -17,12 +15,12 @@ public:
     void deleteBuilding(Building building);
     void clearController();
     void updateObservations();
+    std::list<Camera> getCameras();
+    std::list<Building> getBuildings();
 
 private:
     CameraController();
-    CameraController(std::shared_ptr<MainWindow> mw);
     static CameraController* instance;
-    std::shared_ptr<MainWindow> mainWindow;
 
     std::list<Camera> cameras;
     std::list<Building> buildings;

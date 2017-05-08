@@ -11,14 +11,6 @@ CameraController* CameraController::getInstance() {
 
 CameraController::CameraController() {}
 
-CameraController::CameraController(std::shared_ptr<MainWindow> mw) {
-    mainWindow = mw;
-}
-
-void CameraController::setMainWindow(std::shared_ptr<MainWindow> mw) {
-    mainWindow = mw;
-}
-
 void CameraController::addCamera(Camera camera) {
     cameras.push_back(camera);
 }
@@ -45,4 +37,12 @@ void CameraController::updateObservations() {
         it->clearObservation();
         it->updateObservation();
     }
+}
+
+std::list<Camera> CameraController::getCameras() {
+    return cameras;
+}
+
+std::list<Building> CameraController::getBuildings() {
+    return buildings;
 }
