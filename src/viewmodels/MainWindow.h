@@ -85,7 +85,7 @@ private:
     bool click = false;
     bool randomMovement = false;
     bool checkClosest(Node node, Position position);
-    bool checkIfIntersectStreet(Position position, int radius);
+    bool checkIfIntersectStreet(Position position);
 };
 
 #endif // MAINWINDOW_H

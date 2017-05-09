@@ -17,6 +17,7 @@ public:
     int getLength();
     static Direction getPredictedDirection(Position start, Position end);
 
+    bool hasSidewalk();
     void alterStart(PNode n);
     void alterEnd(PNode n);
 private:

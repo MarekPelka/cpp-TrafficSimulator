@@ -15,6 +15,8 @@ public:
     void deleteBuilding(Building building);
     void clearController();
     void updateObservations();
+    bool checkIfBuilding(Position p1, Position p2);
+    bool LineIntersectsLine(Position p1, Position p2, Position q1, Position q2);
     std::list<Camera> getCameras();
     std::list<Building> getBuildings();
 

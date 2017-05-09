@@ -11,6 +11,8 @@ const double TRUCK_ACCELERATION = 0.3;
 const double TRUCK_SLOWDOWN = 1;
 
 const int STREET_WIDTH = 12;
+const int SIDEWALK_WIDTH = 6;
+
 //How much car is slimmer then road
 const int VECH_OFFSET = 2;
 

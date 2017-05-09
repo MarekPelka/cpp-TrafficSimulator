@@ -205,7 +205,7 @@ void MainWindow::mousePressEvent(QMouseEvent *event) {
             click = false;
         }
         else if (status == "Budynek") {
-            if (!checkIfIntersectStreet(position, BUILDING_SIZE)) {
+            if (!checkIfIntersectStreet(position)) {
                 Building building(position);
                 CameraController::getInstance()->addBuilding(building);
                 QRect buildingRect(position.x, position.y, BUILDING_SIZE, BUILDING_SIZE);
@@ -437,8 +437,57 @@ void MainWindow::cameraPopupHide(Position pos, int angle, QString direction) {
     scene->addEllipse(cam, pen, brush);
 }
 
-bool MainWindow::checkIfIntersectStreet(Position position, int radius)
+bool MainWindow::checkIfIntersectStreet(Position position)
 {
-    //TODO add building only if not intersecting some street
+    for (auto street : CityController::getInstance()->getStreets()) {
+        //TODO if street twoway check two edges of street (main line +- STREET_WIDTH)
+        //TODO if street not twoway check correct edge and main line
+        int offset = STREET_WIDTH;
+        if (street->hasSidewalk()) {
+            offset += SIDEWALK_WIDTH;
+        }
+
+        //check middle line
+        Position p1 = street->getStartEndPositions().first;
+        Position p2 = street->getStartEndPositions().second;
+        if (CameraController::getInstance()->LineIntersectsLine(p1, p2, position, Position(position.x + BUILDING_SIZE, position.y)) ||
+            CameraController::getInstance()->LineIntersectsLine(p1, p2, position, Position(position.x, position.y + BUILDING_SIZE)) ||
+            CameraController::getInstance()->LineIntersectsLine(p1, p2, Position(position.x + BUILDING_SIZE, position.y + BUILDING_SIZE), Position(position.x + BUILDING_SIZE, position.y)) ||
+            CameraController::getInstance()->LineIntersectsLine(p1, p2, Position(position.x + BUILDING_SIZE, position.y + BUILDING_SIZE), Position(position.x, position.y + BUILDING_SIZE))) {
+            return true;
+        }
+
+        //check outer edge
+        Position q1;
+        Position q2;
+        switch (street->getDirection()) {
+        case N: {
+            q1 = Position(p1.x + offset, p1.y);
+            q2 = Position(p2.x + offset, p2.y);
+            break;
+        }
+        case S: {
+            q1 = Position(p1.x - offset, p1.y);
+            q2 = Position(p2.x - offset, p2.y);
+            break;
+        }
+        case E: {
+            q1 = Position(p1.x, p1.y + offset);
+            q2 = Position(p2.x, p2.y + offset);
+            break;
+        }
+        case W: {
+            q1 = Position(p1.x, p1.y - offset);
+            q2 = Position(p2.x, p2.y - offset);
+            break;
+        }
+        }
+        if (CameraController::getInstance()->LineIntersectsLine(q1, q2, position, Position(position.x + BUILDING_SIZE, position.y)) ||
+            CameraController::getInstance()->LineIntersectsLine(q1, q2, position, Position(position.x, position.y + BUILDING_SIZE)) ||
+            CameraController::getInstance()->LineIntersectsLine(q1, q2, Position(position.x + BUILDING_SIZE, position.y + BUILDING_SIZE), Position(position.x + BUILDING_SIZE, position.y)) ||
+            CameraController::getInstance()->LineIntersectsLine(q1, q2, Position(position.x + BUILDING_SIZE, position.y + BUILDING_SIZE), Position(position.x, position.y + BUILDING_SIZE))) {
+            return true;
+        }
+    }
     return false;
 }

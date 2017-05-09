@@ -41,6 +41,10 @@ Direction Street::getPredictedDirection(Position start, Position end) {
     return NONE;
 }
 
+bool Street::hasSidewalk() {
+    return sidewalk;
+}
+
 void Street::alterStart(PNode n) {
     nodeFrom = n;
 }

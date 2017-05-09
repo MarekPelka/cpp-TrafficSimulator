@@ -47,7 +47,7 @@ void Camera::updateObservation() {
     for (auto veh : vehicles) {
         double angl = getAngleBetweenPoints(position, veh.getPosition());
         if (checkIfInZone(angl)) {
-            if (checkIfBuilding(position, veh.getPosition())) {
+            if (CameraController::getInstance()->checkIfBuilding(position, veh.getPosition())) {
                 double distsqr = getDistanceBetweenPoints(position, veh.getPosition());
 
                 int accuracy = 100;
@@ -105,27 +105,6 @@ bool Camera::checkIfInZone(double angl) {
     else {
         return false;
     }
-}
-
-bool Camera::checkIfBuilding(Position p1, Position p2)
-{
-    for (auto building : CameraController::getInstance()->getBuildings()) {
-        if (LineIntersectsLine(p1, p2, building.position, Position(building.position.x + BUILDING_SIZE, building.position.y)) ||
-            LineIntersectsLine(p1, p2, building.position, Position(building.position.x, building.position.y - BUILDING_SIZE)) ||
-            LineIntersectsLine(p1, p2, Position(building.position.x + BUILDING_SIZE, building.position.y - BUILDING_SIZE), Position(building.position.x + BUILDING_SIZE, building.position.y)) ||
-            LineIntersectsLine(p1, p2, Position(building.position.x + BUILDING_SIZE, building.position.y - BUILDING_SIZE), Position(building.position.x, building.position.y - BUILDING_SIZE))) {
-            return false;
-        }
-    }
-    return true;
-}
-
-bool Camera::LineIntersectsLine(Position p1, Position p2, Position q1, Position q2) {
-        return (((q1.x-p1.x)*(p2.y-p1.y) - (q1.y-p1.y)*(p2.x-p1.x))
-            * ((q2.x-p1.x)*(p2.y-p1.y) - (q2.y-p1.y)*(p2.x-p1.x)) < 0)
-            &&
-           (((p1.x-q1.x)*(q2.y-q1.y) - (p1.y-q1.y)*(q2.x-q1.x))
-            * ((p2.x-q1.x)*(q2.y-q1.y) - (p2.y-q1.y)*(q2.x-q1.x)) < 0);
 }
 
 double Camera::getDistanceBetweenPoints(Position p1, Position p2) {
