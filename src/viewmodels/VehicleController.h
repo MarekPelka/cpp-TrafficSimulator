@@ -4,6 +4,8 @@
 #include "MainWindow.h"
 #include <list>
 #include <memory>
+#include "../models/Street.h"
+#include "CityController.h"
 
 class VehicleController {
 public:
@@ -19,5 +21,5 @@ private:
     static VehicleController* instance;
 
     std::shared_ptr<MainWindow> mainWindow;
-    std::list<Vehicle> vehicles;
+    //std::list<Street> vehicles;
 };

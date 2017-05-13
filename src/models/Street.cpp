@@ -41,6 +41,11 @@ Direction Street::getPredictedDirection(Position start, Position end) {
     return NONE;
 }
 
+std::vector<Vehicle> * Street::getVehicles()
+{
+	return &vehOnStreet;
+}
+
 bool Street::hasSidewalk() {
     return sidewalk;
 }
@@ -51,6 +56,74 @@ void Street::alterStart(PNode n) {
 
 void Street::alterEnd(PNode n) {
     nodeTo = n;
+}
+
+void Street::addVehicleToStreet(Vehicle v)
+{
+	vehOnStreet.push_back(v);
+}
+
+bool Street::updatePositions(int interval)
+{
+	int place = 0;
+	for (auto iter = vehOnStreet.begin(); iter != vehOnStreet.end();) {
+	    if (iter->updatePosition(this, interval, place)) {
+	        ++iter;
+			++place;
+	    }
+	    else {
+	        iter = vehOnStreet.erase(iter);
+	    }
+	}
+	auto deleteIterator = vehOnStreet.begin();
+	while (deleteIterator != vehOnStreet.end()) {
+		if (deleteIterator->getToClear())
+			deleteIterator = vehOnStreet.erase(deleteIterator);
+		else
+			++deleteIterator;
+	}
+	return true;
+}
+
+bool Street::swichStreet(std::weak_ptr<Street> s, int spaceNeeded)
+{
+	if (auto street = s.lock()) {
+		//if(this == street.get())
+			//return false;
+		Position streetEnd = this->getStartEndPositions().second;
+		if (street->getVehicles()->empty()) {
+			return swichS(street, spaceNeeded);
+		}
+		else {
+			Position carPosition = street->getVehicles()->back().getPosition();
+			int possibleSpace = streetEnd.x == carPosition.x ? abs(streetEnd.y - carPosition.y) : abs(streetEnd.x - carPosition.x);
+			if (possibleSpace >= spaceNeeded) {
+				return swichS(street, spaceNeeded);
+			}
+		}	
+	}
+	return false;
+	
+}
+
+bool Street::operator==(const Street & v)
+{
+	return this->nodeFrom == v.nodeFrom && this->nodeTo == v.nodeTo;
+}
+
+bool Street::swichS(std::shared_ptr<Street> s, int spaceNeeded)
+{
+	auto vec = this->vehOnStreet;
+	if (!vec.empty()) {
+		s->addVehicleToStreet(vec.front());
+		//vec.front().getNodes().pop_front();
+		//vec.front() = std::move(vec.back());
+		//vec.pop_back();
+		return true;
+	}
+	else {
+		return false;
+	}
 }
 
 std::pair<PNode, PNode> Street::getNodes() {

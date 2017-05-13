@@ -21,10 +21,20 @@ std::string Node::getName() {
     return name;
 }
 
+std::map<int, std::weak_ptr<Street>> Node::getStreetsIn()
+{
+	return streetsIn;
+}
+
 bool Node::getIsParking() {
     return isParking;
 }
 
 void Node::setIsParking(bool p) {
     this->isParking = p;
+}
+
+void Node::addStreetIn(Direction d, std::weak_ptr<Street> PWStreet)
+{
+	streetsIn.insert(std::make_pair(d, PWStreet));
 }

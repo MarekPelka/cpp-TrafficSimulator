@@ -92,8 +92,11 @@ bool CityController::handleCrossSteets(Position start, Position end, bool twoWay
         }
 
         crossingNodes.push_back(middle);
-        streets.push_back(std::make_shared<Street>(middle, crossingStreet.first->getNodes().second));
-        crossingStreet.first->alterEnd(middle);
+		auto cwks = std::make_shared<Street>(middle, crossingStreet.first->getNodes().second);
+        streets.push_back(cwks);
+		crossingStreet.first->getNodes().second->addStreetIn(cwks->getDirection(), cwks);
+		crossingStreet.first->alterEnd(middle);
+		middle->addStreetIn(crossingStreet.first->getDirection(), crossingStreet.first);
     }
 
     crossingNodes.sort([](const PNode a, const PNode b) {
@@ -199,9 +202,14 @@ std::map<PStreet, Position> CityController::isStreetsCross(Position start, Posit
 }
 
 void CityController::createStreet(PNode start, PNode end, bool twoWay) {
-    streets.push_back(std::make_shared<Street>(start, end));
+    
+	PStreet s = std::make_shared<Street>(start, end);
+	streets.push_back(s);
+	end->addStreetIn(s->getDirection(), s);
     if (twoWay) {
-        streets.push_back(std::make_shared<Street>(end, start));
+		s = std::make_shared<Street>(end, start);
+        streets.push_back(s);
+		start->addStreetIn(s->getDirection(), s);
     }
 }
 

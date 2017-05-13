@@ -27,10 +27,14 @@ const int BUILDING_SIZE = 30;
 
 const int CAMERA_SIZE = 10;
 
-const double PROBABILITY_SPAWN = 2;
+const double PROBABILITY_SPAWN = 0.5;
 const double PERCENTAGE_OF_TRUCKS = 0.1;
 const double PARKING_SIZE_MULTIPLIER = 2;
 
 const double CAMERA_PRECISION = 10000; //in meters
 
 const int LABEL_HEIGHT = 20;
+
+const int DRIVE_UP = 3; // distance between first car and intersection
+const int CAR_SPACING = 3; // distance between cars
+const int DRIVE_OFFSET = 0; // accuracy of traling cars

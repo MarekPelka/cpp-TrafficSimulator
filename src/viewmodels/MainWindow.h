@@ -51,6 +51,7 @@ protected:
     void start();
     void scenario1();
     void scenario2();
+	void randomMovment();
     void addStreet();
     void addParking();
     void addCamera();
@@ -68,6 +69,7 @@ private:
     QAction *startAct;
     QAction *scenario1Act;
     QAction *scenario2Act;
+	QAction *randomMovmentAct;
     QAction *exitAct;
     QAction *addStreetAct;
     QAction *addParkingAct;

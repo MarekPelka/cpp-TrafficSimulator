@@ -269,8 +269,11 @@ void MainWindow::createActions() {
     scenario1Act = new QAction(tr("&Scenariusz 1"), this);
     connect(scenario1Act, &QAction::triggered, this, &MainWindow::scenario1);
 
-    scenario2Act = new QAction(tr("&Ruch losowy"), this);
+    scenario2Act = new QAction(tr("&Scenariusz 2"), this);
     connect(scenario2Act, &QAction::triggered, this, &MainWindow::scenario2);
+
+	randomMovmentAct = new QAction(tr("&Ruch losowy"), this);
+	connect(randomMovmentAct, &QAction::triggered, this, &MainWindow::randomMovment);
 
     exitAct = new QAction(tr("&Koniec"), this);
     exitAct->setShortcuts(QKeySequence::Close);
@@ -310,6 +313,7 @@ void MainWindow::createMenus() {
     fileMenu->addAction(startAct);
     fileMenu->addAction(scenario1Act);
     fileMenu->addAction(scenario2Act);
+	fileMenu->addAction(randomMovmentAct);
     fileMenu->addSeparator();
     fileMenu->addAction(exitAct);
 
@@ -388,7 +392,34 @@ void MainWindow::scenario1() {
     paintParkings();
 }
 void MainWindow::scenario2() {
-    randomMovement = !randomMovement;
+	CityController *cityC = CityController::getInstance();
+	Position p1(100, 100);
+	Position p2(500, 100);
+	Position p3(500, 500);
+	Position p4(100, 500);
+
+	cityC->addStreet(p1, p2);
+	cityC->addStreet(p2, p3);
+	cityC->addStreet(p3, p4);
+
+	cityC->addStreet(p2, p1);
+	cityC->addStreet(p3, p2);
+	cityC->addStreet(p4, p3);
+
+	std::list<PNode> nodes = nodesPath(p4, p1);
+	if (!nodes.empty()) {
+		for (int i = 0; i < 20; i++) {
+			Vehicle car(CAR, nodes);
+			VehicleController::getInstance()->addVehicle(car);
+		}
+	}
+	paintStreets();
+	paintIntersections();
+	paintParkings();
+}
+void MainWindow::randomMovment()
+{
+	randomMovement = !randomMovement;
 }
 void MainWindow::addStreet() {
     infoLabel->setText(tr("Ulica"));
