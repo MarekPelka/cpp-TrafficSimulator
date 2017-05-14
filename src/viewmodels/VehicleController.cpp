@@ -44,7 +44,7 @@ void VehicleController::updatePositions(int interval) {
 	for (PStreet s : CityController::getInstance()->getStreets()) {
 		s->updatePositions(interval);
 	}
-    mainWindow->updateVehiclesViews();
+    //mainWindow->updateVehiclesViews();
 }
 
 void VehicleController::clearController() {
