@@ -2,16 +2,20 @@
 #include "../viewmodels/CameraController.h"
 #include "../viewmodels/VehicleController.h"
 
-Camera::Camera() {
+int Camera::counter = 0;
+
+Camera::Camera() : id(++counter) {
 }
 
 Camera::Camera(Position pos) {
+    id = ++counter;
     position = pos;
     angle = 360; //omni-directional characteristic
     direction = NONE;
 }
 
 Camera::Camera(Position pos, int angl, Direction dir) {
+    id = ++counter;
     position = pos;
     angle = angl;
     direction = dir;

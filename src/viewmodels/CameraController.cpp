@@ -47,6 +47,30 @@ std::list<Building> CameraController::getBuildings() {
     return buildings;
 }
 
+void CameraController::writeToFile(std::string name)
+{
+    file.open(name, std::ios::app | std::ios::ate);
+    int  time = 0;//TODO
+    if (file.is_open()) {
+        for (auto it = cameras.begin(); it != cameras.end(); ++it) {
+            file << "CameraID: ";
+            file << it->id;
+            file << " ";
+            file << "Timestamp: ";
+            file << time;
+            file << "\n";
+            std::list<std::pair<int, int>> temp = it->getView();
+            for (auto iter = temp.begin(); iter != temp.end(); ++iter) {
+                file << iter->first;
+                file << " ";
+                file << iter->second;
+                file << "\n";
+            }
+        }
+        file.close();
+    }
+}
+
 bool CameraController::checkIfBuilding(Position p1, Position p2)
 {
     for (auto building : getBuildings()) {
