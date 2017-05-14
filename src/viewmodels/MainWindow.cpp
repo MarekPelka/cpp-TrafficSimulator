@@ -162,6 +162,7 @@ void MainWindow::timerEvent(QTimerEvent *event) {
 
     CameraController *camC = CameraController::getInstance();
     camC->updateObservations();
+    camC->writeToFile("CameraObservations.txt");
 
     if (randomMovement) {
         ParkingController::getInstance()->randomSpawnVehicle(FPS);
