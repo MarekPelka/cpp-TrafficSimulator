@@ -18,16 +18,22 @@ bool CityController::isInIntervalX(Position point, PStreet range) {
 
     int upper = range->getStartEndPositions().first.x > range->getStartEndPositions().second.x ? range->getStartEndPositions().first.x : range->getStartEndPositions().second.x;
     int lower = range->getStartEndPositions().first.x < range->getStartEndPositions().second.x ? range->getStartEndPositions().first.x : range->getStartEndPositions().second.x;
-    if ((unsigned)(point.x - lower) <= (upper - lower))
-        return true;
+    if (abs(point.x - lower) <= (upper - lower))
+		if (point.x > lower)
+			return true;
+		else
+			return false;
     else
         return false;
 }
 bool CityController::isInIntervalY(Position point, PStreet range) {
     int upper = range->getStartEndPositions().first.y > range->getStartEndPositions().second.y ? range->getStartEndPositions().first.y : range->getStartEndPositions().second.y;
     int lower = range->getStartEndPositions().first.y < range->getStartEndPositions().second.y ? range->getStartEndPositions().first.y : range->getStartEndPositions().second.y;
-    if ((unsigned)(point.y - lower) <= (upper - lower))
-        return true;
+    if (abs(point.y - lower) <= (upper - lower))
+        if(point.y > lower)
+			return true;
+		else
+			return false;
     else
         return false;
 }
