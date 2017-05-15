@@ -39,7 +39,11 @@ private:
 
     CityController();
     static CityController* instance;
-    bool handleCrossSteets(Position start, Position end, bool twoWay, std::map<PStreet, Position> map);
+	PNode createNode(Position p);
+	bool handleCrossSteets(Position start, Position end, bool twoWay, std::map<PStreet, Position> map);
+	std::list<PNode> handleExsitingCrossSteets(std::map<PStreet, Position> map);
+	bool handleNewCrossSteets(PNode s, PNode e, bool twoWay, std::list<PNode> crossingNodes);
+	std::list<PNode> sortNodeList(std::list<PNode> list);
     void createStreet(PNode start, PNode end, bool twoWay);
     void filterList(std::list<PNode>*);
     std::list<PStreet> streets;

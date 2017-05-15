@@ -21,10 +21,7 @@ bool CityController::isInIntervalX(Position point, PStreet range) {
     if (abs(point.x - lower) <= (upper - lower))
 		if (point.x > lower)
 			return true;
-		else
-			return false;
-    else
-        return false;
+	return false;
 }
 bool CityController::isInIntervalY(Position point, PStreet range) {
     int upper = range->getStartEndPositions().first.y > range->getStartEndPositions().second.y ? range->getStartEndPositions().first.y : range->getStartEndPositions().second.y;
@@ -32,17 +29,17 @@ bool CityController::isInIntervalY(Position point, PStreet range) {
     if (abs(point.y - lower) <= (upper - lower))
         if(point.y > lower)
 			return true;
-		else
-			return false;
-    else
-        return false;
+    return false;
 }
 
 bool CityController::isStreetExist(PNode start, PNode end) {
-    for (PStreet stre : streets) {
-        if (stre->getNodes().first == start && stre->getNodes().second == end)
-            return true;
-    }
+	if (start == nullptr || end == nullptr)
+		return true;
+	else
+		for (PStreet stre : streets) {
+			if (stre->getNodes().first == start && stre->getNodes().second == end)
+				return true;
+		}
     return false;
 }
 
@@ -56,14 +53,10 @@ bool CityController::addStreet(Position start, Position end, bool twoWay) {
 
     std::map<PStreet, Position> cross = isStreetsCross(start, end);
     if (cross.empty()) {
-        if (s == nullptr) {
-            s = std::make_shared<Node>(start);
-            nodes.push_back(s);
-        }
-        if (e == nullptr) {
-            e = std::make_shared<Node>(end);
-            nodes.push_back(e);
-        }
+		if (s == nullptr)
+			s = createNode(start);
+        if (e == nullptr)
+			e = createNode(end);
         createStreet(s, e, twoWay);
         return true;
     }
@@ -75,78 +68,99 @@ bool CityController::addStreet(Position start, Position end, bool twoWay) {
     }
 }
 
+PNode CityController::createNode(Position p) {
+	PNode n = std::make_shared<Node>(p);
+	nodes.push_back(n);
+	return n;
+}
+
 bool CityController::handleCrossSteets(Position start, Position end, bool twoWay, std::map<PStreet, Position> map) {
 
     PNode s = findNode(start);
-    PNode e = findNode(end);
-    std::list<PNode> crossingNodes = {};
-    for (std::pair<PStreet, Position> crossingStreet : map) {
-        std::pair<Position, Position> cStreetPositions = crossingStreet.first->getStartEndPositions();
-        if (cStreetPositions.first == crossingStreet.second ||
-            cStreetPositions.second == crossingStreet.second)
-            continue;
+	PNode e = findNode(end);
 
-        PNode middle = findNode(crossingStreet.second);
+	std::list<PNode> crossingNodes = handleExsitingCrossSteets(map);
+	if (crossingNodes.back() == nullptr)
+		return false;
 
-        if (isStreetExist(middle, crossingStreet.first->getNodes().second))
-            if (isStreetExist(crossingStreet.first->getNodes().first, middle))
-                return false;
 
-        if (middle == nullptr) {
-            middle = std::make_shared<Node>(crossingStreet.second);
-            nodes.push_back(middle);
-        }
+    if (s == nullptr)
+		s = createNode(start);
+    if (e == nullptr)
+		e = createNode(end);
+    
+	return handleNewCrossSteets(s, e, twoWay, crossingNodes);
+}
 
-        crossingNodes.push_back(middle);
+std::list<PNode> CityController::handleExsitingCrossSteets(std::map<PStreet, Position> map) {
+	std::list<PNode> crossingNodes = {};
+
+	for (std::pair<PStreet, Position> crossingStreet : map) {
+		std::pair<Position, Position> cStreetPositions = crossingStreet.first->getStartEndPositions();
+		if (cStreetPositions.first == crossingStreet.second ||
+			cStreetPositions.second == crossingStreet.second)
+			continue;
+
+		PNode middle = findNode(crossingStreet.second);
+
+		if (isStreetExist(middle, crossingStreet.first->getNodes().second))
+			if (isStreetExist(crossingStreet.first->getNodes().first, middle)) {
+				crossingNodes.push_back(nullptr);
+			}
+
+		if (middle == nullptr) {
+			middle = createNode(crossingStreet.second);
+		}
+
+		crossingNodes.push_back(middle);
 		auto cwks = std::make_shared<Street>(middle, crossingStreet.first->getNodes().second);
-        streets.push_back(cwks);
+		streets.push_back(cwks);
 		crossingStreet.first->getNodes().second->addStreetIn(cwks->getDirection(), cwks);
 		crossingStreet.first->alterEnd(middle);
 		middle->addStreetIn(crossingStreet.first->getDirection(), crossingStreet.first);
-    }
+	}
 
-    crossingNodes.sort([](const PNode a, const PNode b) {
-        if (a->position.x == b->position.x)
-            return a->position.y < b->position.y;
-        else
-            return a->position.x < b->position.x;
-    });
-    filterList(&crossingNodes);
+	crossingNodes = sortNodeList(crossingNodes);
+	filterList(&crossingNodes);
+	return crossingNodes;
+}
 
+bool CityController::handleNewCrossSteets(PNode s, PNode e, bool twoWay, std::list<PNode> crossingNodes) {
+	//Another possibility, if you like using the BOOST_FOREACH macro is to use the BOOST_REVERSE_FOREACH macro introduced in Boost 1.36.0.
+	if (Street::getPredictedDirection(s->getPosition(), e->getPosition()) == E || Street::getPredictedDirection(s->getPosition(), e->getPosition()) == S) {
 
-    if (s == nullptr) {
-        s = std::make_shared<Node>(start);
-        nodes.push_back(s);
-    }
-    if (e == nullptr) {
-        e = std::make_shared<Node>(end);
-        nodes.push_back(e);
-    }
-    //Another possibility, if you like using the BOOST_FOREACH macro is to use the BOOST_REVERSE_FOREACH macro introduced in Boost 1.36.0.
-    if (Street::getPredictedDirection(start, end) == E || Street::getPredictedDirection(start, end) == S) {
+		createStreet(s, crossingNodes.front(), twoWay);
+		createStreet(crossingNodes.back(), e, twoWay);
+		if (crossingNodes.size() > 1)
+			for (auto it = crossingNodes.begin(); it != crossingNodes.end(); ++it) {
+				createStreet(*it, *std::next(it), twoWay);
+				if (std::next(it, 2) == crossingNodes.end()) {
+					break;
+				}
+			}
+	}
+	else if (Street::getPredictedDirection(s->getPosition(), e->getPosition()) == W || Street::getPredictedDirection(s->getPosition(), e->getPosition()) == N) {
+		createStreet(s, crossingNodes.back(), twoWay);
+		createStreet(crossingNodes.front(), e, twoWay);
+		if (crossingNodes.size() > 1)
+			for (auto it = crossingNodes.end(); it != crossingNodes.begin(); --it) {
+				createStreet(*it, *std::prev(it), twoWay);
+				if (std::prev(it, 2) == crossingNodes.begin()) {
+					break;
+				}
+			}
+	}
+	return true;
+}
 
-        createStreet(s, crossingNodes.front(), twoWay);
-        createStreet(crossingNodes.back(), e, twoWay);
-        if (crossingNodes.size() > 1)
-            for (auto it = crossingNodes.begin(); it != crossingNodes.end(); ++it) {
-                createStreet(*it, *std::next(it), twoWay);
-                if (std::next(it, 2) == crossingNodes.end()) {
-                    break;
-                }
-            }
-    }
-    else if (Street::getPredictedDirection(start, end) == W || Street::getPredictedDirection(start, end) == N) {
-        createStreet(s, crossingNodes.back(), twoWay);
-        createStreet(crossingNodes.front(), e, twoWay);
-        if (crossingNodes.size() > 1)
-            for (auto it = crossingNodes.end(); it != crossingNodes.begin(); --it) {
-                createStreet(*it, *std::prev(it), twoWay);
-                if (std::prev(it, 2) == crossingNodes.begin()) {
-                    break;
-                }
-            }
-    }
-    return true;
+std::list<PNode> CityController::sortNodeList(std::list<PNode> list) {
+	list.sort([](const PNode a, const PNode b) {
+		if (a->position.x == b->position.x)
+			return a->position.y < b->position.y;
+		else
+			return a->position.x < b->position.x;
+	});
+	return list;
 }
 
 std::map<PStreet, Position> CityController::isStreetsCross(Position start, Position end) {
