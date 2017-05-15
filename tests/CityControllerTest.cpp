@@ -46,7 +46,7 @@ BOOST_AUTO_TEST_CASE(Test_addSingleStreet) {
 	Position p1(100, 100);
 	Position p2(500, 100);
 
-	if (!cityC->addStreet(p1, p2)) throw "Error creating street!";
+	if (!cityC->addStreet(p1, p2)) BOOST_FAIL("Error creating street!");
 
 	auto list = cityC->getStreets();
 	BOOST_REQUIRE(list.size() == 1);
@@ -130,7 +130,7 @@ BOOST_AUTO_TEST_CASE(Test_streetOverlap) {
 	Position p1(100, 100);
 	Position p2(500, 100);
 	Position p3(700, 100);
-	if (!cityC->addStreet(p1, p2)) throw "Error creating street!";
+	if (!cityC->addStreet(p1, p2)) BOOST_FAIL("Error creating street!");
 
 	auto list = cityC->getStreets();
 	BOOST_REQUIRE(list.size() == 1);
@@ -143,7 +143,7 @@ BOOST_AUTO_TEST_CASE(Test_streetCross) {
 	Position p1(100, 100);
 	Position p2(500, 100);
 
-	if (!cityC->addStreet(p1, p2)) throw "Error creating street!";
+	if (!cityC->addStreet(p1, p2)) BOOST_FAIL("Error creating street!");
 
 	auto list = cityC->getStreets();
 	BOOST_REQUIRE(list.size() == 1);
