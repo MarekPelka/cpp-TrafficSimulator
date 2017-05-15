@@ -7,7 +7,7 @@
 #include <list>
 #include <memory>
 #include <thread>
-#include <windows.h>
+//#include <windows.h>
 
 class CameraController {
 public:

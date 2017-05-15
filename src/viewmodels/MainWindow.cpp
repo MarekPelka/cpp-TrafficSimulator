@@ -446,7 +446,8 @@ void MainWindow::about() {
         QStringLiteral("<b>Autorzy:</b> Micha³ Krzemiñski i Marek Pelka"));
 }
 
-void MainWindow::cameraPopupHide(Position pos, int angle, QString direction) {
+void MainWindow::cameraPopupHide(Position pos, int angle, QString di) {
+  char direction = di.toLatin1().data()[0];
     Direction dir=NONE;
     if (direction == 'N') {
         dir = N;
@@ -513,6 +514,10 @@ bool MainWindow::checkIfIntersectStreet(Position position)
             q1 = Position(p1.x, p1.y - offset);
             q2 = Position(p2.x, p2.y - offset);
             break;
+        }
+        default: {
+            q1 = Position(0, 0);
+            q2 = Position(0, 0);
         }
         }
         if (CameraController::getInstance()->LineIntersectsLine(q1, q2, position, Position(position.x + BUILDING_SIZE, position.y)) ||

@@ -9,7 +9,7 @@
 #include "Vehicle.h"
 typedef std::shared_ptr<Node> PNode;
 
-class Street : std::enable_shared_from_this<Street> {
+class Street {
 public:
     Street();
     Street(PNode nodeFrom, PNode nodeTo, bool sidewalk = false);
