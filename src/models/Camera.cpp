@@ -2,16 +2,20 @@
 #include "../viewmodels/CameraController.h"
 #include "../viewmodels/VehicleController.h"
 
-Camera::Camera() {
+int Camera::counter = 0;
+
+Camera::Camera() : id(++counter) {
 }
 
 Camera::Camera(Position pos) {
+    id = ++counter;
     position = pos;
     angle = 360; //omni-directional characteristic
     direction = NONE;
 }
 
 Camera::Camera(Position pos, int angl, Direction dir) {
+    id = ++counter;
     position = pos;
     angle = angl;
     direction = dir;
@@ -73,22 +77,23 @@ double Camera::getAngleBetweenPoints(Position p1, Position p2) {
 bool Camera::checkIfInZone(double angl) {
     double border1 = 0, border2 = 0;
     switch (direction) {
-    case N: {
+        //N replace with S, E replaced with W
+    case S: {
         border1 = 90 + (angle / 2);
         border2 = 90 - (angle / 2);
         break;
     }
-    case S: {
+    case N: {
         border1 = -90 + (angle / 2);
         border2 = -90 - (angle / 2);
         break;
     }
-    case E: {
+    case W: {
         border1 = angle / 2;
         border2 = -(angle / 2);
         break;
     }
-    case W: {
+    case E: {
         border1 = 180 + (angle / 2);
         border2 = 180 - (angle / 2);
         break;

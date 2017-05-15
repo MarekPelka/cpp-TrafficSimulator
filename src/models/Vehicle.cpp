@@ -1,32 +1,6 @@
 #include "Vehicle.h"
 #include "../viewmodels/VehicleController.h"
 
-Vehicle::Vehicle() {
-	type = CAR;
-	length = CAR_LENGTH;
-	acceleration = CAR_ACCELERATION;
-	slowdown = CAR_SLOWDOWN;
-	speed = 0;
-	orientation = N;
-}
-
-Vehicle::Vehicle(VehicleType typ, Position pos) {
-	type = typ;
-	if (type == CAR) {
-		length = CAR_LENGTH;
-		acceleration = CAR_ACCELERATION;
-		slowdown = CAR_SLOWDOWN;
-	}
-	else if (type == TRUCK) {
-		length = TRUCK_LENGTH;
-		acceleration = TRUCK_ACCELERATION;
-		slowdown = TRUCK_SLOWDOWN;
-	}
-	position = pos;
-	orientation = N;
-	speed = 0;
-}
-
 Vehicle::Vehicle(VehicleType typ, std::list<Node> nods) {
 	type = typ;
 	if (type == CAR) {

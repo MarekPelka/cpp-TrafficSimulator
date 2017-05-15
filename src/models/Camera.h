@@ -27,6 +27,8 @@ public:
     bool checkIfBuilding(Position p1, Position p2);
     bool static LineIntersectsLine(Position l1p1, Position l1p2, Position l2p1, Position l2p2);
     double getDistanceBetweenPoints(Position p1, Position p2);
+    int id;
+    static int counter;
 
 private:
     Position position;

@@ -1,4 +1,5 @@
 #include "CameraController.h"
+#include <ctime>
 
 CameraController* CameraController::instance = nullptr;
 
@@ -47,13 +48,39 @@ std::list<Building> CameraController::getBuildings() {
     return buildings;
 }
 
+void CameraController::writeToFile(std::string name)
+{
+    file.open(name, std::ios::app | std::ios::ate);
+    time_t now = time(0);
+    if (file.is_open()) {
+        for (auto it = cameras.begin(); it != cameras.end(); ++it) {
+            std::list<std::pair<int, int>> temp = it->getView();
+            if (!temp.empty()) {
+                file << "CameraID: ";
+                file << it->id;
+                file << " ";
+                file << "Timestamp: ";
+                file << ctime(&now);
+                for (auto iter = temp.begin(); iter != temp.end(); ++iter) {
+                    file << iter->first;
+                    file << " ";
+                    file << iter->second;
+                    file << "\n";
+                }
+            }
+        }
+        file.close();
+    }
+}
+
 bool CameraController::checkIfBuilding(Position p1, Position p2)
 {
     for (auto building : getBuildings()) {
-        if (LineIntersectsLine(p1, p2, building.position, Position(building.position.x + BUILDING_SIZE, building.position.y)) ||
-            LineIntersectsLine(p1, p2, building.position, Position(building.position.x, building.position.y - BUILDING_SIZE)) ||
-            LineIntersectsLine(p1, p2, Position(building.position.x + BUILDING_SIZE, building.position.y + BUILDING_SIZE), Position(building.position.x + BUILDING_SIZE, building.position.y)) ||
-            LineIntersectsLine(p1, p2, Position(building.position.x + BUILDING_SIZE, building.position.y + BUILDING_SIZE), Position(building.position.x, building.position.y + BUILDING_SIZE))) {
+        //extending lines with 1px to cover corners
+        if (LineIntersectsLine(p1, p2, Position(building.position.x -1, building.position.y), Position(building.position.x + BUILDING_SIZE + 1, building.position.y)) ||
+            LineIntersectsLine(p1, p2, Position(building.position.x, building.position.y - 1), Position(building.position.x, building.position.y + BUILDING_SIZE + 1)) ||
+            LineIntersectsLine(p1, p2, Position(building.position.x + BUILDING_SIZE, building.position.y + BUILDING_SIZE + 1), Position(building.position.x + BUILDING_SIZE, building.position.y - 1)) ||
+            LineIntersectsLine(p1, p2, Position(building.position.x + BUILDING_SIZE + 1, building.position.y + BUILDING_SIZE), Position(building.position.x -1, building.position.y + BUILDING_SIZE))) {
             return false;
         }
     }

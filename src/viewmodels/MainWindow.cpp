@@ -159,9 +159,11 @@ bool MainWindow::checkClosest(Node node, Position position) {
 void MainWindow::timerEvent(QTimerEvent *event) {
     VehicleController *vehC = VehicleController::getInstance();
     vehC->updatePositions(int(1000 / FPS));
+    this->updateVehiclesViews();
 
     CameraController *camC = CameraController::getInstance();
     camC->updateObservations();
+    camC->writeToFile("CameraObservations.txt");
 
     if (randomMovement) {
         ParkingController::getInstance()->randomSpawnVehicle(FPS);

@@ -43,28 +43,28 @@ BOOST_AUTO_TEST_CASE(deleteCamAndBuild)
 BOOST_AUTO_TEST_CASE(getDistanceBetweenPoints) {
     Position pos1(0,0);
     Position pos2(3,4);
-    Camera camera(pos1, 60, E);
+    Camera camera(pos1, 120, N);
     double distance = camera.getDistanceBetweenPoints(pos1,pos2);
     BOOST_TEST_MESSAGE("Distance to power: " << distance);
     BOOST_REQUIRE(distance == 25);
 }
 
 BOOST_AUTO_TEST_CASE(getAngleBetweenPoints) {
-    Position pos1(0, 0);
-    Position pos2(100, 100);
-    Camera camera(pos1, 60, E);
+    Position pos1(50, 50);
+    Position pos2(0, 0);
+    Camera camera(pos1, 120, N);
     double angle = camera.getAngleBetweenPoints(pos1, pos2);
     BOOST_TEST_MESSAGE("Angle in degrees: " << angle);
-    BOOST_CHECK_EQUAL(angle, (double)45);
+    BOOST_CHECK_EQUAL(angle, (double)-135);
 }
 
 BOOST_AUTO_TEST_CASE(checkIfInZone) {
-    Position pos1(0, 0);
-    Position posOut(100, 100);
-    Position posOut2(-100, 0);
-    Position posIn(100, 0);
-    Position posIn2(100, 20);
-    Camera camera(pos1, 60, E);
+    Position pos1(50, 50);
+    Position posOut(0, 50);
+    Position posOut2(100, 100);
+    Position posIn(0, 0);
+    Position posIn2(50, 0);
+    Camera camera(pos1, 120, N);
     BOOST_CHECK_EQUAL(camera.checkIfInZone(camera.getAngleBetweenPoints(pos1, posOut)), false);
     BOOST_CHECK_EQUAL(camera.checkIfInZone(camera.getAngleBetweenPoints(pos1, posOut2)), false);
     BOOST_CHECK_EQUAL(camera.checkIfInZone(camera.getAngleBetweenPoints(pos1, posIn)), true);
@@ -74,27 +74,50 @@ BOOST_AUTO_TEST_CASE(checkIfInZone) {
 BOOST_AUTO_TEST_CASE(updateObservation) {
     VehicleController *vehC = VehicleController::getInstance();
     CameraController *camC = CameraController::getInstance();
+    CityController *cityC = CityController::getInstance();
 
-    Vehicle vehIn(CAR,Position(100,0));
-    Vehicle vehIn2(TRUCK, Position(100, 50));
-    Vehicle vehOut(CAR, Position(100, 100));
-    vehC->addVehicle(vehIn);//correct
-    vehC->addVehicle(vehIn2);//shadowed by building
-    vehC->addVehicle(vehOut);//not in zone
-    Building building(Position(50,50));
-    Building building2(Position(200, 500));
+    //test city
+    Position p1(0,0);
+    Position p2(500, 0);
+    Position p3(500, 500);
+    Position p4(0, 500);
+
+    cityC->addStreet(p1, p2);
+    cityC->addStreet(p2, p3);
+    cityC->addStreet(p3, p4);
+
+    cityC->addStreet(p2, p1);
+    cityC->addStreet(p3, p2);
+    cityC->addStreet(p4, p3);
+    std::list<PNode> nodes =cityC->getNodes();
+    if (!nodes.empty()) {
+        for (int i = 0; i < 10; i++) {
+            Vehicle car(CAR, nodes);
+            VehicleController::getInstance()->addVehicle(car);
+        }
+    }
+
+    Building building(Position(15,15));
     camC->addBuilding(building);
-    camC->addBuilding(building2);
-    Position pos1(0, 0);
-    Camera camera(pos1, 60, E);
+    Position pos1(50, 50);
+    Position pos2(0, 50);
+    Camera camera(pos1, 120, N);
+    Camera camera2(pos2, 60, N);
     camC->addCamera(camera);
+    camC->addCamera(camera2);
     camera.updateObservation();
-    BOOST_CHECK_EQUAL(camera.getView().size(), 1);
+    camera2.updateObservation();
+    BOOST_CHECK_EQUAL(camera.getView().size(), 0);
+    BOOST_CHECK_EQUAL(camera2.getView().size(), 10);
     camC->deleteBuilding(building);
-    camC->deleteBuilding(building2);
+
     camera.clearObservation();
+    camera2.clearObservation();
     camera.updateObservation();
-    BOOST_CHECK_EQUAL(camera.getView().size(), 2);
+    camera2.updateObservation();
+    BOOST_CHECK_EQUAL(camera.getView().size(), 10);
+    BOOST_CHECK_EQUAL(camera2.getView().size(), 10);
     vehC->clearController();
     camC->clearController();
+    cityC->clearController();
 }

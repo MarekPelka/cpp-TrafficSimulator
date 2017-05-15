@@ -11,9 +11,7 @@ typedef std::shared_ptr<Node> PNode;
 
 class Vehicle : MovingObject {
 public:
-    Vehicle();
     ~Vehicle();
-    Vehicle(VehicleType type, Position pos);
     Vehicle(VehicleType type, std::list<Node> nodes);
     Vehicle(VehicleType type, std::list<PNode> nodes);
 	void move(Street * const s, int time, int place);

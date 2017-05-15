@@ -2,6 +2,8 @@
 #define CAMERACONTROLLER_H
 #include "../models/Building.h"
 #include "../models/Camera.h"
+#include <iostream>
+#include <fstream>
 #include <list>
 #include <memory>
 #include <thread>
@@ -20,6 +22,7 @@ public:
     bool LineIntersectsLine(Position p1, Position p2, Position q1, Position q2);
     std::list<Camera> getCameras();
     std::list<Building> getBuildings();
+    void writeToFile(std::string name);
 
 private:
     CameraController();
@@ -27,5 +30,6 @@ private:
 
     std::list<Camera> cameras;
     std::list<Building> buildings;
+    std::ofstream file;
 };
 #endif
