@@ -1,4 +1,5 @@
-#pragma once
+#ifndef ENUMS_H
+#define ENUMS_H
 enum Direction { N, E, S, W, NONE};
 enum VehicleType {CAR, TRUCK, NOTHING};
 
@@ -38,3 +39,4 @@ const int LABEL_HEIGHT = 20;
 const int DRIVE_UP = 3; // distance between first car and intersection
 const int CAR_SPACING = 3; // distance between cars
 const int DRIVE_OFFSET = 0; // accuracy of traling cars
+#endif

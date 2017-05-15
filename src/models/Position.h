@@ -1,4 +1,5 @@
-#pragma once
+#ifndef POSITION_H
+#define POSITION_H
 #include <utility>
 
 class Position {
@@ -10,3 +11,4 @@ public:
     std::pair <int, int> getCoordinates();
     bool operator==(const Position &p) { return x == p.x && y == p.y; }
 };
+#endif

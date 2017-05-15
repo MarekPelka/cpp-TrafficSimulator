@@ -1,4 +1,5 @@
-#pragma once
+#ifndef NODE_H
+#define NODE_H
 #include <iostream>
 #include "Position.h"
 #include <map>
@@ -26,3 +27,4 @@ private:
     static int all_Nodes;
 	std::map<int, std::weak_ptr<Street>> streetsIn;
 };
+#endif

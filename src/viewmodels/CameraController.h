@@ -1,4 +1,5 @@
-#pragma once
+#ifndef CAMERACONTROLLER_H
+#define CAMERACONTROLLER_H
 #include "../models/Building.h"
 #include "../models/Camera.h"
 #include <list>
@@ -27,3 +28,4 @@ private:
     std::list<Camera> cameras;
     std::list<Building> buildings;
 };
+#endif

@@ -1,4 +1,5 @@
-#pragma once
+#ifndef VEHICLE_H
+#define VEHICLE_H
 #include <iostream>
 #include <list>
 #include <memory>
@@ -40,3 +41,4 @@ private:
 	Direction getPredictedDirection(Position start, Position end);
 	void calculateSpeed(int d, int time, Vehicle inFront);
 };
+#endif

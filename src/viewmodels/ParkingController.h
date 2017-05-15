@@ -1,4 +1,5 @@
-#pragma once
+#ifndef PARKINGCONTROLLER_H
+#define PARKINGCONTROLLER_H
 #include "CityController.h"
 #include "VehicleController.h"
 #include <ctime>
@@ -15,3 +16,4 @@ private:
     //TO CONSIDER
     //std::list<PParking> parkings;
 };
+#endif

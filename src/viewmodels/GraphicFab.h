@@ -1,4 +1,5 @@
-#pragma once
+#ifndef GRAPHICFAB_H
+#define GRAPHICFAB_H
 #include <QGraphicsItem>
 #include <QRect>
 #include <QPen>
@@ -15,3 +16,4 @@ public:
 private:
     GraphicFab() {};
 };
+#endif

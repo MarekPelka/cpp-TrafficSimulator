@@ -1,4 +1,6 @@
-#pragma once
+#ifndef CITYCONTROLLER_H
+#define CITYCONTROLLER_H
+
 #include "../models/Position.h"
 #include "../models/Street.h"
 #include "../Enums.h"
@@ -44,3 +46,4 @@ private:
     std::list<PNode> nodes;
     std::list<PNode> parkings;
 };
+#endif

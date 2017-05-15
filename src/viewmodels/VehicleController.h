@@ -1,4 +1,5 @@
-#pragma once
+#ifndef VEHICLECONTROLLER_H
+#define VEHICLECONTROLLER_H
 #include "../models/Position.h"
 #include "../models/Vehicle.h"
 #include "MainWindow.h"
@@ -23,3 +24,4 @@ private:
     std::shared_ptr<MainWindow> mainWindow;
     //std::list<Street> vehicles;
 };
+#endif

@@ -1,4 +1,6 @@
-#pragma once
+#ifndef BUILDING_H
+#define BUILDING_H
+
 #include "../Enums.h"
 #include "Position.h"
 
@@ -11,3 +13,4 @@ public:
     Position position;
     int size = BUILDING_SIZE;
 };
+#endif

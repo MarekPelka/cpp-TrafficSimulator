@@ -1,3 +1,6 @@
+#ifndef CAMERAPOPUP_H
+#define CAMERAPOPUP_H
+
 #include "../viewmodels/MainWindow.h"
 #include <QWidget>
 #include <QLabel>
@@ -27,3 +30,4 @@ private:
     QLineEdit *angleLineEdit;
     QPushButton *buttonOk;
 };
+#endif

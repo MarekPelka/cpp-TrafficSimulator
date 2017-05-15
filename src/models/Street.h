@@ -1,4 +1,5 @@
-#pragma once
+#ifndef STREET_H
+#define STREET_H
 #include "Position.h"
 #include "Node.h"
 #include "../Enums.h"
@@ -34,3 +35,4 @@ private:
 	std::vector<Vehicle> vehOnStreet;
 	bool swichS(std::shared_ptr<Street> s, int spaceNeeded);
 };
+#endif
