@@ -60,7 +60,8 @@ void CameraController::writeToFile(std::string name)
                 file << it->id;
                 file << " ";
                 file << "Timestamp: ";
-                file << ctime(&now);
+				char str[26];
+                file << ctime_s(str, sizeof(str), &now);
                 for (auto iter = temp.begin(); iter != temp.end(); ++iter) {
                     file << iter->first;
                     file << " ";
