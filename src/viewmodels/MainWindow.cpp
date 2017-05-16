@@ -33,7 +33,7 @@ MainWindow::MainWindow(QWidget *parent) :
     setWindowTitle(QStringLiteral("Symulator ruchu miejskiego"));
 
     //initialize controllers
-    VehicleController::getInstance()->setMainWindow(std::shared_ptr<MainWindow>(this));
+    //VehicleController::getInstance()->setMainWindow(std::shared_ptr<MainWindow>(this));
 
     //Painting streets
     //TODO: There is some weird auto-scaling/positioning -> understend and fix
