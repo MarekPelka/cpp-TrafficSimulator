@@ -34,7 +34,7 @@ bool CityController::isInIntervalY(Position point, PStreet range) {
 
 bool CityController::isStreetExist(PNode start, PNode end) {
 	if (start == nullptr || end == nullptr)
-		return true;
+		return false;
 	else
 		for (PStreet stre : streets) {
 			if (stre->getNodes().first == start && stre->getNodes().second == end)
