@@ -2,7 +2,7 @@
 #define VEHICLECONTROLLER_H
 #include "../models/Position.h"
 #include "../models/Vehicle.h"
-#include "MainWindow.h"
+//#include "MainWindow.h"
 #include <list>
 #include <memory>
 #include "../models/Street.h"
@@ -10,7 +10,7 @@
 
 class VehicleController {
 public:
-    void setMainWindow(std::shared_ptr<MainWindow> mw);
+    //void setMainWindow(std::shared_ptr<MainWindow> mw);
     void addVehicle(Vehicle vehicle);
     std::list<Vehicle> getVehicles();
     void updatePositions(int interval);
@@ -21,7 +21,7 @@ private:
     VehicleController();
     static VehicleController* instance;
 
-    std::shared_ptr<MainWindow> mainWindow;
+    //std::shared_ptr<MainWindow> mainWindow;
     //std::list<Street> vehicles;
 };
 #endif

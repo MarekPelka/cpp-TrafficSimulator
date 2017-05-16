@@ -10,10 +10,6 @@ VehicleController* VehicleController::getInstance() {
 
 VehicleController::VehicleController() {}
 
-void VehicleController::setMainWindow(std::shared_ptr<MainWindow> mw) {
-    mainWindow = mw;
-}
-
 void VehicleController::addVehicle(Vehicle vehicle) {
 	if (auto spt = vehicle.getNodes().front().getStreetsIn().at(vehicle.getOrientation()).lock()) { // Has to be copied into a shared_ptr before usage	
 		spt->addVehicleToStreet(vehicle);
