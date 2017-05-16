@@ -2,6 +2,7 @@
 #include "../src/models/Node.h"
 #include "../src/models/Street.h"
 #include "../src/models/Position.h"
+#include "../src/models/Pedestrian.h"
 #include "../src/viewmodels/CityController.h"
 #include "../src/models/Node.cpp"
 #include "../src/models/Street.cpp"

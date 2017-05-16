@@ -61,7 +61,7 @@ bool CityController::addStreet(Position start, Position end, bool twoWay) {
         return true;
     }
     else {
-        if (handleCrossSteets(start, end, twoWay, cross))
+        if (handleCrossStreets(start, end, twoWay, cross))
             return true;
         else
             return false;
@@ -74,12 +74,12 @@ PNode CityController::createNode(Position p) {
 	return n;
 }
 
-bool CityController::handleCrossSteets(Position start, Position end, bool twoWay, std::map<PStreet, Position> map) {
+bool CityController::handleCrossStreets(Position start, Position end, bool twoWay, std::map<PStreet, Position> map) {
 
     PNode s = findNode(start);
 	PNode e = findNode(end);
 
-	std::list<PNode> crossingNodes = handleExsitingCrossSteets(map);
+	std::list<PNode> crossingNodes = handleExistingCrossStreets(map);
 	if (crossingNodes.back() == nullptr)
 		return false;
 
@@ -89,10 +89,10 @@ bool CityController::handleCrossSteets(Position start, Position end, bool twoWay
     if (e == nullptr)
 		e = createNode(end);
     
-	return handleNewCrossSteets(s, e, twoWay, crossingNodes);
+	return handleNewCrossStreets(s, e, twoWay, crossingNodes);
 }
 
-std::list<PNode> CityController::handleExsitingCrossSteets(std::map<PStreet, Position> map) {
+std::list<PNode> CityController::handleExistingCrossStreets(std::map<PStreet, Position> map) {
 	std::list<PNode> crossingNodes = {};
 
 	for (std::pair<PStreet, Position> crossingStreet : map) {
@@ -125,7 +125,7 @@ std::list<PNode> CityController::handleExsitingCrossSteets(std::map<PStreet, Pos
 	return crossingNodes;
 }
 
-bool CityController::handleNewCrossSteets(PNode s, PNode e, bool twoWay, std::list<PNode> crossingNodes) {
+bool CityController::handleNewCrossStreets(PNode s, PNode e, bool twoWay, std::list<PNode> crossingNodes) {
 	//Another possibility, if you like using the BOOST_FOREACH macro is to use the BOOST_REVERSE_FOREACH macro introduced in Boost 1.36.0.
 	if (Street::getPredictedDirection(s->getPosition(), e->getPosition()) == E || Street::getPredictedDirection(s->getPosition(), e->getPosition()) == S) {
 
