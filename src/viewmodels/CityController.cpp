@@ -113,7 +113,7 @@ std::list<PNode> CityController::handleExsitingCrossSteets(std::map<PStreet, Pos
 		}
 
 		crossingNodes.push_back(middle);
-		auto cwks = std::make_shared<Street>(middle, crossingStreet.first->getNodes().second);
+		auto cwks = std::make_shared<Street>(middle, crossingStreet.first->getNodes().second, true);
 		streets.push_back(cwks);
 		crossingStreet.first->getNodes().second->addStreetIn(cwks->getDirection(), cwks);
 		crossingStreet.first->alterEnd(middle);
@@ -223,11 +223,11 @@ std::map<PStreet, Position> CityController::isStreetsCross(Position start, Posit
 
 void CityController::createStreet(PNode start, PNode end, bool twoWay) {
     
-	PStreet s = std::make_shared<Street>(start, end);
+	PStreet s = std::make_shared<Street>(start, end, true);
 	streets.push_back(s);
 	end->addStreetIn(s->getDirection(), s);
     if (twoWay) {
-		s = std::make_shared<Street>(end, start);
+		s = std::make_shared<Street>(end, start, true);
         streets.push_back(s);
 		start->addStreetIn(s->getDirection(), s);
     }
@@ -350,7 +350,7 @@ void CityController::filterList(std::list<PNode> *list) {
 bool CityController::isStreetsOverlap(Position start, Position end) {
     PNode startNode = std::make_shared<Node>(start);
     PNode endNode = std::make_shared<Node>(end);
-    PStreet temp = std::make_shared<Street>(startNode, endNode);
+    PStreet temp = std::make_shared<Street>(startNode, endNode, true);
     if (Street::getPredictedDirection(start, end) == N || Street::getPredictedDirection(start, end) == S)
         for (PStreet s : streets) {
             if (s->getStartEndPositions().first == end && s->getStartEndPositions().second == start)

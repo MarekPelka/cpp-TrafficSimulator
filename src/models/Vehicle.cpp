@@ -36,7 +36,7 @@ Vehicle::Vehicle(VehicleType typ, std::list<PNode> nods) {
 	nods.pop_front();
 	for (auto n : nods)
 		nodes.push_back(*n);
-	orientation = Vehicle::getPredictedDirection(position, nodes.front().getPosition());
+	orientation = getPredictedDirection(position, nodes.front().getPosition());
 	speed = 0;
 }
 

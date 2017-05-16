@@ -13,9 +13,15 @@ const double TRUCK_SLOWDOWN = 1;
 
 const int STREET_WIDTH = 12;
 const int SIDEWALK_WIDTH = 6;
+const int FULL_STREET_WIDTH = STREET_WIDTH + SIDEWALK_WIDTH;
+
+const double PEDESTRIAN_SPEED = 0.1;
 
 //How much car is slimmer then road
 const int VECH_OFFSET = 2;
+const int PED_OFFSET = 3;
+
+const int PEDESTRIAN_SIZE = 4;
 
 const int FPS = 60;
 

@@ -13,6 +13,7 @@ public:
     static std::list<QGraphicsItem*> getParkingGraphics(CityController * cityCon);
     static std::list<QGraphicsItem*> getStreetsGraphics(CityController * cityCon);
     static std::list<QGraphicsRectItem*> getVehiclesGraphics(VehicleController *vehCon);
+    static std::list<QGraphicsEllipseItem*> getPedestriansGraphics(VehicleController *cityCon);
 private:
     GraphicFab() {};
 };
