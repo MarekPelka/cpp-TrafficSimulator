@@ -1,55 +1,42 @@
-# cpp-TrafficSimulator
+#	cpp-TrafficSimulator
+##	Installation
+###	Windows 10
+####	Required programs:
+- Compiled BOOST libraries located in `C:/Boost/boost_1_63_0`;
+- `SCONS`
+- Qt compiler located in `C:/Qt/5.8/msvc2015_64`;
+###	Linux ubuntu 16.04
+####	Packages installation and building project:
+- If boost libraries not installed:
+	```
+	sudo apt-get install libboost-all-dev
+	```
+- If scons not installed:
+	```
+	sudo apt-get install scons
+	```
+- Qt compilator installation:
+	```
+	sudo apt-get install qt5-default
+	```
+- To build full project with tests:
+	```
+	scons
+	```
+- To build project without tests:
+	```
+	scons tests=0
+	```
+- To run main application:
+	```
+	./TrafficSimulator
+	```
+- To run tests:
+	```
+	./Tests
+	```
 
-!!! WORK IN PROGRESS !!!
-
-TO DO
-----------
-1. Zaprojektować miasto
-	- Dodawanie ulic
-		- Chodniki
-		- Skrzyżowania
-			- O: Światła
-		- Ulice zabronione dla ciężarówek
-	- Budynków
-	- Parkingów
-	- Kamer
-	- O: Realistyczny rozkład ruchu miejskiego wg pory dnia
-2. Samochody
-	- Cięzarówki i Osobowe
-		- Inne przyśpieszenia
-		- Vmax dla danej ulicy
-		- Długość
-	- Przyśpieszanie, zwalnianie
-	- Skręty n skrzyżowaniach
-	- Max speed dla ulicy
-	- O: Hamowanie przed przeszkodami - światła, inne wariaty
-	- Kolory dlaa przędkości
-3. Skrzyżowania
-	- 5 typów skrzyrzowań
-		- ograniczenia prędkości w zależności od skrętów
-		- O: światła
-		- O: Pasy dla pieszych na skrzyrzowaniach
-
-	- 4 typy skrętów - inne prędkości
-4. Kamery
-	- w dowolnym miejscu
-	- kąt widzenia, dokładność, kierunek obserwacji
-	- budynki zasłaniają widok
-	- próbkowane co 1s
-	- podaje współrzędne zaobserwowanego obiektu
-5. Piesi
-	- Chodzą po chodnikach
-	- Stała predkość + zatrzymywanie
-	- O: Zwracaja uwage na swiatła
-	- Poruszaja sie od korpo do korpo
-6. Budynki
-	- Przesłaniają kamery
-	- Współrzędne
-7. Parkingi
-	- Węzły w grafie
-	- Punkty końcowe
-	- Dwa typy: Domowe i Pracowe
-	- Określone rozmiary
-	- Zajętość
-	- O: Rozkład losowości chęći przyjazdu (Wiecej osób do centrum)
-	- !Odpowwiedzialy za stworzenie samochodu i pieszych!
+#	Scenariusz użycia aplikacji:
+1. Wybierz `scenariusz1` z menu `Plik` aby załadować miasto.
+2. Wybierz `Ruch losowy` z menu `Plik` aby wygenerować ruch losowy w mieście.
+3. Wybierz `Start` z menu `Plik` aby rozpocząć symulację.
