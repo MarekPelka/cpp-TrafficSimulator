@@ -10,7 +10,6 @@
 
 class VehicleController {
 public:
-    //void setMainWindow(std::shared_ptr<MainWindow> mw);
     void addVehicle(Vehicle vehicle);
     std::list<Vehicle> getVehicles();
     void updatePositions(int interval);
@@ -20,8 +19,6 @@ public:
 private:
     VehicleController();
     static VehicleController* instance;
-
-    //std::shared_ptr<MainWindow> mainWindow;
-    //std::list<Street> vehicles;
+	void updatePositionCallback(PStreet s, int arg);
 };
 #endif
