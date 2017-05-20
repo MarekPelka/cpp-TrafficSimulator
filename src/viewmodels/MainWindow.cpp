@@ -38,10 +38,7 @@ MainWindow::MainWindow(QWidget *parent) :
     //Painting streets
     //TODO: There is some weird auto-scaling/positioning -> understend and fix
     scene = new QGraphicsScene(ui->graphicsView);
-	//QBrush backgroundBrush;
-	//QColor bColor(160, 231, 160);
-	//backgroundBrush.setColor(bColor);
-    scene->setBackgroundBrush(QBrush(QColor(99, 216, 99)));
+    scene->setBackgroundBrush(Qt::darkGreen);
     ui->graphicsView->setScene(scene);
 
     streetGroup = new QGraphicsItemGroup();
@@ -187,7 +184,7 @@ void MainWindow::timerEvent(QTimerEvent *event) {
 
     if (randomMovement) {
         ParkingController::getInstance()->randomSpawnVehicle(FPS);
-        //ParkingController::getInstance()->randomSpawnPedestrian(FPS);
+        ParkingController::getInstance()->randomSpawnPedestrian(FPS);
     }
 }
 

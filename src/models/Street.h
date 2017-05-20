@@ -8,37 +8,35 @@
 #include <vector>
 #include "Pedestrian.h"
 #include "Vehicle.h"
-#include "../viewmodels/VehicleController.h"
-
 typedef std::shared_ptr<Node> PNode;
-//class VehicleController;
+
 class Street {
 public:
-	Street();
-	Street(PNode nodeFrom, PNode nodeTo, bool sidewalk = false);
-	std::pair <PNode, PNode> getNodes();
-	std::pair <Position, Position> getStartEndPositions();
-	Direction getDirection();
-	int getLength();
-	static Direction getPredictedDirection(Position start, Position end);
+    Street();
+    Street(PNode nodeFrom, PNode nodeTo, bool sidewalk = false);
+    std::pair <PNode, PNode> getNodes();
+    std::pair <Position, Position> getStartEndPositions();
+    Direction getDirection();
+    int getLength();
+    static Direction getPredictedDirection(Position start, Position end);
 	std::vector<Vehicle> * getVehicles();
-	std::vector<Pedestrian> * getPedestrians();
-	bool hasSidewalk();
-	void alterStart(PNode n);
-	void alterEnd(PNode n);
+    std::vector<Pedestrian> * getPedestrians();
+    bool hasSidewalk();
+    void alterStart(PNode n);
+    void alterEnd(PNode n);
 	void addVehicleToStreet(Vehicle v);
-	void addPedestrianToStreet(Pedestrian p);
+    void addPedestrianToStreet(Pedestrian p);
 	bool updatePositions(int interval);
 	bool swichStreet(std::weak_ptr<Street> s, int spaceNeeded);
 	bool operator==(const Street &v);
 private:
-	Direction direction;
-	PNode nodeFrom;
-	PNode nodeTo;
-	bool sidewalk;
-	int length;
+    Direction direction;
+    PNode nodeFrom;
+    PNode nodeTo;
+    bool sidewalk;
+    int length;
 	std::vector<Vehicle> vehOnStreet;
-	std::vector<Pedestrian> pedOnStreet;
+    std::vector<Pedestrian> pedOnStreet;
 	bool swichS(std::shared_ptr<Street> s, int spaceNeeded);
 };
 #endif
