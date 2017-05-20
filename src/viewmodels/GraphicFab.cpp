@@ -111,12 +111,17 @@ std::list<QGraphicsItem*> GraphicFab::getParkingGraphics(CityController * cityCo
         Y = n->getPosition().y;
 
         QPen pen(Qt::SolidLine);
-        pen.setColor(Qt::black);
+		QColor pColor(99, 99, 216);
+        pen.setColor(pColor);
         QGraphicsRectItem *rect = new QGraphicsRectItem(X - STREET_WIDTH * PARKING_SIZE_MULTIPLIER, Y - STREET_WIDTH * PARKING_SIZE_MULTIPLIER, STREET_WIDTH * 2 * PARKING_SIZE_MULTIPLIER, STREET_WIDTH * 2 * PARKING_SIZE_MULTIPLIER);
-        rect->setBrush(QBrush(Qt::black));
+        rect->setBrush(QBrush(pColor));
         rect->setPen(pen);
-
         out.push_back(rect);
+		QGraphicsTextItem *text = new QGraphicsTextItem(" Parking");
+		text->setDefaultTextColor(Qt::white);
+		auto r = text->boundingRect();
+		text->setPos(X - r.width() / 2, Y - r.height() / 2);
+		out.push_back(text);
     }
     return out;
 }

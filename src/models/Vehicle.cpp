@@ -111,7 +111,7 @@ void Vehicle::move(Street * const s, int time, int place) {
 				calculateSpeed(0, time, vehInFront);
 			}
 			if (speed < 0)
-				speed = -1;
+				speed = 0;
 		}
 		Position step = nodes.front().getPosition();
 		int temp = speed*time;
