@@ -44,9 +44,9 @@ private:
 	std::list<PNode> nodes;
 
 	PNode createNode(Position p);
-	bool handleCrossSteets(Position start, Position end, bool twoWay, std::map<PStreet, Position> map);
-	bool handleNewCrossSteets(PNode s, PNode e, bool twoWay, std::list<PNode> crossingNodes);
-	std::list<PNode> handleExsitingCrossSteets(std::map<PStreet, Position> map);
+	bool handleCrossStreets(Position start, Position end, bool twoWay, std::map<PStreet, Position> map);
+	bool handleNewCrossStreets(PNode s, PNode e, bool twoWay, std::list<PNode> crossingNodes);
+	std::list<PNode> handleExistingCrossStreets(std::map<PStreet, Position> map);
 	std::list<PNode> sortNodeList(std::list<PNode> list);
 	void createStreet(PNode start, PNode end, bool twoWay);
 	void filterList(std::list<PNode>*);
