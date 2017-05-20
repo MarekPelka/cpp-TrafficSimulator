@@ -20,11 +20,6 @@ public:
 private:
     VehicleController();
     static VehicleController* instance;
-<<<<<<< HEAD
 	void updatePositionCallback(PStreet s, int arg);
-=======
-
-    //std::list<Street> vehicles;
->>>>>>> refs/remotes/origin/master
 };
 #endif
