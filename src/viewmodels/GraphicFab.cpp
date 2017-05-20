@@ -1,6 +1,17 @@
 #include "GraphicFab.h"
 
 std::list<QGraphicsItem*> GraphicFab::getStreetsGraphics(CityController * cityCon) {
+    //HOW TO DRAW TEXT:
+    //p.addText(s->getStartEndPositions().first.x + 10 * s->getDirection(), s->getStartEndPositions().first.y + 10, font, "D: " + s->getDirection());
+    //text->setPos(s->getStartEndPositions().first.x / 2 + s->getStartEndPositions().second.x / 2, s->getStartEndPositions().first.y - 30 - 30 * s->getDirection());
+    //QString str = "D: ";
+    //int d = s->getDirection();
+    //std::string stdstr = std::to_string(d);
+
+    //str.append(QString::fromUtf8(stdstr.c_str()));
+    //text->setPlainText(str);
+    //text->setDefaultTextColor(Color);
+    //out.push_back(text);
     std::list<QGraphicsItem*> out = {};
     int sX, sY, eX, eY;
     for (PStreet s : cityCon->getStreets()) {
@@ -13,37 +24,47 @@ std::list<QGraphicsItem*> GraphicFab::getStreetsGraphics(CityController * cityCo
         QPen pen(Qt::DashLine);
         pen.setColor(Qt::white);
         line->setPen(pen);
-        //HOW TO DRAW TEXT:
-        //p.addText(s->getStartEndPositions().first.x + 10 * s->getDirection(), s->getStartEndPositions().first.y + 10, font, "D: " + s->getDirection());
-        //text->setPos(s->getStartEndPositions().first.x / 2 + s->getStartEndPositions().second.x / 2, s->getStartEndPositions().first.y - 30 - 30 * s->getDirection());
-        //QString str = "D: ";
-        //int d = s->getDirection();
-        //std::string stdstr = std::to_string(d);
 
-        //str.append(QString::fromUtf8(stdstr.c_str()));
-        //text->setPlainText(str);
-        //text->setDefaultTextColor(Color);
-        //out.push_back(text);
-        QGraphicsRectItem *rect = nullptr;
+        QGraphicsRectItem *street = nullptr;
+        QGraphicsRectItem *sidewalk = nullptr;
         if (s->getDirection() == N) {
-            rect = new QGraphicsRectItem(eX, eY, STREET_WIDTH, abs(sY - eY));
+            street = new QGraphicsRectItem(eX, eY, STREET_WIDTH, abs(sY - eY));
+            if (s->hasSidewalk()) {
+                sidewalk = new QGraphicsRectItem(eX + STREET_WIDTH, eY, SIDEWALK_WIDTH, abs(sY - eY));
+            }
         }
         else if (s->getDirection() == E) {
-            rect = new QGraphicsRectItem(sX, sY, abs(sX - eX), STREET_WIDTH);
+            street = new QGraphicsRectItem(sX, sY, abs(sX - eX), STREET_WIDTH);
+            if (s->hasSidewalk()) {
+                sidewalk = new QGraphicsRectItem(sX, sY + STREET_WIDTH, abs(sX - eX), SIDEWALK_WIDTH);
+            }
         }
         else if (s->getDirection() == S) {
-            rect = new QGraphicsRectItem(sX - STREET_WIDTH, sY, STREET_WIDTH, abs(sY - eY));
+            street = new QGraphicsRectItem(sX - STREET_WIDTH, sY, STREET_WIDTH, abs(sY - eY));
+            if (s->hasSidewalk()) {
+                sidewalk = new QGraphicsRectItem(sX - (STREET_WIDTH + SIDEWALK_WIDTH), sY, SIDEWALK_WIDTH, abs(sY - eY));
+            }
         }
         else if (s->getDirection() == W) {
-            rect = new QGraphicsRectItem(eX, eY - STREET_WIDTH, abs(sX - eX), STREET_WIDTH);
+            street = new QGraphicsRectItem(eX, eY - STREET_WIDTH, abs(sX - eX), STREET_WIDTH);
+            if (s->hasSidewalk()) {
+                sidewalk = new QGraphicsRectItem(eX, eY - (STREET_WIDTH + SIDEWALK_WIDTH), abs(sX - eX), SIDEWALK_WIDTH);
+            }
         }
-        if (rect) {
+        if (street) {
             pen.setStyle(Qt::SolidLine);
-            pen.setColor(Qt::gray);
-            rect->setPen(pen);
-            rect->setBrush(QBrush(Qt::gray));
-            out.push_back(rect);
+            pen.setColor(Qt::darkGray);
+            street->setPen(pen);
+            street->setBrush(QBrush(Qt::darkGray));
+            out.push_back(street);
             out.push_back(line);
+            if (sidewalk) {
+                pen.setStyle(Qt::SolidLine);
+                pen.setColor(Qt::gray);
+                sidewalk->setPen(pen);
+                sidewalk->setBrush(QBrush(Qt::gray,Qt::Dense2Pattern));
+                out.push_back(sidewalk);
+            }
         }
     }
     return out;
@@ -58,7 +79,7 @@ std::list<QGraphicsItem*> GraphicFab::getIntersectionsGraphics(CityController * 
 
         QPen pen(Qt::SolidLine);
         pen.setColor(Qt::gray);
-        QGraphicsRectItem *rect = new QGraphicsRectItem(X - STREET_WIDTH, Y - STREET_WIDTH, STREET_WIDTH * 2, STREET_WIDTH * 2);
+        QGraphicsRectItem *rect = new QGraphicsRectItem(X - FULL_STREET_WIDTH, Y - FULL_STREET_WIDTH, FULL_STREET_WIDTH * 2, FULL_STREET_WIDTH * 2);
         rect->setBrush(QBrush(Qt::gray));
         rect->setPen(pen);
 
@@ -66,16 +87,16 @@ std::list<QGraphicsItem*> GraphicFab::getIntersectionsGraphics(CityController * 
 
         pen.setStyle(Qt::DashLine);
         pen.setColor(Qt::white);
-        QGraphicsLineItem *line = new QGraphicsLineItem(X - STREET_WIDTH, Y - STREET_WIDTH, X, Y - STREET_WIDTH);
+        QGraphicsLineItem *line = new QGraphicsLineItem(X - FULL_STREET_WIDTH, Y - FULL_STREET_WIDTH, X, Y - FULL_STREET_WIDTH);
         line->setPen(pen);
         out.push_back(line);
-        line = new QGraphicsLineItem(X + STREET_WIDTH, Y - STREET_WIDTH, X + STREET_WIDTH, Y);
+        line = new QGraphicsLineItem(X + FULL_STREET_WIDTH, Y - FULL_STREET_WIDTH, X + FULL_STREET_WIDTH, Y);
         line->setPen(pen);
         out.push_back(line);
-        line = new QGraphicsLineItem(X, Y + STREET_WIDTH, X + STREET_WIDTH, Y + STREET_WIDTH);
+        line = new QGraphicsLineItem(X, Y + FULL_STREET_WIDTH, X + FULL_STREET_WIDTH, Y + FULL_STREET_WIDTH);
         line->setPen(pen);
         out.push_back(line);
-        line = new QGraphicsLineItem(X - STREET_WIDTH, Y, X - STREET_WIDTH, Y + STREET_WIDTH);
+        line = new QGraphicsLineItem(X - FULL_STREET_WIDTH, Y, X - FULL_STREET_WIDTH, Y + FULL_STREET_WIDTH);
         line->setPen(pen);
         out.push_back(line);
     }
@@ -122,6 +143,24 @@ std::list<QGraphicsRectItem*> GraphicFab::getVehiclesGraphics(VehicleController 
         else if (v.getOrientation() == W) {
             out.push_back(new QGraphicsRectItem(v.getPosition().x, v.getPosition().y - STREET_WIDTH + VECH_OFFSET / 2, length, STREET_WIDTH - VECH_OFFSET));
         }
+    }
+    return out;
+}
+
+std::list<QGraphicsEllipseItem*> GraphicFab::getPedestriansGraphics(VehicleController * vehC)
+{
+    std::list<QGraphicsEllipseItem*> out = {};
+    int X, Y;
+    for (auto p : vehC->getPedestrians()) {
+        X = p.getPosition().x;
+        Y = p.getPosition().y;
+
+        QPen pen(Qt::SolidLine);
+        pen.setColor(Qt::black);
+        QGraphicsEllipseItem *ellipse = new QGraphicsEllipseItem(X, Y, PEDESTRIAN_SIZE, PEDESTRIAN_SIZE);
+        ellipse->setBrush(QBrush(Qt::white));
+        ellipse->setPen(pen);
+        out.push_back(ellipse);
     }
     return out;
 }

@@ -46,6 +46,11 @@ std::vector<Vehicle> * Street::getVehicles()
 	return &vehOnStreet;
 }
 
+std::vector<Pedestrian> * Street::getPedestrians()
+{
+    return &pedOnStreet;
+}
+
 bool Street::hasSidewalk() {
     return sidewalk;
 }
@@ -61,6 +66,11 @@ void Street::alterEnd(PNode n) {
 void Street::addVehicleToStreet(Vehicle v)
 {
 	vehOnStreet.push_back(v);
+}
+
+void Street::addPedestrianToStreet(Pedestrian p)
+{
+    pedOnStreet.push_back(p);
 }
 
 bool Street::updatePositions(int interval)
@@ -82,6 +92,17 @@ bool Street::updatePositions(int interval)
 		else
 			++deleteIterator;
 	}
+
+    //pedestrians
+    for (auto it = pedOnStreet.begin(); it != pedOnStreet.end();) {
+        if (it->updatePosition(this, interval, 0)) {
+            ++it;
+        }
+        else {
+            it = pedOnStreet.erase(it);
+        }
+    }
+
 	return true;
 }
 

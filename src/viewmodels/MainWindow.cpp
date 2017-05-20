@@ -45,11 +45,13 @@ MainWindow::MainWindow(QWidget *parent) :
     parkingGroup = new QGraphicsItemGroup();
     nodeGroup = new QGraphicsItemGroup();
     vehicleGroup = new QGraphicsItemGroup();
+    pedestrianGroup = new QGraphicsItemGroup();
     parkingGroup->setZValue(100);
     //Order is important
     scene->addItem(streetGroup);
     scene->addItem(nodeGroup);
     scene->addItem(vehicleGroup);
+    scene->addItem(pedestrianGroup);
     scene->addItem(parkingGroup);
 
     //label with info about current state of insert
@@ -94,6 +96,20 @@ void MainWindow::updateVehiclesViews() {
     }
     scene->addItem(vehicleGroup);
     //scene->addItem(parkingGroup);
+}
+
+void MainWindow::updatePedestriansViews() {
+
+    VehicleController *vehC = VehicleController::getInstance();
+    std::list<QGraphicsEllipseItem*> pedestrianGraphics = GraphicFab::getPedestriansGraphics(vehC);
+    scene->removeItem(pedestrianGroup);
+    delete pedestrianGroup;
+    pedestrianGroup = new QGraphicsItemGroup();
+    for (auto p : vehC->getPedestrians()) {
+        pedestrianGroup->addToGroup(pedestrianGraphics.front());
+        pedestrianGraphics.pop_front();
+    }
+    scene->addItem(pedestrianGroup);
 }
 
 void MainWindow::paintStreets() {
@@ -160,6 +176,7 @@ void MainWindow::timerEvent(QTimerEvent *event) {
     VehicleController *vehC = VehicleController::getInstance();
     vehC->updatePositions(int(1000 / FPS));
     this->updateVehiclesViews();
+    this->updatePedestriansViews();
 
     CameraController *camC = CameraController::getInstance();
     camC->updateObservations();
@@ -167,6 +184,7 @@ void MainWindow::timerEvent(QTimerEvent *event) {
 
     if (randomMovement) {
         ParkingController::getInstance()->randomSpawnVehicle(FPS);
+        ParkingController::getInstance()->randomSpawnPedestrian(FPS);
     }
 }
 

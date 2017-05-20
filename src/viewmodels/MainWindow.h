@@ -25,6 +25,7 @@ public:
     ~MainWindow();
 
     void updateVehiclesViews();
+    void updatePedestriansViews();
     void paintStreets();
     void paintParkings();
     void paintIntersections();
@@ -39,6 +40,7 @@ private:
     QGraphicsItemGroup * parkingGroup;
     QGraphicsItemGroup * nodeGroup;
     QGraphicsItemGroup * vehicleGroup;
+    QGraphicsItemGroup * pedestrianGroup;
 protected:
     void timerEvent(QTimerEvent *event);
     void mousePressEvent(QMouseEvent *event) override;

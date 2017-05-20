@@ -54,4 +54,38 @@ void ParkingController::randomSpawnVehicle(double probability) {
     }
 }
 
+void ParkingController::randomSpawnPedestrian(double probability)
+{
+    CityController * cityC = CityController::getInstance();
+    VehicleController *vehC = VehicleController::getInstance();
+    std::list<PNode> parkingList = cityC->getParkings();
+    if (parkingList.size() < 2)
+        return;
+    for (auto parking : parkingList) {
+        double random_value = std::rand();
+        double roll = double(random_value / RAND_MAX);
+        if (roll < PROBABILITY_SPAWN / probability) {
+            // pedestrian spawn
+            double destination = std::rand() % 100;
+            destination = destination / 100;
+            int endNumber = round(destination * (parkingList.size() - 1));
+            std::list<PNode>::iterator it = parkingList.begin();
+            std::advance(it, endNumber);
+            if (it == parkingList.end())
+                it = parkingList.begin();
+            if (*it == parking) {
+                std::advance(it, 1);
+                if (it == parkingList.end())
+                    it = parkingList.begin();
+            }
+            PNode end = *it;
+            if (!cityC->findWay(parking, end).empty()) {
+                Pedestrian ped(cityC->findWay(parking, end));
+                vehC->addPedestrian(ped);
+            }
+        }
+    }
+
+}
+
 

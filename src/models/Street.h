@@ -6,6 +6,7 @@
 #include <utility>
 #include <memory>
 #include <vector>
+#include "Pedestrian.h"
 #include "Vehicle.h"
 typedef std::shared_ptr<Node> PNode;
 
@@ -19,10 +20,12 @@ public:
     int getLength();
     static Direction getPredictedDirection(Position start, Position end);
 	std::vector<Vehicle> * getVehicles();
+    std::vector<Pedestrian> * getPedestrians();
     bool hasSidewalk();
     void alterStart(PNode n);
     void alterEnd(PNode n);
 	void addVehicleToStreet(Vehicle v);
+    void addPedestrianToStreet(Pedestrian p);
 	bool updatePositions(int interval);
 	bool swichStreet(std::weak_ptr<Street> s, int spaceNeeded);
 	bool operator==(const Street &v);
@@ -33,6 +36,7 @@ private:
     bool sidewalk;
     int length;
 	std::vector<Vehicle> vehOnStreet;
+    std::vector<Pedestrian> pedOnStreet;
 	bool swichS(std::shared_ptr<Street> s, int spaceNeeded);
 };
 #endif

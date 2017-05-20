@@ -1,5 +1,6 @@
 #include "../src/models/Building.cpp"
 #include "../src/models/Camera.cpp"
+#include "../src/models/Pedestrian.cpp"
 #include "../src/models/Vehicle.cpp"
 #include "../src/viewmodels/CameraController.cpp"
 #include "../src/viewmodels/VehicleController.cpp"
