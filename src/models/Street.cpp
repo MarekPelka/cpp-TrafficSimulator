@@ -1,6 +1,9 @@
 #include "Street.h"
 
-Street::Street() {}
+Street::Street() {
+    vehOnStreet = std::vector<Vehicle>();
+    pedOnStreet = std::vector<Pedestrian>();
+}
 
 Street::Street(PNode nodeFrom, PNode nodeTo, bool sidewalk) {
 	this->nodeFrom = nodeFrom;
@@ -11,6 +14,8 @@ Street::Street(PNode nodeFrom, PNode nodeTo, bool sidewalk) {
 		abs(getStartEndPositions().first.x - getStartEndPositions().second.x) ?
 		abs(getStartEndPositions().first.y - getStartEndPositions().second.y) :
 		abs(getStartEndPositions().first.x - getStartEndPositions().second.x);
+    vehOnStreet = std::vector<Vehicle>();
+    pedOnStreet = std::vector<Pedestrian>();
 }
 
 Direction Street::getDirection() {
@@ -71,32 +76,40 @@ void Street::addPedestrianToStreet(Pedestrian p) {
 
 bool Street::updatePositions(int interval) {
 	int place = 0;
-	for (auto iter = vehOnStreet.begin(); iter != vehOnStreet.end();) {
-		if (iter->updatePosition(this, interval, place)) {
-			++iter;
-			++place;
-		} else {
-			iter = vehOnStreet.erase(iter);
-		}
-	}
-	auto deleteIterator = vehOnStreet.begin();
-	while (deleteIterator != vehOnStreet.end()) {
-		if (deleteIterator->getToClear()) {
-			if (deleteIterator->getToSwitch())
-				VehicleController::getInstance()->addVehicleToSwitch(*deleteIterator);
-			deleteIterator = vehOnStreet.erase(deleteIterator);
-		} else
-			++deleteIterator;
-	}
-
+    if (vehOnStreet.size() != 0) {
+        for (auto iter = vehOnStreet.begin(); iter != vehOnStreet.end();) {
+            if (iter->updatePosition(this, interval, place)) {
+                ++iter;
+                ++place;
+            }
+            else {
+                iter = vehOnStreet.erase(iter);
+            }
+        }
+        auto deleteIterator = vehOnStreet.begin();
+        while (deleteIterator != vehOnStreet.end()) {
+            if (deleteIterator->getToClear()) {
+                if (deleteIterator->getToSwitch()) {
+                    VehicleController::getInstance()->addVehicleToSwitch(*deleteIterator);
+                }
+                deleteIterator = vehOnStreet.erase(deleteIterator);
+            }
+            else {
+                ++deleteIterator;
+            }
+        }
+    }
 	//pedestrians
-	for (auto it = pedOnStreet.begin(); it != pedOnStreet.end();) {
-		if (it->updatePosition(this, interval, 0)) {
-			++it;
-		} else {
-			it = pedOnStreet.erase(it);
-		}
-	}
+    if (pedOnStreet.size() != 0) {
+        for (auto it = pedOnStreet.begin(); it != pedOnStreet.end();) {
+            if (it->updatePosition(this, interval, 0)) {
+                ++it;
+            }
+            else {
+                it = pedOnStreet.erase(it);
+            }
+        }
+    }
 
 	return true;
 }

@@ -67,9 +67,9 @@ void VehicleController::updatePositions(int interval) {
 		std::pair<PStreet, int> args(s, interval);
 		//threads.create_thread(boost::bind(&VehicleController::updatePositionCallback, boost::cref(s), boost::cref(interval)));
 		//threads.add_thread(new boost::thread(&VehicleController::updatePositionCallback, this, s, interval));
-		threadsVC.push_back(std::thread(&VehicleController::updatePositionCallback, this, std::ref(s), interval));
+		threadsVC.push_back(std::thread(&VehicleController::updatePositionCallback, this, s, interval));
 	}
-	for (int i = 0; i < threadsVC.size(); i++) {
+	for (int i = 0; i < threadsVC.size(); ++i) {
 		//if (threadsVC.at(i).joinable())
 		threadsVC.at(i).join();
 	}
@@ -77,13 +77,14 @@ void VehicleController::updatePositions(int interval) {
 		v.getStreetToSwitch()->addVehicleToStreet(v);
 	}
 	//getVehiclesToSwitch().clear();
-	auto deleteIterator = vehiclesToSwitch.begin();
-	while (deleteIterator != vehiclesToSwitch.end()) {
-		deleteIterator = vehiclesToSwitch.erase(deleteIterator);
-	}
+    if (vehiclesToSwitch.size() != 0) {
+        auto deleteIterator = vehiclesToSwitch.begin();
+        while (deleteIterator != vehiclesToSwitch.end()) {
+            deleteIterator = vehiclesToSwitch.erase(deleteIterator);
+        }
+    }
 	//s->addVehicleToStreet(vec.front());
 	//threadsVC.back().join();
-
 }
 
 void VehicleController::updatePositionCallback(PStreet s, int arg) {
