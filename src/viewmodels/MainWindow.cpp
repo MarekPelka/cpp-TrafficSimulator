@@ -2,6 +2,7 @@
 #include "../../GeneratedFiles/ui_mainwindow.h"
 #include "../models/Building.h"
 #include "../models/Camera.h"
+#include "../models/SqlConnector.h"
 #include "../views/CameraPopup.h"
 #include "../Enums.h"
 #include "CameraController.h"
@@ -32,8 +33,8 @@ MainWindow::MainWindow(QWidget *parent) :
 
     setWindowTitle(QStringLiteral("Symulator ruchu miejskiego"));
 
-    //initialize controllers
-    //VehicleController::getInstance()->setMainWindow(std::shared_ptr<MainWindow>(this));
+    //connect to database
+    bool status = SqlConnector::getInstance()->connect();
 
     //Painting streets
     //TODO: There is some weird auto-scaling/positioning -> understend and fix
@@ -184,6 +185,7 @@ void MainWindow::timerEvent(QTimerEvent *event) {
     CameraController *camC = CameraController::getInstance();
     camC->updateObservations();
     camC->writeToFile("CameraObservations.txt");
+    camC->writeToDatabase();
 
     if (randomMovement) {
         ParkingController::getInstance()->randomSpawnVehicle(FPS);

@@ -1,5 +1,4 @@
 #include "CameraController.h"
-#include <ctime>
 
 CameraController* CameraController::instance = nullptr;
 
@@ -48,8 +47,7 @@ std::list<Building> CameraController::getBuildings() {
     return buildings;
 }
 
-void CameraController::writeToFile(std::string name)
-{
+void CameraController::writeToFile(std::string name) {
     file.open(name, std::ios::app | std::ios::ate);
     time_t now = time(0);
     if (file.is_open()) {
@@ -74,8 +72,19 @@ void CameraController::writeToFile(std::string name)
     }
 }
 
-bool CameraController::checkIfBuilding(Position p1, Position p2)
-{
+void CameraController::writeToDatabase() {
+    for (auto it = cameras.begin(); it != cameras.end(); ++it) {
+        std::list<std::pair<int, int>> temp = it->getView();
+        if (!temp.empty()) {
+            for (auto iter = temp.begin(); iter != temp.end(); ++iter) {
+                //TODO timestamp
+                SqlConnector::getInstance()->insert(it->id, "######", iter->first, iter->second);
+            }
+        }
+    }
+}
+
+bool CameraController::checkIfBuilding(Position p1, Position p2) {
     for (auto building : getBuildings()) {
         //extending lines with 1px to cover corners
         if (LineIntersectsLine(p1, p2, Position(building.position.x -1, building.position.y), Position(building.position.x + BUILDING_SIZE + 1, building.position.y)) ||

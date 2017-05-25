@@ -2,7 +2,9 @@
 #define CAMERACONTROLLER_H
 #include "../models/Building.h"
 #include "../models/Camera.h"
+#include "../models/SqlConnector.h"
 #include <iostream>
+#include <ctime>
 #include <fstream>
 #include <list>
 #include <memory>
@@ -23,6 +25,7 @@ public:
     std::list<Camera> getCameras();
     std::list<Building> getBuildings();
     void writeToFile(std::string name);
+    void writeToDatabase();
 
 private:
     CameraController();

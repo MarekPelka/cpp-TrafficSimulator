@@ -3,7 +3,8 @@ env = qtEnv.Clone()
 env.EnableQt5Modules([
                       'QtGui',
                       'QtCore',
-					  'QtWidgets'
+					  'QtWidgets',
+					  'QtSql'
                      ])
 
 #env.Program('TrafficSimulator', Glob('src/*.cpp'))
