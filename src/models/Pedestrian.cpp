@@ -26,7 +26,7 @@ Pedestrian::Pedestrian(std::list<PNode> nods)
     }
 }
 
-void Pedestrian::move(Street * const s, int time, int place)
+void Pedestrian::move(int time)
 {
     int offset = FULL_STREET_WIDTH - PED_OFFSET;
     if (nodes.size() != 0) {
@@ -82,7 +82,7 @@ void Pedestrian::move(Street * const s, int time, int place)
                 nextNode = Position(nodes.front().getPosition().x + offset, nodes.front().getPosition().y - offset);
             }
         }
-        int step = PEDESTRIAN_SPEED * time;
+        int step = static_cast<int> (PEDESTRIAN_SPEED * time);
 
         if (position.x != nextNode.x || position.y != nextNode.y) {
             if (position.x < nextNode.x) {
@@ -157,7 +157,7 @@ std::list<Node> Pedestrian::getNodes()
     return nodes;
 }
 
-bool Pedestrian::updatePosition(Street * const s, int time, int place)
+bool Pedestrian::updatePosition(int time)
 {
     if (isMoving == false && nodes.size() == 0) {
         //pedestrian to delete
@@ -165,10 +165,9 @@ bool Pedestrian::updatePosition(Street * const s, int time, int place)
     }
     else {
         //vehicle still moving
-        move(s, time, place);
+        move(time);
         return true;
     }
-    return false;
 }
 
 bool Pedestrian::operator==(const Pedestrian & p)
@@ -181,16 +180,16 @@ Direction Pedestrian::predictDirection(Position start, Position end) {
     double angleRad = atan2(end.y - start.y, end.x - start.x);
     angleRad *= 180 / M_PI;
 
-    if (-45 <= angleRad < 45) {
+    if (-45.0 <= angleRad && angleRad < 45.0) {
         return E;
     }
-    else if (45 <= angleRad < 135) {
+    else if (45.0 <= angleRad && angleRad < 135.0) {
         return N;
     }
-    else if (135 <= angleRad <= 180 || -180 < angleRad < -135) {
+    else if ((135.0 <= angleRad && angleRad <= 180.0) || (-180.0 < angleRad && angleRad < -135.0)) {
         return W;
     }
-    else if (-135 <= angleRad < -45) {
+    else if (-135.0 <= angleRad && angleRad < -45.0) {
         return S;
     }
     return NONE;

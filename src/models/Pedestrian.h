@@ -5,22 +5,22 @@
 #include <list>
 #include <math.h>
 #include "../Enums.h"
-#include "MovingObject.h"
 #include "Node.h"
 
 typedef std::shared_ptr<Node> PNode;
 
-class Pedestrian : MovingObject {
+class Pedestrian{
 public:
     Pedestrian(std::list<PNode> nodes);
-    void move(Street * const s, int time, int place);
+    void move(int time);
     Position getPosition();
     Direction getOrientation();
     std::list<Node> getNodes();
-    bool updatePosition(Street * const s, int time, int place);
+    bool updatePosition(int time);
     bool isMoving = false;
     bool operator==(const Pedestrian &p);
 private:
+    Position position;
     Direction orientation;
     std::list<Node> nodes;
     Direction predictDirection(Position start, Position end);

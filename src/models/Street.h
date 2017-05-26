@@ -39,6 +39,6 @@ private:
 	int length;
 	std::vector<Vehicle> vehOnStreet;
 	std::vector<Pedestrian> pedOnStreet;
-	bool swichS(std::shared_ptr<Street> s, int spaceNeeded);
+	bool swichS(std::shared_ptr<Street> s);
 };
 #endif

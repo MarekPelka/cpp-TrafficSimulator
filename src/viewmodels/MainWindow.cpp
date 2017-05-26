@@ -34,7 +34,7 @@ MainWindow::MainWindow(QWidget *parent) :
     setWindowTitle(QStringLiteral("Symulator ruchu miejskiego"));
 
     //connect to database
-    bool status = SqlConnector::getInstance()->connect();
+    SqlConnector::getInstance()->connect();
 
     //Painting streets
     //TODO: There is some weird auto-scaling/positioning -> understend and fix

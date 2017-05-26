@@ -3,7 +3,7 @@
 ParkingController * ParkingController::instance = nullptr;
 
 ParkingController::ParkingController() {
-    std::srand(std::time(0));
+    std::srand(static_cast <unsigned int> (std::time(0)));
 }
 
 ParkingController * ParkingController::getInstance() {
@@ -25,7 +25,7 @@ void ParkingController::randomSpawnVehicle(double probability) {
             // vehicle spawn
             double destination = std::rand() % 1000;
             destination = destination / 1000;
-            int endNumber = round(destination * (parkingList.size() - 1));
+            int endNumber = static_cast <int> (round(destination * (parkingList.size() - 1)));
             std::list<PNode>::iterator it = parkingList.begin();
             std::advance(it, endNumber);
             if (it == parkingList.end())
@@ -68,7 +68,7 @@ void ParkingController::randomSpawnPedestrian(double probability)
             // pedestrian spawn
             double destination = std::rand() % 100;
             destination = destination / 100;
-            int endNumber = round(destination * (parkingList.size() - 1));
+            int endNumber = static_cast <int> (round(destination * (parkingList.size() - 1)));
             std::list<PNode>::iterator it = parkingList.begin();
             std::advance(it, endNumber);
             if (it == parkingList.end())

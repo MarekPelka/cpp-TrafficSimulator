@@ -102,7 +102,7 @@ bool Street::updatePositions(int interval) {
 	//pedestrians
     if (pedOnStreet.size() != 0) {
         for (auto it = pedOnStreet.begin(); it != pedOnStreet.end();) {
-            if (it->updatePosition(this, interval, 0)) {
+            if (it->updatePosition(interval)) {
                 ++it;
             }
             else {
@@ -120,12 +120,12 @@ bool Street::swichStreet(std::weak_ptr<Street> s, int spaceNeeded) {
 			//return false;
 		Position streetEnd = this->getStartEndPositions().second;
 		if (street->getVehicles()->empty()) {
-			return swichS(street, spaceNeeded);
+			return swichS(street);
 		} else {
 			Position carPosition = street->getVehicles()->back().getPosition();
 			int possibleSpace = streetEnd.x == carPosition.x ? abs(streetEnd.y - carPosition.y) : abs(streetEnd.x - carPosition.x);
 			if (possibleSpace >= spaceNeeded) {
-				return swichS(street, spaceNeeded);
+				return swichS(street);
 			}
 		}
 	}
@@ -137,7 +137,7 @@ bool Street::operator==(const Street & v) {
 	return this->nodeFrom == v.nodeFrom && this->nodeTo == v.nodeTo;
 }
 
-bool Street::swichS(std::shared_ptr<Street> s, int spaceNeeded) {
+bool Street::swichS(std::shared_ptr<Street> s) {
 	auto vec = this->vehOnStreet;
 	if (!vec.empty()) {
 		//s->addVehicleToStreet(vec.front());

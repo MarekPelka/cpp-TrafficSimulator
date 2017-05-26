@@ -7,7 +7,6 @@
 #include <math.h>
 #include "../Enums.h"
 #include "../models/Position.h"
-#include "../models/MovingObject.h"
 
 class Camera {
 public:

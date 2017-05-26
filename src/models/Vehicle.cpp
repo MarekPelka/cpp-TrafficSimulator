@@ -44,7 +44,7 @@ void Vehicle::move(Street * const s, int time, int place) {
 		if (place == 0) { //first  vehicle
 			/*if (place != 0)
 				throw "First and nor first element";*/
-			int brakingDistance = pow(speed, 2) / 2 / CAR_SLOWDOWN;
+			int brakingDistance = static_cast <int> (pow(speed, 2) / 2 / CAR_SLOWDOWN);
 			int roadTT = nodes.front().getPosition().x == position.x ? abs(nodes.front().getPosition().y - position.y) : abs(nodes.front().getPosition().x - position.x);
 			if (roadTT < DRIVE_UP) {
 				//DOJECHA£ DO SKRZYZOWANIA I POWINIEN STAC
@@ -61,7 +61,7 @@ void Vehicle::move(Street * const s, int time, int place) {
 			//POLICZENIE PRZESUNIÊCIA
 		} else { //Not first vehicle
 			Vehicle vehInFront = s->getVehicles()->at(place - 1);
-			int distanceFromVehInFront = this->speed / 2 + 1;
+			int distanceFromVehInFront = static_cast <int> (this->speed / 2 + 1);
 			int brakingOffset = DRIVE_UP;
 			//auto myIter = std::next(s->getVehicles().begin(), place - 1);
 
@@ -89,7 +89,7 @@ void Vehicle::move(Street * const s, int time, int place) {
 				brakingOffset += CAR_SPACING;
 			}
 
-			int brakingDistance = pow(speed, 2) / 2 / CAR_SLOWDOWN;
+			int brakingDistance = static_cast <int> (pow(speed, 2) / 2 / CAR_SLOWDOWN);
 			int roadTT = nodes.front().getPosition().x == position.x ? abs(nodes.front().getPosition().y - position.y) : abs(nodes.front().getPosition().x - position.x);
 			int carInFrontRoadTT = nodes.front().getPosition().x == vehInFront.getPosition().x ? abs(nodes.front().getPosition().y - vehInFront.getPosition().y) : abs(nodes.front().getPosition().x - vehInFront.getPosition().x);
 			if (roadTT <= brakingOffset) {
@@ -114,7 +114,7 @@ void Vehicle::move(Street * const s, int time, int place) {
 				speed = 0;
 		}
 		Position step = nodes.front().getPosition();
-		int temp = speed*time;
+		int temp = static_cast <int> (speed*time);
 		if (position.x != step.x || position.y != step.y) {
 			if (position.x < step.x) {
 				orientation = E;
@@ -300,29 +300,29 @@ std::list<int> Vehicle::vehicleColor(double veh_speed) {
 	veh_speed += 30;
 
 	int r, g, b;
-	double d = 256.0 / 20.0;
+	double d = 256 / 20;
 
 	if (veh_speed < 0) { //nadfiolet
 		r = g = b = 0;
 	} else if (veh_speed < 20) {
-		r = 255 - d * veh_speed;
+		r = static_cast <int> (255 - d * veh_speed);
 		g = 0;
 		b = 255;
 	} else if (veh_speed < 40) {
 		r = 0;
-		g = d * (veh_speed - 20);
+		g = static_cast <int> (d * (veh_speed - 20));
 		b = 255;
 	} else if (veh_speed < 60) {
 		r = 0;
 		g = 255;
-		b = 255 - d * (veh_speed - 40);
+		b = static_cast <int> (255 - d * (veh_speed - 40));
 	} else if (veh_speed < 80) {
-		r = d * (veh_speed - 60);
+		r = static_cast <int> (d * (veh_speed - 60));
 		g = 255;
 		b = 0;
 	} else if (veh_speed < 100) {
 		r = 255;
-		g = 255 - d * (veh_speed - 80);
+		g = static_cast <int> (255 - d * (veh_speed - 80));
 		b = 0;
 	} else { //podczerwieñ
 		r = g = b = 0;

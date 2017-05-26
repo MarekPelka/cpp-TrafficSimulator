@@ -4,12 +4,11 @@
 #include <list>
 #include <memory>
 #include "../Enums.h"
-#include "MovingObject.h"
 #include "Node.h"
 
 typedef std::shared_ptr<Node> PNode;
 
-class Vehicle : MovingObject {
+class Vehicle{
 public:
 	~Vehicle();
 	Vehicle(VehicleType type, std::list<Node> nodes);
@@ -32,6 +31,7 @@ public:
 	std::shared_ptr<Street> getStreetToSwitch();
 	void setStreetToSwitch(std::shared_ptr<Street> t);
 private:
+    Position position;
 	int length;
 	double acceleration;
 	double slowdown;
