@@ -2,7 +2,6 @@
 #include "../../GeneratedFiles/ui_mainwindow.h"
 #include "../models/Building.h"
 #include "../models/Camera.h"
-#include "../models/SqlConnector.h"
 #include "../views/CameraPopup.h"
 #include "../Enums.h"
 #include "CameraController.h"
