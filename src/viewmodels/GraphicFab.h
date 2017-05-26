@@ -6,14 +6,14 @@
 #include <list>
 #include <string>
 #include "CityController.h"
-#include "VehicleController.h"
+#include "MovementController.h"
 class GraphicFab {
 public:
     static std::list<QGraphicsItem*> getIntersectionsGraphics(CityController * cityCon);
     static std::list<QGraphicsItem*> getParkingGraphics(CityController * cityCon);
     static std::list<QGraphicsItem*> getStreetsGraphics(CityController * cityCon);
-    static std::list<QGraphicsRectItem*> getVehiclesGraphics(VehicleController *vehCon);
-    static std::list<QGraphicsEllipseItem*> getPedestriansGraphics(VehicleController *cityCon);
+    static std::list<QGraphicsRectItem*> getVehiclesGraphics(MovementController *moveCon);
+    static std::list<QGraphicsEllipseItem*> getPedestriansGraphics(MovementController *cityCon);
 private:
     GraphicFab() {};
 };

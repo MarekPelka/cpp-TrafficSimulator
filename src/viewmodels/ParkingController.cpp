@@ -14,7 +14,7 @@ ParkingController * ParkingController::getInstance() {
 
 void ParkingController::randomSpawnVehicle(double probability) {
     CityController * cityC = CityController::getInstance();
-    VehicleController *vehC = VehicleController::getInstance();
+    MovementController *moveC = MovementController::getInstance();
     std::list<PNode> parkingList = cityC->getParkings();
     if (parkingList.size() < 2)
         return;
@@ -40,14 +40,14 @@ void ParkingController::randomSpawnVehicle(double probability) {
                 //spawn truck
                 if (!cityC->findWay(parking, end).empty()) {
                     Vehicle truck(TRUCK, cityC->findWay(parking, end));
-                    vehC->addVehicle(truck);
+                    moveC->addVehicle(truck);
                 }
             }
             else {
                 //spawn car
                 if (!cityC->findWay(parking, end).empty()) {
                     Vehicle car(CAR, cityC->findWay(parking, end));
-                    vehC->addVehicle(car);
+                    moveC->addVehicle(car);
                 }
             }
         }
@@ -57,7 +57,7 @@ void ParkingController::randomSpawnVehicle(double probability) {
 void ParkingController::randomSpawnPedestrian(double probability)
 {
     CityController * cityC = CityController::getInstance();
-    VehicleController *vehC = VehicleController::getInstance();
+    MovementController *moveC = MovementController::getInstance();
     std::list<PNode> parkingList = cityC->getParkings();
     if (parkingList.size() < 2)
         return;
@@ -81,7 +81,7 @@ void ParkingController::randomSpawnPedestrian(double probability)
             PNode end = *it;
             if (!cityC->findWay(parking, end).empty()) {
                 Pedestrian ped(cityC->findWay(parking, end));
-                vehC->addPedestrian(ped);
+                moveC->addPedestrian(ped);
             }
         }
     }

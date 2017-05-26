@@ -1,7 +1,7 @@
 #ifndef PARKINGCONTROLLER_H
 #define PARKINGCONTROLLER_H
 #include "CityController.h"
-#include "VehicleController.h"
+#include "MovementController.h"
 #include <ctime>
 #include <list>
 #include <memory>

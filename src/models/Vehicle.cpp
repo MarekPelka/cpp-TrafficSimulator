@@ -1,5 +1,5 @@
 #include "Vehicle.h"
-#include "../viewmodels/VehicleController.h"
+#include "../viewmodels/MovementController.h"
 
 Vehicle::Vehicle(VehicleType typ, std::list<Node> nods) {
 	type = typ;

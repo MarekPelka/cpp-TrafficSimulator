@@ -1,46 +1,42 @@
-//#include <boost/thread/thread.hpp>
-//#include <boost/bind.hpp>
-//#include <boost/core/ref.hpp>
-
 #include <thread>
 #include <vector>
 
-#include "VehicleController.h"
+#include "MovementController.h"
 
-VehicleController* VehicleController::instance = nullptr;
+MovementController* MovementController::instance = nullptr;
 
-VehicleController* VehicleController::getInstance() {
+MovementController* MovementController::getInstance() {
 	if (!instance)
-		instance = new VehicleController;
+		instance = new MovementController;
 	return instance;
 }
 
-VehicleController::VehicleController() {
+MovementController::MovementController() {
 	vehiclesToSwitch = std::list<Vehicle>();
 }
 
-std::list<Vehicle> * VehicleController::getVehiclesToSwitch() {
+std::list<Vehicle> * MovementController::getVehiclesToSwitch() {
 	return &vehiclesToSwitch;
 }
 
-void VehicleController::addVehicle(Vehicle vehicle) {
+void MovementController::addVehicle(Vehicle vehicle) {
 	if (auto spt = vehicle.getNodes().front().getStreetsIn().at(vehicle.getOrientation()).lock()) { // Has to be copied into a shared_ptr before usage	
 		spt->addVehicleToStreet(vehicle);
 	}
 	//vehicles.push_back(vehicle);
 }
 
-void VehicleController::addVehicleToSwitch(Vehicle vehicle) {
+void MovementController::addVehicleToSwitch(Vehicle vehicle) {
 	vehiclesToSwitch.push_back(vehicle);
 }
 
-void VehicleController::addPedestrian(Pedestrian ped) {
+void MovementController::addPedestrian(Pedestrian ped) {
 	if (auto spt = ped.getNodes().front().getStreetsIn().at(ped.getOrientation()).lock()) { // Has to be copied into a shared_ptr before usage	
 		spt->addPedestrianToStreet(ped);
 	}
 }
 
-std::list<Vehicle> VehicleController::getVehicles() {
+std::list<Vehicle> MovementController::getVehicles() {
 	std::list<Vehicle> out;
 	for (PStreet s : CityController::getInstance()->getStreets()) {
 		std::vector<Vehicle> * temp = s->getVehicles();
@@ -49,7 +45,7 @@ std::list<Vehicle> VehicleController::getVehicles() {
 	return out;
 }
 
-std::list<Pedestrian> VehicleController::getPedestrians() {
+std::list<Pedestrian> MovementController::getPedestrians() {
 	std::list<Pedestrian> out;
 	for (PStreet s : CityController::getInstance()->getStreets()) {
 		std::vector<Pedestrian> * temp = s->getPedestrians();
@@ -58,7 +54,7 @@ std::list<Pedestrian> VehicleController::getPedestrians() {
 	return out;
 }
 
-void VehicleController::updatePositions(int interval) {
+void MovementController::updatePositions(int interval) {
 
 	//boost::thread_group threads;
 	std::vector<std::thread> threadsVC;
@@ -67,7 +63,7 @@ void VehicleController::updatePositions(int interval) {
 		std::pair<PStreet, int> args(s, interval);
 		//threads.create_thread(boost::bind(&VehicleController::updatePositionCallback, boost::cref(s), boost::cref(interval)));
 		//threads.add_thread(new boost::thread(&VehicleController::updatePositionCallback, this, s, interval));
-		threadsVC.push_back(std::thread(&VehicleController::updatePositionCallback, this, s, interval));
+		threadsVC.push_back(std::thread(&MovementController::updatePositionCallback, this, s, interval));
 	}
 	for (int i = 0; i < threadsVC.size(); ++i) {
 		//if (threadsVC.at(i).joinable())
@@ -87,12 +83,12 @@ void VehicleController::updatePositions(int interval) {
 	//threadsVC.back().join();
 }
 
-void VehicleController::updatePositionCallback(PStreet s, int arg) {
+void MovementController::updatePositionCallback(PStreet s, int arg) {
 	s->updatePositions(arg);
 	//args.first->updatePositions(args.second);
 }
 
-void VehicleController::clearController() {
+void MovementController::clearController() {
 	for (PStreet s : CityController::getInstance()->getStreets()) {
 		s->getVehicles()->clear();
 	}

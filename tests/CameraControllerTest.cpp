@@ -3,7 +3,7 @@
 #include "../src/models/Pedestrian.cpp"
 #include "../src/models/Vehicle.cpp"
 #include "../src/viewmodels/CameraController.cpp"
-#include "../src/viewmodels/VehicleController.cpp"
+#include "../src/viewmodels/MovementController.cpp"
 
 #include <boost/test/unit_test.hpp>
 
@@ -73,7 +73,7 @@ BOOST_AUTO_TEST_CASE(checkIfInZone) {
 }
 
 BOOST_AUTO_TEST_CASE(updateObservation) {
-    VehicleController *vehC = VehicleController::getInstance();
+    MovementController *moveC = MovementController::getInstance();
     CameraController *camC = CameraController::getInstance();
     CityController *cityC = CityController::getInstance();
 
@@ -94,7 +94,7 @@ BOOST_AUTO_TEST_CASE(updateObservation) {
     if (!nodes.empty()) {
         for (int i = 0; i < 10; i++) {
             Vehicle car(CAR, nodes);
-            VehicleController::getInstance()->addVehicle(car);
+            MovementController::getInstance()->addVehicle(car);
         }
     }
 
@@ -118,7 +118,7 @@ BOOST_AUTO_TEST_CASE(updateObservation) {
     camera2.updateObservation();
     BOOST_CHECK_EQUAL(camera.getView().size(), 10);
     BOOST_CHECK_EQUAL(camera2.getView().size(), 10);
-    vehC->clearController();
+    moveC->clearController();
     camC->clearController();
     cityC->clearController();
 }

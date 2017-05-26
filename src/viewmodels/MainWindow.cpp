@@ -77,12 +77,12 @@ MainWindow::~MainWindow() {
 
 void MainWindow::updateVehiclesViews() {
 
-    VehicleController *vehC = VehicleController::getInstance();
-    std::list<QGraphicsRectItem*> vehicleGraphics = GraphicFab::getVehiclesGraphics(vehC);
+    MovementController *moveC = MovementController::getInstance();
+    std::list<QGraphicsRectItem*> vehicleGraphics = GraphicFab::getVehiclesGraphics(moveC);
     scene->removeItem(vehicleGroup);
     delete vehicleGroup;
     vehicleGroup = new QGraphicsItemGroup();
-    for (Vehicle veh : vehC->getVehicles()) {
+    for (Vehicle veh : moveC->getVehicles()) {
         if (veh.color.size() != 0) {
             QPen pen = QPen(QColor(0, 0, 0), 1, Qt::SolidLine);
             int r = veh.color.front();
@@ -104,12 +104,12 @@ void MainWindow::updateVehiclesViews() {
 
 void MainWindow::updatePedestriansViews() {
 
-    VehicleController *vehC = VehicleController::getInstance();
-    std::list<QGraphicsEllipseItem*> pedestrianGraphics = GraphicFab::getPedestriansGraphics(vehC);
+    MovementController *moveC = MovementController::getInstance();
+    std::list<QGraphicsEllipseItem*> pedestrianGraphics = GraphicFab::getPedestriansGraphics(moveC);
     scene->removeItem(pedestrianGroup);
     delete pedestrianGroup;
     pedestrianGroup = new QGraphicsItemGroup();
-    for (auto p : vehC->getPedestrians()) {
+    for (auto p : moveC->getPedestrians()) {
         pedestrianGroup->addToGroup(pedestrianGraphics.front());
         pedestrianGraphics.pop_front();
     }
@@ -177,8 +177,8 @@ bool MainWindow::checkClosest(Node node, Position position) {
 }
 
 void MainWindow::timerEvent(QTimerEvent *event) {
-    VehicleController *vehC = VehicleController::getInstance();
-    vehC->updatePositions(int(1000 / FPS));
+    MovementController *moveC = MovementController::getInstance();
+    moveC->updatePositions(int(1000 / FPS));
     this->updateVehiclesViews();
     this->updatePedestriansViews();
 
@@ -195,7 +195,7 @@ void MainWindow::timerEvent(QTimerEvent *event) {
 
 void MainWindow::mousePressEvent(QMouseEvent *event) {
     QString status = infoLabel->text();
-    VehicleController *vehC = VehicleController::getInstance();
+    MovementController *moveC = MovementController::getInstance();
     CityController *cityC = CityController::getInstance();
     std::list<PNode> nodes;
     if (status.size() != 0) {
@@ -267,7 +267,7 @@ void MainWindow::mousePressEvent(QMouseEvent *event) {
             nodes = nodesPath(startPos, endPos);
             if (!nodes.empty()) {
                 Vehicle car(CAR, nodes);
-                vehC->addVehicle(car);
+                moveC->addVehicle(car);
             }
             click = false;
         }
@@ -280,7 +280,7 @@ void MainWindow::mousePressEvent(QMouseEvent *event) {
             nodes = nodesPath(startPos, endPos);
             if (!nodes.empty()) {
                 Vehicle truck(TRUCK, nodes);
-                vehC->addVehicle(truck);
+                moveC->addVehicle(truck);
             }
             click = false;
         }
@@ -435,7 +435,7 @@ void MainWindow::scenario2() {
 	if (!nodes.empty()) {
 		for (int i = 0; i < 20; i++) {
 			Vehicle car(CAR, nodes);
-			VehicleController::getInstance()->addVehicle(car);
+			MovementController::getInstance()->addVehicle(car);
 		}
 	}
 	paintStreets();

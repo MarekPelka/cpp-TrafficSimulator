@@ -8,7 +8,7 @@
 #include <vector>
 #include "Pedestrian.h"
 #include "Vehicle.h"
-#include "../viewmodels/VehicleController.h"
+#include "../viewmodels/MovementController.h"
 
 typedef std::shared_ptr<Node> PNode;
 //class VehicleController;

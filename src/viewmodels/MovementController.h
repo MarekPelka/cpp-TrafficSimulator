@@ -1,16 +1,15 @@
-#ifndef VEHICLECONTROLLER_H
-#define VEHICLECONTROLLER_H
+#ifndef MOVEMENTCONTROLLER_H
+#define MOVEMENTCONTROLLER_H
 #include "../models/Position.h"
 #include "../models/Vehicle.h"
 #include <list>
 #include <memory>
-//#include "../models/Street.h"
 #include "CityController.h"
 
 class Street;
 typedef std::shared_ptr<Street> PStreet;
 
-class VehicleController {
+class MovementController {
 public:
 	void addVehicle(Vehicle vehicle);
 	void addVehicleToSwitch(Vehicle vehicle);
@@ -21,11 +20,11 @@ public:
 	void updatePositions(int interval);
 	void clearController();
 
-	static VehicleController* getInstance();
+	static MovementController* getInstance();
 private:
-	VehicleController();
+	MovementController();
 
-	static VehicleController* instance;
+	static MovementController* instance;
 	void updatePositionCallback(PStreet s, int arg);
 	std::list<Vehicle> vehiclesToSwitch;
 };

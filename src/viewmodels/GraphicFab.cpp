@@ -126,10 +126,10 @@ std::list<QGraphicsItem*> GraphicFab::getParkingGraphics(CityController * cityCo
     return out;
 }
 
-std::list<QGraphicsRectItem*> GraphicFab::getVehiclesGraphics(VehicleController * vehCon) {
+std::list<QGraphicsRectItem*> GraphicFab::getVehiclesGraphics(MovementController * moveCon) {
     std::list<QGraphicsRectItem*> out = {};
     int length = 0;
-    for (Vehicle v : vehCon->getVehicles()) {
+    for (Vehicle v : moveCon->getVehicles()) {
         if (v.getType() == CAR) {
             length = CAR_LENGTH;
         }
@@ -152,11 +152,11 @@ std::list<QGraphicsRectItem*> GraphicFab::getVehiclesGraphics(VehicleController 
     return out;
 }
 
-std::list<QGraphicsEllipseItem*> GraphicFab::getPedestriansGraphics(VehicleController * vehC)
+std::list<QGraphicsEllipseItem*> GraphicFab::getPedestriansGraphics(MovementController * moveCon)
 {
     std::list<QGraphicsEllipseItem*> out = {};
     int X, Y;
-    for (auto p : vehC->getPedestrians()) {
+    for (auto p : moveCon->getPedestrians()) {
         X = p.getPosition().x;
         Y = p.getPosition().y;
 

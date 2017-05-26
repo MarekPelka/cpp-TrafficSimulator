@@ -1,6 +1,6 @@
 #include "Camera.h"
 #include "../viewmodels/CameraController.h"
-#include "../viewmodels/VehicleController.h"
+#include "../viewmodels/MovementController.h"
 
 int Camera::counter = 0;
 
@@ -46,8 +46,8 @@ void Camera::clearObservation() {
 }
 
 void Camera::updateObservation() {
-    VehicleController *vehC = VehicleController::getInstance();
-    std::list<Vehicle> vehicles = vehC->getVehicles();
+    MovementController *moveC = MovementController::getInstance();
+    std::list<Vehicle> vehicles = moveC->getVehicles();
     for (auto veh : vehicles) {
         double angl = getAngleBetweenPoints(position, veh.getPosition());
         if (checkIfInZone(angl)) {

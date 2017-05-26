@@ -90,7 +90,7 @@ bool Street::updatePositions(int interval) {
         while (deleteIterator != vehOnStreet.end()) {
             if (deleteIterator->getToClear()) {
                 if (deleteIterator->getToSwitch()) {
-                    VehicleController::getInstance()->addVehicleToSwitch(*deleteIterator);
+                    MovementController::getInstance()->addVehicleToSwitch(*deleteIterator);
                 }
                 deleteIterator = vehOnStreet.erase(deleteIterator);
             }
