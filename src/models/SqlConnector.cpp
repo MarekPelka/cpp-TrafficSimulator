@@ -33,7 +33,7 @@ void SqlConnector::insert(int cam_id, std::string time, int x, int y) {
     query.addBindValue(time.c_str());
     query.addBindValue(x);
     query.addBindValue(y);
-    bool ok = query.exec();
+    query.exec();
 }
 
 void SqlConnector::disconnect() {

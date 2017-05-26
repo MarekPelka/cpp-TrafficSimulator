@@ -48,8 +48,9 @@ std::list<Building> CameraController::getBuildings() {
 }
 
 void CameraController::writeToFile(std::string name) {
+    std::chrono::system_clock::time_point p = std::chrono::system_clock::now();
+    std::time_t t = std::chrono::system_clock::to_time_t(p);
     file.open(name, std::ios::app | std::ios::ate);
-    time_t now = time(0);
     if (file.is_open()) {
         for (auto it = cameras.begin(); it != cameras.end(); ++it) {
             std::list<std::pair<int, int>> temp = it->getView();
@@ -58,8 +59,7 @@ void CameraController::writeToFile(std::string name) {
                 file << it->id;
                 file << " ";
                 file << "Timestamp: ";
-				char str[26];
-                file << ctime_s(str, sizeof(str), &now);
+                file << std::ctime(&t);
                 for (auto iter = temp.begin(); iter != temp.end(); ++iter) {
                     file << iter->first;
                     file << " ";
@@ -73,12 +73,13 @@ void CameraController::writeToFile(std::string name) {
 }
 
 void CameraController::writeToDatabase() {
+    std::chrono::system_clock::time_point p = std::chrono::system_clock::now();
+    std::time_t t = std::chrono::system_clock::to_time_t(p);
     for (auto it = cameras.begin(); it != cameras.end(); ++it) {
         std::list<std::pair<int, int>> temp = it->getView();
         if (!temp.empty()) {
             for (auto iter = temp.begin(); iter != temp.end(); ++iter) {
-                //TODO timestamp
-                SqlConnector::getInstance()->insert(it->id, "######", iter->first, iter->second);
+                SqlConnector::getInstance()->insert(it->id, std::ctime(&t), iter->first, iter->second);
             }
         }
     }
