@@ -35,6 +35,9 @@ MainWindow::MainWindow(QWidget *parent) :
     //connect to database
     SqlConnector::getInstance()->connect();
 
+    //set window icon
+    setWindowIcon(QIcon("images/Traffic-50.png"));
+
     //Painting streets
     //TODO: There is some weird auto-scaling/positioning -> understend and fix
     scene = new QGraphicsScene(ui->graphicsView);
