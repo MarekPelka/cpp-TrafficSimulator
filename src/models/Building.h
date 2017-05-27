@@ -1,3 +1,10 @@
+/**
+* \class Building
+* \ingroup models
+* \details class representing building object
+* \author Michal Krzeminski
+*/
+
 #ifndef BUILDING_H
 #define BUILDING_H
 
@@ -6,11 +13,18 @@
 
 class Building {
 public:
+    ///default constructor
     Building();
+    /** constructor with parameter
+    * \param position building positon
+    */
     Building(Position position);
+    /// equal to operator
     bool operator==(const Building &v);
 
+    ///building position
     Position position;
+    ///building size
     int size = BUILDING_SIZE;
 };
 #endif

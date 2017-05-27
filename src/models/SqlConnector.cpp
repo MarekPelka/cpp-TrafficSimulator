@@ -16,11 +16,7 @@ bool SqlConnector::connect() {
         return false;
     }
     db = QSqlDatabase::addDatabase("QSQLITE");
-    //db.setHostName(host);
-    //db.setPort(3306);
     db.setDatabaseName("cam_observations.db");
-    //db.setUserName(user);
-    //db.setPassword(pass);
     bool ok = db.open();
     return ok;
 }
