@@ -27,6 +27,7 @@ public:
     std::list<Building> getBuildings();
     void writeToFile(std::string name);
     void writeToDatabase();
+    bool insertType = false;
 
 private:
     CameraController();

@@ -33,7 +33,8 @@ MainWindow::MainWindow(QWidget *parent) :
 	setWindowTitle(QStringLiteral("Symulator ruchu miejskiego"));
 
 	//connect to database
-	SqlConnector::getInstance()->connect();
+    bool status = SqlConnector::getInstance()->connect();
+    CameraController::getInstance()->insertType = status;
 
 	//set window icon
 	setWindowIcon(QIcon("images/Traffic-50.png"));
@@ -192,8 +193,12 @@ void MainWindow::timerEvent(QTimerEvent *event) {
 
 	CameraController *camC = CameraController::getInstance();
 	camC->updateObservations();
-	camC->writeToFile("CameraObservations.txt");
-	camC->writeToDatabase();
+    if (camC->insertType) {
+        camC->writeToDatabase();
+    }
+    else {
+        camC->writeToFile("CameraObservations.txt");
+    }
 
 	if (randomMovement) {
 		ParkingController::getInstance()->randomSpawnVehicle(FPS);
