@@ -23,6 +23,7 @@ MainWindow::MainWindow(QWidget *parent) :
 	createActions();
 	createMenus();
 
+    //popup for adding camera specification
 	CameraPopup *popup = CameraPopup::getInstance();
 	popup->setMainWindow(std::shared_ptr<MainWindow>(this));
 	popup->setWindowFlags(Qt::Popup);
@@ -192,14 +193,14 @@ void MainWindow::timerEvent(QTimerEvent *event) {
 	this->updateVehiclesViews();
 	this->updatePedestriansViews();
 
-	CameraController *camC = CameraController::getInstance();
-	camC->updateObservations();
-    if (camC->insertType) {
-        camC->writeToDatabase();
-    }
-    else {
-        camC->writeToFile("CameraObservations.txt");
-    }
+	//CameraController *camC = CameraController::getInstance();
+	//camC->updateObservations();
+ //   if (camC->insertType) {
+ //       camC->writeToDatabase();
+ //   }
+ //   else {
+ //       camC->writeToFile("CameraObservations.txt");
+ //   }
 
 	if (randomMovement) {
 		ParkingController::getInstance()->randomSpawnVehicle(FPS);

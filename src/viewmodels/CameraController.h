@@ -16,7 +16,6 @@
 #include <fstream>
 #include <list>
 #include <memory>
-#include <thread>
 
 class CameraController {
 public:
