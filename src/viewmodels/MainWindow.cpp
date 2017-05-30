@@ -193,14 +193,14 @@ void MainWindow::timerEvent(QTimerEvent *event) {
 	this->updateVehiclesViews();
 	this->updatePedestriansViews();
 
-	//CameraController *camC = CameraController::getInstance();
-	//camC->updateObservations();
- //   if (camC->insertType) {
- //       camC->writeToDatabase();
- //   }
- //   else {
- //       camC->writeToFile("CameraObservations.txt");
- //   }
+    CameraController *camC = CameraController::getInstance();
+    camC->updateObservations();
+    if (camC->insertType) {
+        camC->writeToDatabase();
+    }
+    else {
+        camC->writeToFile("CameraObservations.txt");
+    }
 
 	if (randomMovement) {
 		ParkingController::getInstance()->randomSpawnVehicle(FPS);
@@ -375,8 +375,38 @@ void MainWindow::contextMenuEvent(QContextMenuEvent *event) {
 
 void MainWindow::start() {
 	//timer for vehicle movement
-	timerId = startTimer(1000 / FPS);
+	//timerId = startTimer(1000 / FPS);
+    timerPosition = new QTimer(this);
+    connect(timerPosition, SIGNAL(timeout()), this, SLOT(timerEventPos()));
+    timerPosition->start(1000 / FPS);
+    timerDatabase = new QTimer(this);
+    connect(timerDatabase, SIGNAL(timeout()), this, SLOT(timerEventDatabase()));
+    timerDatabase->start(1000);
 }
+
+void MainWindow::timerEventPos() {
+    MovementController *moveC = MovementController::getInstance();
+    moveC->updatePositions(int(1000 / FPS));
+    this->updateVehiclesViews();
+    this->updatePedestriansViews();
+
+    if (randomMovement) {
+        ParkingController::getInstance()->randomSpawnVehicle(FPS);
+        ParkingController::getInstance()->randomSpawnPedestrian(FPS);
+    }
+}
+
+void MainWindow::timerEventDatabase() {
+    CameraController *camC = CameraController::getInstance();
+    camC->updateObservations();
+    if (camC->insertType) {
+        camC->writeToDatabase();
+    }
+    else {
+        camC->writeToFile("CameraObservations.txt");
+    }
+}
+
 void MainWindow::scenario1() {
 	CityController *cityC = CityController::getInstance();
 	Position p1(100, 100);

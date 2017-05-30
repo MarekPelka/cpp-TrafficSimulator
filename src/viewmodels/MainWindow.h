@@ -52,7 +52,8 @@ private:
 protected:
     void timerEvent(QTimerEvent *event);
     void mousePressEvent(QMouseEvent *event) override;
-
+    QTimer * timerPosition;
+    QTimer * timerDatabase;
     //dropdown menu
     void contextMenuEvent(QContextMenuEvent *event) override;
 
@@ -68,6 +69,9 @@ protected:
     void addCar();
     void addTruck();
     void about();
+    void timerEventDatabase();
+    void timerEventPos();
+
 private:
     void createActions();
     void createMenus();
