@@ -47,19 +47,19 @@ void Camera::clearObservation() {
 
 void Camera::updateObservation() {
     MovementController *moveC = MovementController::getInstance();
-    std::list<Vehicle> vehicles = moveC->getVehicles();
+    std::list<PVehicle> vehicles = moveC->getVehicles();
     for (auto veh : vehicles) {
-        double angl = getAngleBetweenPoints(position, veh.getPosition());
+        double angl = getAngleBetweenPoints(position, veh->getPosition());
         if (checkIfInZone(angl)) {
-            if (CameraController::getInstance()->checkIfBuilding(position, veh.getPosition())) {
-                double distsqr = getDistanceBetweenPoints(position, veh.getPosition());
+            if (CameraController::getInstance()->checkIfBuilding(position, veh->getPosition())) {
+                double distsqr = getDistanceBetweenPoints(position, veh->getPosition());
 
                 int accuracy = 100;
                 //prawo odwrotnych kwadratów CAMERA_PRECISION/(d^2)
                 double distNoisiness = (CAMERA_PRECISION / distsqr) * accuracy;
                 double result = rand() % accuracy;
                 if (result < distNoisiness) {
-                    observation.push_back(veh.getPosition().getCoordinates());
+                    observation.push_back(veh->getPosition().getCoordinates());
                 }
                 else {
                     //veh lost due to noises

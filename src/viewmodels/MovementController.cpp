@@ -12,14 +12,14 @@ MovementController* MovementController::getInstance() {
 }
 
 MovementController::MovementController() {
-	vehiclesToSwitch = std::list<Vehicle>();
+	vehiclesToSwitch = std::list<PVehicle>();
 }
 
-std::list<Vehicle> * MovementController::getVehiclesToSwitch() {
+std::list<PVehicle> * MovementController::getVehiclesToSwitch() {
 	return &vehiclesToSwitch;
 }
 
-std::list<Pedestrian> * MovementController::getPedestriansToSwitch() {
+std::list<PPedestrian> * MovementController::getPedestriansToSwitch() {
     return &pedestriansToSwitch;
 }
 
@@ -31,11 +31,11 @@ void MovementController::addVehicle(Vehicle vehicle) {
 }
 
 void MovementController::addVehicleToSwitch(Vehicle vehicle) {
-	vehiclesToSwitch.push_back(vehicle);
+	vehiclesToSwitch.push_back(std::make_shared<Vehicle>(vehicle));
 }
 
 void MovementController::addPedestrianToSwitch(Pedestrian ped) {
-    pedestriansToSwitch.push_back(ped);
+    pedestriansToSwitch.push_back(std::make_shared<Pedestrian>(ped));
 }
 
 void MovementController::addPedestrian(Pedestrian ped) {
@@ -44,19 +44,19 @@ void MovementController::addPedestrian(Pedestrian ped) {
 	}
 }
 
-std::list<Vehicle> MovementController::getVehicles() {
-	std::list<Vehicle> out;
+std::list<PVehicle> MovementController::getVehicles() {
+	std::list<PVehicle> out;
 	for (PStreet s : CityController::getInstance()->getStreets()) {
-		std::vector<Vehicle> * temp = s->getVehicles();
+		std::vector<PVehicle> * temp = s->getVehicles();
 		out.insert(out.end(), temp->begin(), temp->end());
 	}
 	return out;
 }
 
-std::list<Pedestrian> MovementController::getPedestrians() {
-	std::list<Pedestrian> out;
+std::list<PPedestrian> MovementController::getPedestrians() {
+	std::list<PPedestrian> out;
 	for (PStreet s : CityController::getInstance()->getStreets()) {
-		std::vector<Pedestrian> * temp = s->getPedestrians();
+		std::vector<PPedestrian> * temp = s->getPedestrians();
 		out.insert(out.end(), temp->begin(), temp->end());
 	}
 	return out;
@@ -78,13 +78,13 @@ void MovementController::updatePositions(int interval) {
 		threadsVC.at(i).join();
 	}
 
-	for (Vehicle v : vehiclesToSwitch) {
-		v.getStreetToSwitch()->addVehicleToStreet(v);
+	for (auto v : vehiclesToSwitch) {
+		v->getStreetToSwitch()->addVehicleToStreet(*v);
 	}
 	vehiclesToSwitch.clear();
 
-    for (Pedestrian p : pedestriansToSwitch) {
-        p.getStreetToSwitch()->addPedestrianToStreet(p);
+    for (PPedestrian p : pedestriansToSwitch) {
+        p->getStreetToSwitch()->addPedestrianToStreet(*p);
     }
     pedestriansToSwitch.clear();
 }

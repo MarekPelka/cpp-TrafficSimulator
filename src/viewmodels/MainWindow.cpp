@@ -90,10 +90,10 @@ void MainWindow::updateVehiclesViews() {
 	//}
 	delete vehicleGroup;
 	vehicleGroup = new QGraphicsItemGroup();
-	for (Vehicle veh : moveC->getVehicles()) {
-		if (veh.getColor()->size() != 0) {
+	for (auto veh : moveC->getVehicles()) {
+		if (veh->getColor()->size() != 0) {
 			QPen pen = QPen(QColor(0, 0, 0), 1, Qt::SolidLine);
-			auto colorPointer = veh.getColor();
+			auto colorPointer = veh->getColor();
 			int r = *colorPointer->begin();
 			//veh.getColor().pop_front();
 			int g = *std::next(colorPointer->begin(), 1);
@@ -184,27 +184,6 @@ bool MainWindow::checkClosest(Node node, Position position) {
 		return true;
 	} else {
 		return false;
-	}
-}
-
-void MainWindow::timerEvent(QTimerEvent *event) {
-	MovementController *moveC = MovementController::getInstance();
-	moveC->updatePositions(int(1000 / FPS));
-	this->updateVehiclesViews();
-	this->updatePedestriansViews();
-
-    CameraController *camC = CameraController::getInstance();
-    camC->updateObservations();
-    if (camC->insertType) {
-        camC->writeToDatabase();
-    }
-    else {
-        camC->writeToFile("CameraObservations.txt");
-    }
-
-	if (randomMovement) {
-		ParkingController::getInstance()->randomSpawnVehicle(FPS);
-		ParkingController::getInstance()->randomSpawnPedestrian(FPS);
 	}
 }
 

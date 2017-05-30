@@ -18,6 +18,8 @@
 #include "../viewmodels/MovementController.h"
 
 typedef std::shared_ptr<Node> PNode;
+typedef std::shared_ptr<Vehicle> PVehicle;
+typedef std::shared_ptr<Pedestrian> PPedestrian;
 
 class Street {
 public:
@@ -44,9 +46,9 @@ public:
     */
 	static Direction getPredictedDirection(Position start, Position end);
     ///return vector vehicles assigned to this object
-	std::vector<Vehicle> * getVehicles();
+	std::vector<PVehicle> * getVehicles();
     ///return vector pedestrians assigned to this object
-	std::vector<Pedestrian> * getPedestrians();
+	std::vector<PPedestrian> * getPedestrians();
     ///if object has sidewalk
 	bool hasSidewalk();
     ///change street start position
@@ -74,9 +76,8 @@ private:
     ///object length
 	int length;
     ///vector vehicles assigned to this object
-	std::vector<Vehicle> vehOnStreet;
+	std::vector<PVehicle> vehOnStreet;
     ///vector pedestrians assigned to this object
-	std::vector<Pedestrian> pedOnStreet;
-	bool swichS(std::shared_ptr<Street> s);
+	std::vector<PPedestrian> pedOnStreet;
 };
 #endif

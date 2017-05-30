@@ -141,24 +141,24 @@ std::list<QGraphicsItem*> GraphicFab::getParkingGraphics(CityController * cityCo
 std::list<QGraphicsRectItem*> GraphicFab::getVehiclesGraphics(MovementController * moveCon) {
     std::list<QGraphicsRectItem*> out = {};
     int length = 0;
-    for (Vehicle v : moveCon->getVehicles()) {
-        if (v.getType() == CAR) {
+    for (auto v : moveCon->getVehicles()) {
+        if (v->getType() == CAR) {
             length = CAR_LENGTH;
         }
-        else if (v.getType() == TRUCK) {
+        else if (v->getType() == TRUCK) {
             length = TRUCK_LENGTH;
         }
-        if (v.getOrientation() == N) {
-            out.push_back(new QGraphicsRectItem(v.getPosition().x + VECH_OFFSET / 2, v.getPosition().y, STREET_WIDTH - VECH_OFFSET, length));
+        if (v->getOrientation() == N) {
+            out.push_back(new QGraphicsRectItem(v->getPosition().x + VECH_OFFSET / 2, v->getPosition().y, STREET_WIDTH - VECH_OFFSET, length));
         }
-        else if (v.getOrientation() == E) {
-            out.push_back(new QGraphicsRectItem(v.getPosition().x - length, v.getPosition().y + VECH_OFFSET / 2, length, STREET_WIDTH - VECH_OFFSET));
+        else if (v->getOrientation() == E) {
+            out.push_back(new QGraphicsRectItem(v->getPosition().x - length, v->getPosition().y + VECH_OFFSET / 2, length, STREET_WIDTH - VECH_OFFSET));
         }
-        else if (v.getOrientation() == S) {
-            out.push_back(new QGraphicsRectItem(v.getPosition().x - STREET_WIDTH + VECH_OFFSET / 2, v.getPosition().y - length, STREET_WIDTH - VECH_OFFSET, length));
+        else if (v->getOrientation() == S) {
+            out.push_back(new QGraphicsRectItem(v->getPosition().x - STREET_WIDTH + VECH_OFFSET / 2, v->getPosition().y - length, STREET_WIDTH - VECH_OFFSET, length));
         }
-        else if (v.getOrientation() == W) {
-            out.push_back(new QGraphicsRectItem(v.getPosition().x, v.getPosition().y - STREET_WIDTH + VECH_OFFSET / 2, length, STREET_WIDTH - VECH_OFFSET));
+        else if (v->getOrientation() == W) {
+            out.push_back(new QGraphicsRectItem(v->getPosition().x, v->getPosition().y - STREET_WIDTH + VECH_OFFSET / 2, length, STREET_WIDTH - VECH_OFFSET));
         }
     }
     return out;
@@ -169,8 +169,8 @@ std::list<QGraphicsEllipseItem*> GraphicFab::getPedestriansGraphics(MovementCont
     std::list<QGraphicsEllipseItem*> out = {};
     int X, Y;
     for (auto p : moveCon->getPedestrians()) {
-        X = p.getPosition().x;
-        Y = p.getPosition().y;
+        X = p->getPosition().x;
+        Y = p->getPosition().y;
 
         QPen pen(Qt::SolidLine);
         pen.setColor(Qt::black);

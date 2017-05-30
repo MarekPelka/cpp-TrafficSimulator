@@ -60,7 +60,7 @@ void Vehicle::move(Street * const s, int time, int place) {
 			}
 			//POLICZENIE PRZESUNIÊCIA
 		} else { //Not first vehicle
-			Vehicle vehInFront = s->getVehicles()->at(place - 1);
+			Vehicle vehInFront = *s->getVehicles()->at(place - 1);
 			int distanceFromVehInFront = static_cast <int> (this->speed / 2 + 1);
 			int brakingOffset = DRIVE_UP;
 			//auto myIter = std::next(s->getVehicles().begin(), place - 1);
@@ -76,11 +76,11 @@ void Vehicle::move(Street * const s, int time, int place) {
 				brakingOffset += CAR_SPACING;
 			}*/
 			int p = 0;
-			for (Vehicle vh : *s->getVehicles()) {
+			for (auto vh : *s->getVehicles()) {
 				brakingOffset += CAR_SPACING;
 				if (p == place)
 					break;
-				if (vh.getType() == CAR) {
+				if (vh->getType() == CAR) {
 					brakingOffset += CAR_LENGTH;
 				} else {
 					brakingOffset += TRUCK_LENGTH;

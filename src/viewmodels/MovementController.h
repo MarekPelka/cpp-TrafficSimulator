@@ -16,6 +16,8 @@
 
 class Street;
 typedef std::shared_ptr<Street> PStreet;
+typedef std::shared_ptr<Vehicle> PVehicle;
+typedef std::shared_ptr<Pedestrian> PPedestrian;
 
 class MovementController {
 public:
@@ -36,13 +38,13 @@ public:
     */
     void addPedestrianToSwitch(Pedestrian ped);
     ///return all vehicles
-	std::list<Vehicle> getVehicles();
+	std::list<PVehicle> getVehicles();
     ///return all pedestrians
-	std::list<Pedestrian> getPedestrians();
+	std::list<PPedestrian> getPedestrians();
     ///return all vehicles that have to change street
-	std::list<Vehicle> * getVehiclesToSwitch();
+	std::list<PVehicle> * getVehiclesToSwitch();
     ///return all pedestrians that have to change street
-    std::list<Pedestrian> * getPedestriansToSwitch();
+    std::list<PPedestrian> * getPedestriansToSwitch();
     ///update positions of all moving objects
 	void updatePositions(int interval);
     ///clear controller
@@ -60,8 +62,8 @@ private:
     */
 	void updatePositionCallback(PStreet s, int arg);
     ///colection of all vehicles that have to change street
-	std::list<Vehicle> vehiclesToSwitch;
+	std::list<PVehicle> vehiclesToSwitch;
     ///colection of all pedestrians that have to change street
-    std::list<Pedestrian> pedestriansToSwitch;
+    std::list<PPedestrian> pedestriansToSwitch;
 };
 #endif

@@ -50,7 +50,6 @@ private:
     QGraphicsItemGroup * vehicleGroup;
     QGraphicsItemGroup * pedestrianGroup;
 protected:
-    void timerEvent(QTimerEvent *event);
     void mousePressEvent(QMouseEvent *event) override;
     QTimer * timerPosition;
     QTimer * timerDatabase;
