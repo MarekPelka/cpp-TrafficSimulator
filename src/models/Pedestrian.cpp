@@ -1,4 +1,5 @@
 #include "Pedestrian.h"
+#include "../viewmodels/CityController.h"
 
 Pedestrian::Pedestrian(std::list<PNode> nods)
 {
@@ -105,41 +106,61 @@ void Pedestrian::move(Street * const s, int time, int place)
                 }
                 position = Position(step, position.y);
             }
-            else if (position.y < nextNode.y)
-            {
+            else if (position.y < nextNode.y) {
                 orientation = S;
-                if (step + position.y >= nextNode.y)
-                {
+                if (step + position.y >= nextNode.y) {
                     step = nextNode.y;
                 }
-                else
-                {
+                else {
                     step += position.y;
                 }
                 position = Position(position.x, step);
             }
-            else if (position.y > nextNode.y)
-            {
+            else if (position.y > nextNode.y) {
                 orientation = N;
-                if (position.y - step <= nextNode.y)
-                {
+                if (position.y - step <= nextNode.y) {
                     step = nextNode.y;
                 }
-                else
-                {
+                else {
                     step = position.y - step;
                 }
                 position = Position(position.x, step);
             }
         }
-        else
-        {
-            nodes.pop_front();
+        else {
+            if (nodes.size() > 1) {
+                nodes.pop_front();
+                auto nextnext = nodes.front();
+                //nodes.push_front(next);
+                Direction nextDirection = predictDirection(next, nextnext.getPosition());
+                std::weak_ptr<Street> nextStreet = nextnext.getStreetsIn().at(nextDirection);
+                this->toSwitch = true;
+                this->setStreetToSwitch(nextStreet.lock());
+            }
+            else {
+                nodes.pop_front();
+            }
         }
     }
     else {
         isMoving = false;
     }
+}
+
+bool Pedestrian::getToSwitch() {
+    return toSwitch;
+}
+
+void Pedestrian::setToSwitch(bool t) {
+    toSwitch = t;
+}
+
+std::shared_ptr<Street> Pedestrian::getStreetToSwitch() {
+    return streetToSwitch;
+}
+
+void Pedestrian::setStreetToSwitch(std::shared_ptr<Street> t) {
+    streetToSwitch = t;
 }
 
 Position Pedestrian::getPosition()

@@ -19,6 +19,10 @@ std::list<Vehicle> * MovementController::getVehiclesToSwitch() {
 	return &vehiclesToSwitch;
 }
 
+std::list<Pedestrian> * MovementController::getPedestriansToSwitch() {
+    return &pedestriansToSwitch;
+}
+
 void MovementController::addVehicle(Vehicle vehicle) {
 	if (auto spt = vehicle.getNodes().front().getStreetsIn().at(vehicle.getOrientation()).lock()) { // Has to be copied into a shared_ptr before usage	
 		spt->addVehicleToStreet(vehicle);
@@ -28,6 +32,10 @@ void MovementController::addVehicle(Vehicle vehicle) {
 
 void MovementController::addVehicleToSwitch(Vehicle vehicle) {
 	vehiclesToSwitch.push_back(vehicle);
+}
+
+void MovementController::addPedestrianToSwitch(Pedestrian ped) {
+    pedestriansToSwitch.push_back(ped);
 }
 
 void MovementController::addPedestrian(Pedestrian ped) {
@@ -62,23 +70,23 @@ void MovementController::updatePositions(int interval) {
 	for (PStreet s : CityController::getInstance()->getStreets()) {
 		std::pair<PStreet, int> args(s, interval);
 		
-		if (!s->getVehicles()->empty()) {
+		if (!s->getVehicles()->empty() || !s->getPedestrians()->empty()) {
 			threadsVC.push_back(std::thread(&MovementController::updatePositionCallback, this, s, interval));
 		}
 	}
 	for (int i = 0; i < threadsVC.size(); ++i) {
 		threadsVC.at(i).join();
 	}
+
 	for (Vehicle v : vehiclesToSwitch) {
 		v.getStreetToSwitch()->addVehicleToStreet(v);
 	}
 	vehiclesToSwitch.clear();
-    /*if (vehiclesToSwitch.size() != 0) {
-        auto deleteIterator = vehiclesToSwitch.begin();
-        while (deleteIterator != vehiclesToSwitch.end()) {
-            deleteIterator = vehiclesToSwitch.erase(deleteIterator);
-        }
-    }*/
+
+    for (Pedestrian p : pedestriansToSwitch) {
+        p.getStreetToSwitch()->addPedestrianToStreet(p);
+    }
+    pedestriansToSwitch.clear();
 }
 
 void MovementController::updatePositionCallback(PStreet s, int arg) {

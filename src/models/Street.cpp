@@ -71,6 +71,8 @@ void Street::addVehicleToStreet(Vehicle v) {
 }
 
 void Street::addPedestrianToStreet(Pedestrian p) {
+    p.setToSwitch(false);
+    p.setStreetToSwitch(nullptr);
 	pedOnStreet.push_back(p);
 }
 
@@ -104,6 +106,17 @@ bool Street::updatePositions(int interval) {
 			}
 		}
 	}
+    auto delIter = pedOnStreet.begin();
+    while (delIter != pedOnStreet.end()) {
+        if (delIter->getToSwitch()) {
+            MovementController::getInstance()->addPedestrianToSwitch(*delIter);
+            delIter = pedOnStreet.erase(delIter);
+
+        }
+        else {
+            ++delIter;
+        }
+    }
 
 	return true;
 }

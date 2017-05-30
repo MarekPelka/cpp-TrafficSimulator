@@ -73,10 +73,6 @@ private:
 	double slowdown;
     ///state of object to clear
 	bool toClear = false;
-    ///state of object to switch street
-	bool toSwich = false;
-    ///pointer to street to which object will be switched
-	std::shared_ptr<Street> streetToSwitch;
     ///object type
 	VehicleType type;
     ///object speed

@@ -33,6 +33,14 @@ public:
     Direction getOrientation();
     ///return list of nodes object will go through
     std::list<Node> getNodes();
+    ///return state of object to clear
+    bool getToSwitch();
+    ///set state of object to switch street
+    void setToSwitch(bool t);
+    ///return pointer to street to which object will be switched
+    std::shared_ptr<Street> getStreetToSwitch();
+    ///set pointer to street to which object will be switched
+    void setStreetToSwitch(std::shared_ptr<Street> t);
     /** specify if move() object or do nothing, false will result in object deletion
     * \param time interval
     * \return status

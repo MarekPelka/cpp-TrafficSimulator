@@ -164,7 +164,7 @@ void Vehicle::move(Street * const s, int time, int place) {
 					nodes.pop_front();
 					auto myIter = std::next(s->getVehicles()->begin(), place);
 					if (myIter != s->getVehicles()->end()) {
-						this->toSwich = true;
+						this->toSwitch = true;
 						this->setStreetToSwitch(nextStreet.lock());
 					} 
 				}
@@ -238,11 +238,11 @@ void Vehicle::setToClear(bool t) {
 }
 
 bool Vehicle::getToSwitch() {
-	return toSwich;
+	return toSwitch;
 }
 
 void Vehicle::setToSwitch(bool t) {
-	toSwich = t;
+	toSwitch = t;
 }
 
 std::list<int> * Vehicle::getColor() {
