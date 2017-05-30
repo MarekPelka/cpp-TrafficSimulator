@@ -64,7 +64,7 @@ void ParkingController::randomSpawnPedestrian(double probability)
     for (auto parking : parkingList) {
         double random_value = std::rand();
         double roll = double(random_value / RAND_MAX);
-        if (roll < PROBABILITY_SPAWN / probability) {
+        if (roll < PROBABILITY_SPAWN / (probability*4)) {
             // pedestrian spawn
             double destination = std::rand() % 100;
             destination = destination / 100;

@@ -1,3 +1,11 @@
+/**
+* \class MainWindow
+* \ingroup viewmodels
+* \details class controlling main window, actions, menu and gui
+* \author Micha³ Krzemiñski
+* \author Marek Pelka
+*/
+
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 

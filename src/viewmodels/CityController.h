@@ -1,3 +1,10 @@
+/**
+* \class GraphicFab
+* \ingroup viewmodels
+* \details class controlling city
+* \author Marek Pelka
+*/
+
 #ifndef CITYCONTROLLER_H
 #define CITYCONTROLLER_H
 
@@ -17,6 +24,7 @@ typedef std::shared_ptr<Street> PStreet;
 class CityController {
 
 public:
+    ///singleton getInstance method
 	static CityController* getInstance();
 	static bool isInIntervalX(Position point, PStreet range);
 	static bool isInIntervalY(Position point, PStreet range);
@@ -34,13 +42,19 @@ public:
 	std::list<PNode> findWay(PNode start, PNode end);
 	std::list<PNode> findNeighbors(PNode n);
 	std::map<PStreet, Position> isStreetsCross(Position start, Position end);
+    ///clearing controller
 	void clearController();
 
 private:
+    ///default constructor
 	CityController();
+    ///singleton instance pointer
 	static CityController* instance;
+    ///all streets list
 	std::list<PStreet> streets;
+    ///all parkings list
 	std::list<PNode> parkings;
+    ///all nodes list
 	std::list<PNode> nodes;
 
 	PNode createNode(Position p);

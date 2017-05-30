@@ -97,4 +97,7 @@ void MovementController::clearController() {
 	for (PStreet s : CityController::getInstance()->getStreets()) {
 		s->getVehicles()->clear();
 	}
+    for (PStreet s : CityController::getInstance()->getStreets()) {
+        s->getPedestrians()->clear();
+    }
 }
