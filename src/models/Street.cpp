@@ -97,7 +97,7 @@ bool Street::updatePositions(int interval) {
 	//pedestrians
 	if (pedOnStreet.size() != 0) {
 		for (auto it = pedOnStreet.begin(); it != pedOnStreet.end();) {
-			if (it->updatePosition(interval)) {
+			if (it->updatePosition(this, interval, 0)) {
 				++it;
 			} else {
 				it = pedOnStreet.erase(it);

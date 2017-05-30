@@ -197,7 +197,7 @@ void MainWindow::timerEvent(QTimerEvent *event) {
 
 	if (randomMovement) {
 		ParkingController::getInstance()->randomSpawnVehicle(FPS);
-		//ParkingController::getInstance()->randomSpawnPedestrian(FPS);
+		ParkingController::getInstance()->randomSpawnPedestrian(FPS);
 	}
 }
 

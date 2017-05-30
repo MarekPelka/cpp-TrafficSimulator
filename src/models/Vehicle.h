@@ -6,7 +6,6 @@
 * \author Marek Pelka
 */
 
-
 #ifndef VEHICLE_H
 #define VEHICLE_H
 #include <iostream>
@@ -14,10 +13,11 @@
 #include <memory>
 #include "../Enums.h"
 #include "Node.h"
+#include "MovingObject.h"
 
 typedef std::shared_ptr<Node> PNode;
 
-class Vehicle{
+class Vehicle : MovingObject {
 public:
 	~Vehicle();
     /** constructor with parameters
@@ -74,8 +74,6 @@ public:
     ///set pointer to street to which object will be switched
 	void setStreetToSwitch(std::shared_ptr<Street> t);
 private:
-    //object postition
-    Position position;
     ///object length
 	int length;
     ///object acceleration
