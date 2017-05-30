@@ -1,8 +1,8 @@
 #include "Street.h"
 
 Street::Street() {
-    vehOnStreet = std::vector<Vehicle>();
-    pedOnStreet = std::vector<Pedestrian>();
+	vehOnStreet = std::vector<Vehicle>();
+	pedOnStreet = std::vector<Pedestrian>();
 }
 
 Street::Street(PNode nodeFrom, PNode nodeTo, bool sidewalk) {
@@ -14,8 +14,8 @@ Street::Street(PNode nodeFrom, PNode nodeTo, bool sidewalk) {
 		abs(getStartEndPositions().first.x - getStartEndPositions().second.x) ?
 		abs(getStartEndPositions().first.y - getStartEndPositions().second.y) :
 		abs(getStartEndPositions().first.x - getStartEndPositions().second.x);
-    vehOnStreet = std::vector<Vehicle>();
-    pedOnStreet = std::vector<Pedestrian>();
+	vehOnStreet = std::vector<Vehicle>();
+	pedOnStreet = std::vector<Pedestrian>();
 }
 
 Direction Street::getDirection() {
@@ -76,56 +76,48 @@ void Street::addPedestrianToStreet(Pedestrian p) {
 
 bool Street::updatePositions(int interval) {
 	int place = 0;
-    if (vehOnStreet.size() != 0) {
-        for (auto iter = vehOnStreet.begin(); iter != vehOnStreet.end();) {
-            if (iter->updatePosition(this, interval, place)) {
-                ++iter;
-                ++place;
-            }
-            else {
-                iter = vehOnStreet.erase(iter);
-            }
-        }
-        auto deleteIterator = vehOnStreet.begin();
-        while (deleteIterator != vehOnStreet.end()) {
-            if (deleteIterator->getToClear()) {
-                if (deleteIterator->getToSwitch()) {
-                    MovementController::getInstance()->addVehicleToSwitch(*deleteIterator);
-                }
-                deleteIterator = vehOnStreet.erase(deleteIterator);
-            }
-            else {
-                ++deleteIterator;
-            }
-        }
-    }
+	for (auto iter = vehOnStreet.begin(); iter != vehOnStreet.end();) {
+		if (iter->updatePosition(this, interval, place)) {
+			++iter;
+			++place;
+		} else {
+			iter = vehOnStreet.erase(iter);
+		}
+	}
+	auto deleteIterator = vehOnStreet.begin();
+	while (deleteIterator != vehOnStreet.end()) {
+		if (deleteIterator->getToSwitch()) {
+			MovementController::getInstance()->addVehicleToSwitch(*deleteIterator);
+			deleteIterator = vehOnStreet.erase(deleteIterator);
+
+		} else {
+			++deleteIterator;
+		}
+	}
 	//pedestrians
-    if (pedOnStreet.size() != 0) {
-        for (auto it = pedOnStreet.begin(); it != pedOnStreet.end();) {
-            if (it->updatePosition(interval)) {
-                ++it;
-            }
-            else {
-                it = pedOnStreet.erase(it);
-            }
-        }
-    }
+	if (pedOnStreet.size() != 0) {
+		for (auto it = pedOnStreet.begin(); it != pedOnStreet.end();) {
+			if (it->updatePosition(interval)) {
+				++it;
+			} else {
+				it = pedOnStreet.erase(it);
+			}
+		}
+	}
 
 	return true;
 }
 
 bool Street::swichStreet(std::weak_ptr<Street> s, int spaceNeeded) {
 	if (auto street = s.lock()) {
-		//if(this == street.get())
-			//return false;
 		Position streetEnd = this->getStartEndPositions().second;
 		if (street->getVehicles()->empty()) {
-			return swichS(street);
+			return true;
 		} else {
 			Position carPosition = street->getVehicles()->back().getPosition();
 			int possibleSpace = streetEnd.x == carPosition.x ? abs(streetEnd.y - carPosition.y) : abs(streetEnd.x - carPosition.x);
 			if (possibleSpace >= spaceNeeded) {
-				return swichS(street);
+				return true;
 			}
 		}
 	}
@@ -135,19 +127,6 @@ bool Street::swichStreet(std::weak_ptr<Street> s, int spaceNeeded) {
 
 bool Street::operator==(const Street & v) {
 	return this->nodeFrom == v.nodeFrom && this->nodeTo == v.nodeTo;
-}
-
-bool Street::swichS(std::shared_ptr<Street> s) {
-	auto vec = this->vehOnStreet;
-	if (!vec.empty()) {
-		//s->addVehicleToStreet(vec.front());
-		//vec.front().getNodes().pop_front();
-		//vec.front() = std::move(vec.back());
-		//vec.pop_back();
-		return true;
-	} else {
-		return false;
-	}
 }
 
 std::pair<PNode, PNode> Street::getNodes() {

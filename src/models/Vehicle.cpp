@@ -43,7 +43,7 @@ void Vehicle::move(Street * const s, int time, int place) {
 		isMoving = true;
 		if (place == 0) { //first  vehicle
 			/*if (place != 0)
-				throw "First and nor first element";*/
+				throw "First and not first element";*/
 			int brakingDistance = static_cast <int> (pow(speed, 2) / 2 / CAR_SLOWDOWN);
 			int roadTT = nodes.front().getPosition().x == position.x ? abs(nodes.front().getPosition().y - position.y) : abs(nodes.front().getPosition().x - position.x);
 			if (roadTT < DRIVE_UP) {
@@ -89,7 +89,7 @@ void Vehicle::move(Street * const s, int time, int place) {
 				brakingOffset += CAR_SPACING;
 			}
 
-			int brakingDistance = static_cast <int> (pow(speed, 2) / 2 / CAR_SLOWDOWN);
+			int brakingDistance = static_cast <int> (pow(speed, 2) / (2 * CAR_SLOWDOWN));
 			int roadTT = nodes.front().getPosition().x == position.x ? abs(nodes.front().getPosition().y - position.y) : abs(nodes.front().getPosition().x - position.x);
 			int carInFrontRoadTT = nodes.front().getPosition().x == vehInFront.getPosition().x ? abs(nodes.front().getPosition().y - vehInFront.getPosition().y) : abs(nodes.front().getPosition().x - vehInFront.getPosition().x);
 			if (roadTT <= brakingOffset) {
@@ -154,28 +154,19 @@ void Vehicle::move(Street * const s, int time, int place) {
 				Node nextNode = *std::next(nodes.begin(), 1);
 				Direction nextDirection = getPredictedDirection(nodes.front().getPosition(), nextNode.getPosition());
 				//auto nextIter = nextNode.getStreetsIn().find(nextDirection);
-				if (*s == *nextNode.getStreetsIn().at(nextDirection).lock().get()) {
-					nodes.pop_front();
-					return;
-				}
+				//if (*s == *nextNode.getStreetsIn().at(nextDirection).lock().get()) {
+				//	nodes.pop_front();
+				//	return;
+				//}
 
 				std::weak_ptr<Street> nextStreet = nextNode.getStreetsIn().at(nextDirection);
 				if (s->swichStreet(nextStreet, this->length + CAR_SPACING)) {
 					nodes.pop_front();
-					if (place == 0) {
-						this->toClear = true;
+					auto myIter = std::next(s->getVehicles()->begin(), place);
+					if (myIter != s->getVehicles()->end()) {
 						this->toSwich = true;
 						this->setStreetToSwitch(nextStreet.lock());
-					} else {
-						auto myIter = std::next(s->getVehicles()->begin(), place);
-						if (myIter != s->getVehicles()->end()) {
-							//s->getVehicles()->erase(myIter);
-							this->toClear = true;
-							this->toSwich = true;
-							this->setStreetToSwitch(nextStreet.lock());
-						}
-					}
-
+					} 
 				}
 			} else {
 				nodes.pop_front();
