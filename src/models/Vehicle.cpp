@@ -245,6 +245,10 @@ void Vehicle::setToSwitch(bool t) {
 	toSwich = t;
 }
 
+std::list<int> * Vehicle::getColor() {
+	return &color;
+}
+
 std::shared_ptr<Street> Vehicle::getStreetToSwitch() {
 	return streetToSwitch;
 }

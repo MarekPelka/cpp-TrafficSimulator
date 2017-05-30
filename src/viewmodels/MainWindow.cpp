@@ -89,14 +89,15 @@ void MainWindow::updateVehiclesViews() {
 	delete vehicleGroup;
 	vehicleGroup = new QGraphicsItemGroup();
 	for (Vehicle veh : moveC->getVehicles()) {
-		if (veh.color.size() != 0) {
+		if (veh.getColor()->size() != 0) {
 			QPen pen = QPen(QColor(0, 0, 0), 1, Qt::SolidLine);
-			int r = veh.color.front();
-			veh.color.pop_front();
-			int g = veh.color.front();
-			veh.color.pop_front();
-			int b = veh.color.front();
-			veh.color.pop_front();
+			auto colorPointer = veh.getColor();
+			int r = *colorPointer->begin();
+			//veh.getColor().pop_front();
+			int g = *std::next(colorPointer->begin(), 1);
+			//veh.getColor().pop_front();
+			int b = *std::next(colorPointer->begin(), 2);
+			//veh.getColor().pop_front();
 			QBrush brush = QBrush(QColor(r, g, b));
 			vehicleGraphics.front()->setBrush(brush);
 			vehicleGraphics.front()->setPen(pen);

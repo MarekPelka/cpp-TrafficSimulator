@@ -73,8 +73,15 @@ std::list<QGraphicsItem*> GraphicFab::getStreetsGraphics(CityController * cityCo
 std::list<QGraphicsItem*> GraphicFab::getIntersectionsGraphics(CityController * cityCon) {
     std::list<QGraphicsItem*> out = {};
     int X, Y;
+	QPixmap m("images/inter.png");
+	//QGraphicsPixmapItem *image = new QGraphicsPixmapItem(m);
     for (PNode n : cityCon->getNodes()) {
-        X = n->getPosition().x;
+		X = n->getPosition().x;
+		Y = n->getPosition().y;
+		QGraphicsPixmapItem *image = new QGraphicsPixmapItem(m);
+		image->setPos(X - FULL_STREET_WIDTH, Y - FULL_STREET_WIDTH);
+		out.push_back(image);
+        /*X = n->getPosition().x;
         Y = n->getPosition().y;
 
         QPen pen(Qt::SolidLine);
@@ -82,23 +89,28 @@ std::list<QGraphicsItem*> GraphicFab::getIntersectionsGraphics(CityController * 
         QGraphicsRectItem *rect = new QGraphicsRectItem(X - FULL_STREET_WIDTH, Y - FULL_STREET_WIDTH, FULL_STREET_WIDTH * 2, FULL_STREET_WIDTH * 2);
         rect->setBrush(QBrush(Qt::gray));
         rect->setPen(pen);
-
         out.push_back(rect);
+
+		pen.setColor(Qt::darkGray);
+		rect = new QGraphicsRectItem(X - STREET_WIDTH, Y - STREET_WIDTH, STREET_WIDTH * 2, STREET_WIDTH * 2);
+		rect->setBrush(QBrush(Qt::darkGray));
+		rect->setPen(pen);
+		out.push_back(rect);
 
         pen.setStyle(Qt::DashLine);
         pen.setColor(Qt::white);
-        QGraphicsLineItem *line = new QGraphicsLineItem(X - FULL_STREET_WIDTH, Y - FULL_STREET_WIDTH, X, Y - FULL_STREET_WIDTH);
+        QGraphicsLineItem *line = new QGraphicsLineItem(X - STREET_WIDTH, Y - STREET_WIDTH, X, Y - STREET_WIDTH);
         line->setPen(pen);
         out.push_back(line);
-        line = new QGraphicsLineItem(X + FULL_STREET_WIDTH, Y - FULL_STREET_WIDTH, X + FULL_STREET_WIDTH, Y);
+        line = new QGraphicsLineItem(X + STREET_WIDTH, Y - STREET_WIDTH, X + STREET_WIDTH, Y);
         line->setPen(pen);
         out.push_back(line);
-        line = new QGraphicsLineItem(X, Y + FULL_STREET_WIDTH, X + FULL_STREET_WIDTH, Y + FULL_STREET_WIDTH);
+        line = new QGraphicsLineItem(X, Y + STREET_WIDTH, X + STREET_WIDTH, Y + STREET_WIDTH);
         line->setPen(pen);
         out.push_back(line);
-        line = new QGraphicsLineItem(X - FULL_STREET_WIDTH, Y, X - FULL_STREET_WIDTH, Y + FULL_STREET_WIDTH);
+        line = new QGraphicsLineItem(X - STREET_WIDTH, Y, X - STREET_WIDTH, Y + STREET_WIDTH);
         line->setPen(pen);
-        out.push_back(line);
+        out.push_back(line);*/
     }
     return out;
 }

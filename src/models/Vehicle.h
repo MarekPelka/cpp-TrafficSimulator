@@ -30,12 +30,6 @@ public:
     * \param nodes list of nodes that vehicle will go through
     */
 	Vehicle(VehicleType type, std::list<PNode> nodes);
-    /** change object position depending on time interval
-    * \param s street that vehicle belongs to
-    * \param time interval
-    * \param place in queue
-    */
-	void move(Street * const s, int time, int place);
     ///return object position
 	Position getPosition();
     ///return object type
@@ -55,10 +49,6 @@ public:
 	bool checkSlowdown(Position step);
     /// check if current speed is equal or greater than maximum speed
 	bool checkMaxSpeed();
-    ///object color
-	std::list<int> color;
-    ///state of object
-	bool isMoving = false;
     ///equal to operator
 	bool operator==(const Vehicle &v);
     ///return state of object to clear
@@ -69,6 +59,7 @@ public:
 	bool getToSwitch();
     ///set state of object to switch street
 	void setToSwitch(bool t);
+	std::list<int> * getColor();
     ///return pointer to street to which object will be switched
 	std::shared_ptr<Street> getStreetToSwitch();
     ///set pointer to street to which object will be switched
@@ -94,8 +85,18 @@ private:
 	double speed;
     /// list of nodes that vehicle will go through 
 	std::list<Node> nodes;
-    //object orientation
+    ///object orientation
 	Direction orientation;
+	///object color
+	std::list<int> color;
+	///state of object
+	bool isMoving = false;
+	/** change object position depending on time interval
+	* \param s street that vehicle belongs to
+	* \param time interval
+	* \param place in queue
+	*/
+	void move(Street * const s, int time, int place);
     ///method updating object color depend on object speed
 	std::list<int> vehicleColor(double veh_speed);
     /** predict direction of object with start end positions
