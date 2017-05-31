@@ -8,9 +8,7 @@
 
 #ifndef GRAPHICFAB_H
 #define GRAPHICFAB_H
-#include <QGraphicsItem>
-#include <QRect>
-#include <QPen>
+#include <QPainter>
 #include <list>
 #include <string>
 #include "CityController.h"
@@ -21,29 +19,34 @@ public:
     * \param cityCon city controller
     * \return QGraphicsItem* list
     */
-    static std::list<QGraphicsItem*> getIntersectionsGraphics(CityController * cityCon);
+    static void getIntersectionsGraphics(QPainter &painter);
     /**generate graphics for parkings
     * \param cityCon city controller
     * \return QGraphicsItem* list
     */
-    static std::list<QGraphicsItem*> getParkingGraphics(CityController * cityCon);
+    static void getParkingGraphics(QPainter &painter);
     /**generate graphics for streets
     * \param cityCon city controller
     * \return QGraphicsItem* list
     */
-    static std::list<QGraphicsItem*> getStreetsGraphics(CityController * cityCon);
+    static void getStreetsGraphics(QPainter &painter);
     /**generate graphics for vehicles
     * \param moveCon moving objects controller
     * \return QGraphicsRectItem* list
     */
-    static std::list<QGraphicsRectItem*> getVehiclesGraphics(MovementController *moveCon);
+    static void getVehiclesGraphics(QPainter &painter);
     /**generate graphics for pedestrians
     * \param moveCon moving objects controller
     * \return QGraphicsEllipseItem* list
     */
-    static std::list<QGraphicsEllipseItem*> getPedestriansGraphics(MovementController *moveCon);
+    static void getPedestriansGraphics(QPainter &painter);
+
+	static QColor getVehicleColor(double speed);
+
 private:
     ///default constructor
     GraphicFab() {};
+	
+	static void setSidewalkPainter(QPainter &painter);
 };
 #endif

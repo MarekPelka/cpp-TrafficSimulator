@@ -76,12 +76,13 @@ void Street::addPedestrianToStreet(Pedestrian p) {
 	pedOnStreet.push_back(std::make_shared<Pedestrian>(p));
 }
 
-bool Street::updatePositions(int interval) {
+bool Street::updatePositions(int interval, bool evenCare) {
 	int place = 0;
 	for (auto iter = vehOnStreet.begin(); iter != vehOnStreet.end();) {
 		if (iter->get()->updatePosition(this, interval, place)) {
 			++iter;
-			++place;
+			if(evenCare)
+				++place;
 		} else {
 			iter = vehOnStreet.erase(iter);
 		}

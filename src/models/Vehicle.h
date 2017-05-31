@@ -59,7 +59,8 @@ public:
 	bool getToSwitch();
     ///set state of object to switch street
 	void setToSwitch(bool t);
-	std::list<int> * getColor();
+	double getSpeed();
+	//std::list<int> * getColor();
     ///return pointer to street to which object will be switched
 	std::shared_ptr<Street> getStreetToSwitch();
     ///set pointer to street to which object will be switched
@@ -82,7 +83,7 @@ private:
     ///object orientation
 	Direction orientation;
 	///object color
-	std::list<int> color;
+	//std::list<int> color;
 	///state of object
 	bool isMoving = false;
 	/** change object position depending on time interval

@@ -46,7 +46,7 @@ public:
     ///return all pedestrians that have to change street
     std::list<PPedestrian> * getPedestriansToSwitch();
     ///update positions of all moving objects
-	void updatePositions(int interval);
+	void updatePositions(int interval, bool evenCare = true);
     ///clear controller
 	void clearController();
     ///singleton getInstance method
@@ -60,7 +60,7 @@ private:
     * \param street
     * \param interval
     */
-	void updatePositionCallback(PStreet s, int arg);
+	void updatePositionCallback(PStreet s, int arg, bool evenCare);
     ///colection of all vehicles that have to change street
 	std::list<PVehicle> vehiclesToSwitch;
     ///colection of all pedestrians that have to change street

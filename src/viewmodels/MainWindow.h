@@ -15,6 +15,7 @@
 #include <memory>
 #include "../models/Position.h"
 #include "../models/Vehicle.h"
+#include "../CityScene.h"
 
 namespace Ui {
     class MainWindow;
@@ -32,25 +33,32 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
 
-    void updateVehiclesViews();
-    void updatePedestriansViews();
-    void paintStreets();
-    void paintParkings();
-    void paintIntersections();
-    void cameraPopupHide(Position pos, int angle, QString direction);
-    std::list<PNode> nodesPath(Position start, Position end);
+	void refreshVehicles();
+	void refreshPedestrians();
+
+
+
+
+    //void updateVehiclesViews();
+    //void updatePedestriansViews();
+
+    //void paintStreets();
+    //void paintParkings();
+    //void paintIntersections();
+    //void cameraPopupHide(Position pos, int angle, QString direction);
+    //std::list<PNode> nodesPath(Position start, Position end);
 
 private:
     Ui::MainWindow *ui;
     int timerId;
-    QGraphicsScene *scene;
-    QGraphicsItemGroup * streetGroup;
-    QGraphicsItemGroup * parkingGroup;
-    QGraphicsItemGroup * nodeGroup;
-    QGraphicsItemGroup * vehicleGroup;
-    QGraphicsItemGroup * pedestrianGroup;
+	CityScene *scene;
+    //QGraphicsItemGroup * streetGroup;
+    //QGraphicsItemGroup * parkingGroup;
+    //QGraphicsItemGroup * nodeGroup;
+    //QGraphicsItemGroup * vehicleGroup;
+    //QGraphicsItemGroup * pedestrianGroup;
 protected:
-    void mousePressEvent(QMouseEvent *event) override;
+    //void mousePressEvent(QMouseEvent *event) override;
     QTimer * timerPosition;
     QTimer * timerDatabase;
     //dropdown menu
@@ -60,15 +68,16 @@ protected:
     void start();
     void scenario1();
     void scenario2();
-	void randomMovment();
-    void addStreet();
-    void addParking();
-    void addCamera();
-    void addBuilding();
-    void addCar();
-    void addTruck();
+ 	  void randomMovment();
+	  void care();
+ //   void addStreet();
+ //   void addParking();
+ //   void addCamera();
+ //   void addBuilding();
+ //   void addCar();
+ //   void addTruck();
     void about();
-    void timerEventDatabase();
+ //   void timerEventDatabase();
     void timerEventPos();
 
 private:
@@ -82,6 +91,7 @@ private:
     QAction *scenario1Act;
     QAction *scenario2Act;
 	QAction *randomMovmentAct;
+	QAction *careForOthersAct;
     QAction *exitAct;
     QAction *addStreetAct;
     QAction *addParkingAct;
@@ -93,13 +103,14 @@ private:
     //label with info about current state of insert
     QLabel *infoLabel;
 
-    //start and end positions for vehicle adding and flag
-    Position startPos;
-    Position endPos;
-    bool click = false;
+ //   //start and end positions for vehicle adding and flag
+ //   Position startPos;
+ //   Position endPos;
+ //   bool click = false;
     bool randomMovement = false;
-    bool checkClosest(Node node, Position position);
-    bool checkIfIntersectStreet(Position position);
+	bool careForOthers = true;
+ //   bool checkClosest(Node node, Position position);
+ //   bool checkIfIntersectStreet(Position position);
 };
 
 #endif // MAINWINDOW_H

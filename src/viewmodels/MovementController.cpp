@@ -62,7 +62,7 @@ std::list<PPedestrian> MovementController::getPedestrians() {
 	return out;
 }
 
-void MovementController::updatePositions(int interval) {
+void MovementController::updatePositions(int interval, bool evenCare) {
 
 	//boost::thread_group threads;
 	std::vector<std::thread> threadsVC;
@@ -71,7 +71,7 @@ void MovementController::updatePositions(int interval) {
 		std::pair<PStreet, int> args(s, interval);
 		
 		if (!s->getVehicles()->empty() || !s->getPedestrians()->empty()) {
-			threadsVC.push_back(std::thread(&MovementController::updatePositionCallback, this, s, interval));
+			threadsVC.push_back(std::thread(&MovementController::updatePositionCallback, this, s, interval, evenCare));
 		}
 	}
 	for (int i = 0; i < threadsVC.size(); ++i) {
@@ -89,8 +89,8 @@ void MovementController::updatePositions(int interval) {
     pedestriansToSwitch.clear();
 }
 
-void MovementController::updatePositionCallback(PStreet s, int arg) {
-	s->updatePositions(arg);
+void MovementController::updatePositionCallback(PStreet s, int arg, bool evenCare) {
+	s->updatePositions(arg, evenCare);
 }
 
 void MovementController::clearController() {

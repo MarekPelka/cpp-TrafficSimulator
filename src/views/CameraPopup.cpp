@@ -42,5 +42,5 @@ void CameraPopup::CameraPopupHide()
     this->hide();
     QString direction = directionLineEdit->text();
     QString angle = angleLineEdit->text();
-    mainwindow->cameraPopupHide(position, angle.toInt(), direction);
+    //mainwindow->cameraPopupHide(position, angle.toInt(), direction);
 }
