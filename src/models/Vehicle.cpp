@@ -229,14 +229,6 @@ bool Vehicle::operator==(const Vehicle & v) {
 	return type == v.type && speed == v.speed && orientation == v.orientation && position == v.position;
 }
 
-bool Vehicle::getToClear() {
-	return toClear;
-}
-
-void Vehicle::setToClear(bool t) {
-	toClear = t;
-}
-
 bool Vehicle::getToSwitch() {
 	return toSwitch;
 }

@@ -52,10 +52,6 @@ public:
     ///equal to operator
 	bool operator==(const Vehicle &v);
     ///return state of object to clear
-	bool getToClear();
-    ///set state of object to clear
-	void setToClear(bool t);
-    ///return state of object to clear
 	bool getToSwitch();
     ///set state of object to switch street
 	void setToSwitch(bool t);

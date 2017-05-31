@@ -1,14 +1,6 @@
 #define BOOST_TEST_MODULE Tests
-#include "../src/models/Node.h"
-#include "../src/models/Street.h"
-#include "../src/models/Position.h"
-#include "../src/models/Pedestrian.h"
-#include "../src/viewmodels/CityController.h"
-#include "../src/models/Node.cpp"
-#include "../src/models/Street.cpp"
 #include "../src/models/Position.cpp"
 #include "../src/viewmodels/CityController.cpp"
-#include "../src/Enums.h"
 #include <list>
 #include <memory>
 
