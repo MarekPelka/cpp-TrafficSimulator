@@ -1,15 +1,11 @@
 #include "../src/models/Building.cpp"
-#include "../src/models/Camera.cpp"
-#include "../src/models/Pedestrian.cpp"
 #include "../src/models/SqlConnector.cpp"
-#include "../src/models/Vehicle.cpp"
 #include "../src/viewmodels/CameraController.cpp"
 #include "../src/viewmodels/MovementController.cpp"
 
 #include <boost/test/unit_test.hpp>
 
-BOOST_AUTO_TEST_CASE(addCamAndBuild)
-{
+BOOST_AUTO_TEST_CASE(addCamAndBuild) {
     CameraController *camC = CameraController::getInstance();
     Camera camera(Position(100,100), 60, E);
     Camera camera2(Position(200, 200), 30, W);
@@ -24,8 +20,7 @@ BOOST_AUTO_TEST_CASE(addCamAndBuild)
     camC->clearController();
 }
 
-BOOST_AUTO_TEST_CASE(deleteCamAndBuild)
-{
+BOOST_AUTO_TEST_CASE(deleteCamAndBuild) {
     CameraController *camC = CameraController::getInstance();
     Camera camera(Position(100, 100), 60, E);
     Camera camera2(Position(200, 200), 30, W);
@@ -42,84 +37,25 @@ BOOST_AUTO_TEST_CASE(deleteCamAndBuild)
     camC->clearController();
 }
 
-BOOST_AUTO_TEST_CASE(getDistanceBetweenPoints) {
-    Position pos1(0,0);
-    Position pos2(3,4);
-    Camera camera(pos1, 120, N);
-    double distance = camera.getDistanceBetweenPoints(pos1,pos2);
-    BOOST_TEST_MESSAGE("Distance to power: " << distance);
-    BOOST_REQUIRE(distance == 25);
-}
-
-BOOST_AUTO_TEST_CASE(getAngleBetweenPoints) {
-    Position pos1(50, 50);
-    Position pos2(0, 0);
-    Camera camera(pos1, 120, N);
-    double angle = camera.getAngleBetweenPoints(pos1, pos2);
-    BOOST_TEST_MESSAGE("Angle in degrees: " << angle);
-    BOOST_CHECK_EQUAL(angle, (double)-135);
-}
-
-BOOST_AUTO_TEST_CASE(checkIfInZone) {
-    Position pos1(50, 50);
-    Position posOut(0, 50);
-    Position posOut2(100, 100);
-    Position posIn(0, 0);
-    Position posIn2(50, 0);
-    Camera camera(pos1, 120, N);
-    BOOST_CHECK_EQUAL(camera.checkIfInZone(camera.getAngleBetweenPoints(pos1, posOut)), false);
-    BOOST_CHECK_EQUAL(camera.checkIfInZone(camera.getAngleBetweenPoints(pos1, posOut2)), false);
-    BOOST_CHECK_EQUAL(camera.checkIfInZone(camera.getAngleBetweenPoints(pos1, posIn)), true);
-    BOOST_CHECK_EQUAL(camera.checkIfInZone(camera.getAngleBetweenPoints(pos1, posIn2)), true);
-}
-
-BOOST_AUTO_TEST_CASE(updateObservation) {
-    MovementController *moveC = MovementController::getInstance();
+BOOST_AUTO_TEST_CASE(IfBuilding) {
     CameraController *camC = CameraController::getInstance();
-    CityController *cityC = CityController::getInstance();
+    Building building(Position(15, 15));
+    CameraController::getInstance()->addBuilding(building);
+    Position pos(0, 0);
+    Position posFalse(50, 50);
+    Position posTrue(0, 50);
+    BOOST_CHECK_EQUAL(camC->checkIfBuilding(pos,posTrue), true);
+    BOOST_CHECK_EQUAL(camC->checkIfBuilding(pos, posFalse), false);
+}
 
-    //test city
-    Position p1(0,0);
-    Position p2(500, 0);
-    Position p3(500, 500);
-    Position p4(0, 500);
-
-    cityC->addStreet(p1, p2);
-    cityC->addStreet(p2, p3);
-    cityC->addStreet(p3, p4);
-
-    cityC->addStreet(p2, p1);
-    cityC->addStreet(p3, p2);
-    cityC->addStreet(p4, p3);
-    std::list<PNode> nodes =cityC->getNodes();
-    if (!nodes.empty()) {
-        for (int i = 0; i < 10; i++) {
-            Vehicle car(CAR, nodes);
-            MovementController::getInstance()->addVehicle(car);
-        }
-    }
-
-    Building building(Position(15,15));
-    camC->addBuilding(building);
-    Position pos1(50, 50);
-    Position pos2(0, 50);
-    Camera camera(pos1, 120, N);
-    Camera camera2(pos2, 60, N);
-    camC->addCamera(camera);
-    camC->addCamera(camera2);
-    camera.updateObservation();
-    camera2.updateObservation();
-    BOOST_CHECK_EQUAL(camera.getView().size(), 0);
-    BOOST_CHECK_EQUAL(camera2.getView().size(), 10);
-    camC->deleteBuilding(building);
-
-    camera.clearObservation();
-    camera2.clearObservation();
-    camera.updateObservation();
-    camera2.updateObservation();
-    BOOST_CHECK_EQUAL(camera.getView().size(), 10);
-    BOOST_CHECK_EQUAL(camera2.getView().size(), 10);
-    moveC->clearController();
-    camC->clearController();
-    cityC->clearController();
+BOOST_AUTO_TEST_CASE(lineintersections) {
+    CameraController *camC = CameraController::getInstance();
+    Position p1(50, 0);
+    Position p2(50, 100);
+    Position q1(0, 50);
+    Position q2(100, 50);
+    Position r1(0, 0);
+    Position r2(0, 100);
+    BOOST_CHECK_EQUAL(camC->LineIntersectsLine(p1, p2, q1, q2), true);
+    BOOST_CHECK_EQUAL(camC->LineIntersectsLine(p1, p2, r1, r2), false);
 }

@@ -64,7 +64,6 @@ void Street::alterEnd(PNode n) {
 }
 
 void Street::addVehicleToStreet(Vehicle v) {
-	v.setToClear(false);
 	v.setToSwitch(false);
 	v.setStreetToSwitch(nullptr);
 	vehOnStreet.push_back(std::make_shared<Vehicle>(v));
