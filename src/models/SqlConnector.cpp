@@ -23,7 +23,7 @@ bool SqlConnector::connect() {
 
 void SqlConnector::insert(int cam_id, std::string time, int x, int y) {
     QSqlQuery query;
-    query.prepare("INSERT INTO history (camera_id, timestamp, x, y) "
+    query.prepare("INSERT INTO 'history' ('camera_id', 'timestamp', 'x', 'y') "
         "VALUES (?, ?, ?, ?)");
     query.addBindValue(cam_id);
     query.addBindValue(time.c_str());

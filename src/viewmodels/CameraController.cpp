@@ -5,6 +5,9 @@ CameraController* CameraController::instance = nullptr;
 CameraController* CameraController::getInstance() {
     if (!instance) {
         instance = new CameraController;
+        //connect to sqlite database
+        bool status = SqlConnector::getInstance()->connect();
+        CameraController::getInstance()->insertType = status;
     }
     return instance;
 }
