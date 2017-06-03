@@ -32,7 +32,7 @@ MainWindow::MainWindow(QWidget *parent) :
 	infoLabel->setAlignment(Qt::AlignBottom);
 	infoLabel->setFrameStyle(QFrame::StyledPanel | QFrame::Sunken);
 	infoLabel->setStyleSheet("QLabel { color : white; }");
-	infoLabel->setGeometry(QRect(20, 20, 80, LABEL_HEIGHT));
+	infoLabel->setGeometry(QRect(20, 30, 80, LABEL_HEIGHT));
 }
 
 MainWindow::~MainWindow() {
@@ -172,8 +172,12 @@ void MainWindow::care() {
 }
 
 void MainWindow::close() {
-    timerPosition->stop();
-    timerDatabase->stop();
+    if(timerPosition)
+        if(timerPosition->isActive())
+            timerPosition->stop();
+    if (timerDatabase)
+        if (timerDatabase->isActive())
+            timerDatabase->stop();
     CameraController::getInstance()->DescCameraController();
     SqlConnector::getInstance()->DescSqlConnector();
     ParkingController::getInstance()->DescParkingController();

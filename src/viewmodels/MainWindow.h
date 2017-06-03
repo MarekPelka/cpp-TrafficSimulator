@@ -58,8 +58,8 @@ private:
     //QGraphicsItemGroup * pedestrianGroup;
 protected:
     //void mousePressEvent(QMouseEvent *event) override;
-    QTimer * timerPosition;
-    QTimer * timerDatabase;
+    QTimer * timerPosition = nullptr;
+    QTimer * timerDatabase = nullptr;
     //dropdown menu
     void contextMenuEvent(QContextMenuEvent *event) override;
 
