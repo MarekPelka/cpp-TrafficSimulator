@@ -69,6 +69,7 @@ void GraphicFab::getParkingGraphics(QPainter &painter) {
 		painter.setBrush(QBrush(pColor));
         painter.drawRect(X - STREET_WIDTH * PARKING_SIZE_MULTIPLIER, Y - STREET_WIDTH * PARKING_SIZE_MULTIPLIER, STREET_WIDTH * 2 * PARKING_SIZE_MULTIPLIER, STREET_WIDTH * 2 * PARKING_SIZE_MULTIPLIER);
 		pen.setColor(Qt::white);
+		painter.setPen(pen);
 		//auto r = QString()->boundingRect();
 		painter.drawText(QRect(X - STREET_WIDTH * PARKING_SIZE_MULTIPLIER, Y - STREET_WIDTH * PARKING_SIZE_MULTIPLIER, STREET_WIDTH * 2 * PARKING_SIZE_MULTIPLIER, STREET_WIDTH * 2 * PARKING_SIZE_MULTIPLIER)
 			, Qt::AlignCenter, "Parking");

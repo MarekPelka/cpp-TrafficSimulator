@@ -62,6 +62,8 @@ void CityScene::mouseReleaseEvent(QMouseEvent * event) {
 			}
 			break;
 		case (Operation::toggleParking):
+			if (node == PNode())
+				break;
 			if (node->isParking())
 				CityController::getInstance()->downgradeFromParking(node);
 			else
@@ -102,11 +104,13 @@ void CityScene::paintEvent(QPaintEvent * event) {
 	paintGrid(painter);
 	GraphicFab::getStreetsGraphics(painter);
 	GraphicFab::getIntersectionsGraphics(painter);
-	GraphicFab::getParkingGraphics(painter);
+	
 	GraphicFab::getBuildingsGraphics(painter);
 	GraphicFab::getCamerasGraphics(painter);
 	GraphicFab::getPedestriansGraphics(painter);
 	GraphicFab::getVehiclesGraphics(painter);
+	GraphicFab::getParkingGraphics(painter);
+	
 	QString string = QString("%1, %2")
 		.arg(_x)
 		.arg(_y);
