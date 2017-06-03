@@ -21,12 +21,12 @@ std::map<int, std::weak_ptr<Street>> Node::getStreetsIn()
 	return streetsIn;
 }
 
-bool Node::getIsParking() {
-    return isParking;
+bool Node::isParking() {
+    return _parking;
 }
 
 void Node::setIsParking(bool p) {
-    this->isParking = p;
+    this->_parking = p;
 }
 
 void Node::addStreetIn(Direction d, std::weak_ptr<Street> PWStreet)

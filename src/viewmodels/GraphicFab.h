@@ -13,6 +13,7 @@
 #include <string>
 #include "CityController.h"
 #include "MovementController.h"
+#include "CameraController.h"
 class GraphicFab {
 public:
     /**generate graphics for intersections
@@ -40,6 +41,10 @@ public:
     * \return QGraphicsEllipseItem* list
     */
     static void getPedestriansGraphics(QPainter &painter);
+
+	static void getBuildingsGraphics(QPainter & painter);
+
+	static void getCamerasGraphics(QPainter & painter);
 
 	static QColor getVehicleColor(double speed);
 

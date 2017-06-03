@@ -65,6 +65,8 @@ public:
     * \return double distance to square
     */
     double getDistanceBetweenPoints(Position p1, Position p2);
+
+	Position getPosition();
     ///unique camera identifier
     int id;
     ///counter for indentifier

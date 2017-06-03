@@ -44,6 +44,69 @@ bool CityController::isStreetExist(PNode start, PNode end) {
 	return false;
 }
 
+bool CityController::checkIfIntersectStreet(Position p) {
+	for (auto street : CityController::getInstance()->getStreets()) {
+		//TODO if street twoway check two edges of street (main line +- STREET_WIDTH)
+		//TODO if street not twoway check correct edge and main line
+		int offset = STREET_WIDTH;
+		if (street->hasSidewalk()) {
+			offset += SIDEWALK_WIDTH;
+		}
+
+		//check middle line
+		Position p1 = street->getStartEndPositions().first;
+		Position p2 = street->getStartEndPositions().second;
+		if (CameraController::getInstance()->LineIntersectsLine(p1, p2, p, Position(p.x + 2 * FULL_STREET_WIDTH, p.y)) ||
+			CameraController::getInstance()->LineIntersectsLine(p1, p2, p, Position(p.x, p.y + 2 * FULL_STREET_WIDTH)) ||
+			CameraController::getInstance()->LineIntersectsLine(p1, p2, Position(p.x + 2 * FULL_STREET_WIDTH, p.y + 2 * FULL_STREET_WIDTH), Position(p.x + 2 * FULL_STREET_WIDTH, p.y)) ||
+			CameraController::getInstance()->LineIntersectsLine(p1, p2, Position(p.x + 2 * FULL_STREET_WIDTH, p.y + 2 * FULL_STREET_WIDTH), Position(p.x, p.y + 2 * FULL_STREET_WIDTH))) {
+			return true;
+		}
+
+		//check outer edge
+		Position q1;
+		Position q2;
+		switch (street->getDirection()) {
+			case N:
+			{
+				q1 = Position(p1.x + offset, p1.y);
+				q2 = Position(p2.x + offset, p2.y);
+				break;
+			}
+			case S:
+			{
+				q1 = Position(p1.x - offset, p1.y);
+				q2 = Position(p2.x - offset, p2.y);
+				break;
+			}
+			case E:
+			{
+				q1 = Position(p1.x, p1.y + offset);
+				q2 = Position(p2.x, p2.y + offset);
+				break;
+			}
+			case W:
+			{
+				q1 = Position(p1.x, p1.y - offset);
+				q2 = Position(p2.x, p2.y - offset);
+				break;
+			}
+			default:
+			{
+				q1 = Position(0, 0);
+				q2 = Position(0, 0);
+			}
+		}
+		if (CameraController::getInstance()->LineIntersectsLine(q1, q2, p, Position(p.x + 2 * FULL_STREET_WIDTH, p.y)) ||
+			CameraController::getInstance()->LineIntersectsLine(q1, q2, p, Position(p.x, p.y + 2 * FULL_STREET_WIDTH)) ||
+			CameraController::getInstance()->LineIntersectsLine(q1, q2, Position(p.x + 2 * FULL_STREET_WIDTH, p.y + 2 * FULL_STREET_WIDTH), Position(p.x + 2 * FULL_STREET_WIDTH, p.y)) ||
+			CameraController::getInstance()->LineIntersectsLine(q1, q2, Position(p.x + 2 * FULL_STREET_WIDTH, p.y + 2 * FULL_STREET_WIDTH), Position(p.x, p.y + 2 * FULL_STREET_WIDTH))) {
+			return true;
+		}
+	}
+	return false;
+}
+
 bool CityController::addStreet(Position start, Position end, bool twoWay) {
 	PNode s = findNode(start);
 	PNode e = findNode(end);
@@ -80,6 +143,7 @@ bool CityController::handleCrossStreets(Position start, Position end, bool twoWa
 	PNode e = findNode(end);
 
 	std::list<PNode> crossingNodes = handleExistingCrossStreets(map);
+		
 	if (crossingNodes.back() == nullptr)
 		return false;
 
@@ -225,7 +289,7 @@ void CityController::createStreet(PNode start, PNode end, bool twoWay) {
 }
 
 PNode CityController::findNode(Position p) {
-	PNode out = nullptr;
+	PNode out = PNode();
 
 	for (PNode n : nodes) {
 		if (n->getPosition() == p) {
@@ -330,6 +394,23 @@ std::list<PNode> CityController::findNeighbors(PNode n) {
 	return neighborNodes;
 }
 
+std::list<PNode> CityController::nodesPath(Position start, Position end) {
+	std::list<PNode> nodes = {};
+	CityController *cityC = CityController::getInstance();
+	std::list<PNode> allNodes = cityC->getNodes();
+	PNode s = findNode(start);
+	PNode e = findNode(end);
+	//finding start node
+	
+	if (s == NULL || e == NULL)
+		return nodes;
+	for (std::list<PNode> w : cityC->getWay(s)) {
+		if (w.back() == e)
+			nodes = w;
+	}
+	return nodes;
+}
+
 void CityController::filterList(std::list<PNode> *list) {
 	auto it = std::unique(list->begin(), list->end(),
 		[] (const PNode a, const PNode b) {
@@ -372,7 +453,7 @@ void CityController::clearController() {
 }
 
 bool CityController::downgradeFromParking(PNode n) {
-	if (!n->getIsParking())
+	if (!n->isParking())
 		return false;
 	else {
 		n->setIsParking(false);
@@ -382,7 +463,7 @@ bool CityController::downgradeFromParking(PNode n) {
 }
 
 bool CityController::upgradeToParking(PNode n) {
-	if (n->getIsParking())
+	if (n->isParking())
 		return false;
 	else {
 		n->setIsParking(true);

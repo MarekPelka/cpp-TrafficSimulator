@@ -117,6 +117,23 @@ void GraphicFab::getPedestriansGraphics(QPainter &painter)
     }
 }
 
+void GraphicFab::getBuildingsGraphics(QPainter &painter) {
+	for (auto p : CameraController::getInstance()->getBuildings()) {
+		painter.setPen(QPen(QColor(0, 0, 0), 1, Qt::SolidLine));
+		painter.setBrush(QBrush(QColor(152, 152, 152)));
+		painter.drawRect(p.position.x, p.position.y, p.size, p.size);
+	}
+}
+
+void GraphicFab::getCamerasGraphics(QPainter &painter) {
+	for (auto cam : CameraController::getInstance()->getCameras()) {
+		QRect cam(cam.getPosition().x, cam.getPosition().y, CAMERA_SIZE, CAMERA_SIZE);
+		painter.setPen(QPen(QColor(0, 0, 0), 1, Qt::SolidLine));
+		painter.setBrush(QBrush(QColor(255, 0, 0)));
+		painter.drawEllipse(cam);
+	}
+}
+
 QColor GraphicFab::getVehicleColor(double speed) {
 	speed *= 100;
 	speed += 30;

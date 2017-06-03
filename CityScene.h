@@ -30,10 +30,11 @@ public:
 private:
 	void paintGrid(QPainter & painter);
 	void putToGrid();
-	Operation _operation;
+	Operation _operation = Operation::nothing;
 	int _x, _y;
 	int _xMouse, _yMouse;
 	int _xStart, _yStart;
+	int _xGrid, _yGrid;
 	const double GAP = FULL_STREET_WIDTH * 2;
 	bool isDrawing = false;
 };

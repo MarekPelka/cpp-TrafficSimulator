@@ -77,7 +77,7 @@ protected:
  //   void addCar();
  //   void addTruck();
     void about();
- //   void timerEventDatabase();
+    void timerEventDatabase();
     void timerEventPos();
 
 private:

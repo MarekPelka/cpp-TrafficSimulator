@@ -13,7 +13,6 @@
 #include <QtWidgets/QAction>
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QButtonGroup>
-#include <QtWidgets/QGraphicsView>
 #include <QtWidgets/QHeaderView>
 #include <QtWidgets/QMainWindow>
 #include <QtWidgets/QWidget>
@@ -24,7 +23,6 @@ class Ui_MainWindow
 {
 public:
     QWidget *centralWidget;
-    QGraphicsView *graphicsView;
 
     void setupUi(QMainWindow *MainWindow)
     {
@@ -34,10 +32,7 @@ public:
         MainWindow->resize(700, 550);
         centralWidget = new QWidget(MainWindow);
         centralWidget->setObjectName(QStringLiteral("centralWidget"));
-        graphicsView = new QGraphicsView(centralWidget);
-        graphicsView->setObjectName(QStringLiteral("graphicsView"));
-        graphicsView->setGeometry(QRect(0, 0, 700, 550));
-        MainWindow->setCentralWidget(graphicsView);
+        MainWindow->setCentralWidget(centralWidget);
 
         retranslateUi(MainWindow);
 

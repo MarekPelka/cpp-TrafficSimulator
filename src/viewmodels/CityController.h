@@ -8,6 +8,8 @@
 #ifndef CITYCONTROLLER_H
 #define CITYCONTROLLER_H
 
+#include "CameraController.h"
+
 #include "../models/Position.h"
 #include "../models/Street.h"
 #include "../models/Node.h"
@@ -31,6 +33,7 @@ public:
 	bool addStreet(Position start, Position end, bool twoWay = false);
 	bool isStreetsOverlap(Position start, Position end);
 	bool isStreetExist(PNode start, PNode end);
+	bool checkIfIntersectStreet(Position p);
 	bool downgradeFromParking(PNode n);
 	bool upgradeToParking(PNode n);
 	PNode findNode(Position p);
@@ -41,6 +44,7 @@ public:
 	std::list<std::list<PNode>> getWay(PNode start);
 	std::list<PNode> findWay(PNode start, PNode end);
 	std::list<PNode> findNeighbors(PNode n);
+	std::list<PNode> nodesPath(Position start, Position end);
 	std::map<PStreet, Position> isStreetsCross(Position start, Position end);
     ///clearing controller
 	void clearController();

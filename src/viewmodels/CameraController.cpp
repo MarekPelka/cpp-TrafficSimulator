@@ -88,10 +88,10 @@ void CameraController::writeToDatabase() {
 bool CameraController::checkIfBuilding(Position p1, Position p2) {
     for (auto building : getBuildings()) {
         //extending lines with 1px to cover corners
-        if (LineIntersectsLine(p1, p2, Position(building.position.x -1, building.position.y), Position(building.position.x + BUILDING_SIZE + 1, building.position.y)) ||
-            LineIntersectsLine(p1, p2, Position(building.position.x, building.position.y - 1), Position(building.position.x, building.position.y + BUILDING_SIZE + 1)) ||
-            LineIntersectsLine(p1, p2, Position(building.position.x + BUILDING_SIZE, building.position.y + BUILDING_SIZE + 1), Position(building.position.x + BUILDING_SIZE, building.position.y - 1)) ||
-            LineIntersectsLine(p1, p2, Position(building.position.x + BUILDING_SIZE + 1, building.position.y + BUILDING_SIZE), Position(building.position.x -1, building.position.y + BUILDING_SIZE))) {
+        if (LineIntersectsLine(p1, p2, Position(building.position.x -1, building.position.y), Position(building.position.x + 2 * FULL_STREET_WIDTH + 1, building.position.y)) ||
+            LineIntersectsLine(p1, p2, Position(building.position.x, building.position.y - 1), Position(building.position.x, building.position.y + 2 * FULL_STREET_WIDTH + 1)) ||
+            LineIntersectsLine(p1, p2, Position(building.position.x + 2 * FULL_STREET_WIDTH, building.position.y + 2 * FULL_STREET_WIDTH + 1), Position(building.position.x + 2 * FULL_STREET_WIDTH, building.position.y - 1)) ||
+            LineIntersectsLine(p1, p2, Position(building.position.x + 2 * FULL_STREET_WIDTH + 1, building.position.y + 2 * FULL_STREET_WIDTH), Position(building.position.x -1, building.position.y + 2 * FULL_STREET_WIDTH))) {
             return false;
         }
     }

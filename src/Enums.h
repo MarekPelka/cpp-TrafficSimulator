@@ -51,7 +51,6 @@ const double MAX_SPEED = 0.5; //[px/ms]
 const int CLOSEST_NODE = 50;
 
 ///fixed size of building object 
-const int BUILDING_SIZE = 30;
 
 ///fixed size of camera object
 const int CAMERA_SIZE = 10;

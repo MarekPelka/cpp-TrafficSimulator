@@ -25,6 +25,6 @@ public:
     ///building position
     Position position;
     ///building size
-    int size = BUILDING_SIZE;
+    int size = 2 * FULL_STREET_WIDTH;
 };
 #endif

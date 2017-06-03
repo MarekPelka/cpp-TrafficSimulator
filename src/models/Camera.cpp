@@ -116,6 +116,10 @@ double Camera::getDistanceBetweenPoints(Position p1, Position p2) {
     return pow(abs(p1.x-p2.x), 2) + pow(abs(p1.y - p2.y), 2);
 }
 
+Position Camera::getPosition() {
+	return position;
+}
+
 bool Camera::operator==(const Camera & v) {
     return position == v.position && angle == v.angle && direction == v.direction;
 }

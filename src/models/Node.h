@@ -42,7 +42,7 @@ public:
     /**
     * \return bool if this object is parking
     */
-    bool getIsParking();
+    bool isParking();
     /** set if it is parking
     * \param p bool parking
     */
@@ -51,7 +51,7 @@ public:
 	void addStreetIn(Direction d, std::weak_ptr<Street> PWStreet);
 private:
     ///flag stating if this object is parking or normal crossroad
-    bool isParking = false;
+    bool _parking = false;
     ///static counter for identifier
     static int all_Nodes;
     ///map with streets connected to this object

@@ -23,7 +23,7 @@ MainWindow::MainWindow(QWidget *parent) :
 	createMenus();
 
 	setWindowTitle(QStringLiteral("Symulator ruchu miejskiego"));
-	setWindowIcon(QIcon("images/Traffic-50.png"));
+	//setWindowIcon(QIcon("images/Traffic-50.png"));
 	scene = new CityScene(this);
 	setCentralWidget(scene);
 
@@ -149,6 +149,16 @@ void MainWindow::timerEventPos() {
 	scene->refresh();
 }
 
+void MainWindow::timerEventDatabase() {
+	CameraController *camC = CameraController::getInstance();
+	camC->updateObservations();
+	if (camC->insertType) {
+		camC->writeToDatabase();
+	} else {
+		camC->writeToFile("CameraObservations.txt");
+	}
+}
+
 void MainWindow::randomMovment() {
 	randomMovement = !randomMovement;
 }
@@ -159,10 +169,11 @@ void MainWindow::care() {
 
 void MainWindow::scenario1() {
 	CityController *cityC = CityController::getInstance();
-	Position p1(100, 100);
-	Position p2(500, 100);
-	Position p3(500, 500);
-	Position p4(100, 500);
+	double GAP = FULL_STREET_WIDTH * 2;
+	Position p1(GAP * 4, GAP * 4);
+	Position p2(GAP * 15, GAP * 4);
+	Position p3(GAP * 15, GAP * 15);
+	Position p4(GAP * 4, GAP * 15);
 
 	cityC->addStreet(p1, p2);
 	cityC->addStreet(p2, p3);
@@ -174,37 +185,26 @@ void MainWindow::scenario1() {
 	cityC->addStreet(p4, p3);
 	cityC->addStreet(p1, p4);
 	//Crossing
-	Position pc3(300, 0);
-	Position pc4(300, 600);
+	Position pc3(GAP * 10, GAP * 2);
+	Position pc4(GAP * 10, GAP * 17);
 	cityC->addStreet(pc3, pc4);
-	Position pc1(0, 300);
-	Position pc2(600, 300);
+	Position pc1(GAP * 2, GAP * 10);
+	Position pc2(GAP * 17, GAP * 10);
 	cityC->addStreet(pc1, pc2);
 
-	cityC->upgradeToParking(cityC->findNode(Position(100, 100)));
-	cityC->upgradeToParking(cityC->findNode(Position(500, 500)));
-	cityC->upgradeToParking(cityC->findNode(Position(300, 300)));
+	cityC->upgradeToParking(cityC->findNode(Position(GAP * 4, GAP * 4)));
+	cityC->upgradeToParking(cityC->findNode(Position(GAP * 15, GAP * 15)));
+	cityC->upgradeToParking(cityC->findNode(Position(GAP * 10, GAP * 10)));
 
-	Position p11(50, 50);
-	Position p12(50, 550);
-	Position p13(550, 550);
-	Position p14(550, 50);
-
-	cityC->addStreet(p11, p12, true);
-	cityC->addStreet(p12, p13, true);
-	cityC->addStreet(p13, p14, true);
-	cityC->addStreet(p14, p11, true);
-
-	cityC->upgradeToParking(cityC->findNode(Position(50, 550)));
-	cityC->upgradeToParking(cityC->findNode(Position(550, 50)));
 	scene->refresh();
 }
 void MainWindow::scenario2() {
 	CityController *cityC = CityController::getInstance();
-	Position p1(100, 100);
-	Position p2(500, 100);
-	Position p3(500, 500);
-	Position p4(100, 500);
+	double GAP = FULL_STREET_WIDTH * 2;
+	Position p1(GAP * 1, GAP * 1);
+	Position p2(GAP * 12, GAP * 1);
+	Position p3(GAP * 12, GAP * 12);
+	Position p4(GAP * 1, GAP * 12);
 
 	cityC->addStreet(p1, p2);
 	cityC->addStreet(p2, p3);
@@ -213,6 +213,14 @@ void MainWindow::scenario2() {
 	cityC->addStreet(p2, p1);
 	cityC->addStreet(p3, p2);
 	cityC->addStreet(p4, p3);
+	std::list<PNode> nodes = CityController::getInstance()->nodesPath(p4, p1);
+	if (!nodes.empty()) {
+		for (int i = 0; i < 20; i++) {
+			Vehicle car(CAR, nodes);
+			MovementController::getInstance()->addVehicle(car);
+		}
+	}
+	scene->refresh();
 }
 
 void MainWindow::about() {
