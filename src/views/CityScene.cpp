@@ -125,21 +125,14 @@ void CityScene::paintEvent(QPaintEvent * event) {
 		painter.drawText(QPoint(_x + 20, _y + 20), string);
 		QPen pen(QColor(128, 128, 128, 128));
 		QBrush brush(QColor(255, 255, 255, 128));
-			int angleInDegrees = atan2(_yStart - _yMouse, _xStart - _xMouse) * 180 / M_PI;
-			int alfa1 = angleInDegrees - 30;
-			int alfa2 = angleInDegrees + 30;
-			if (alfa1 > 180)
-				alfa1 = -alfa1;
-			if (alfa2 > 180)
-				alfa2 = -alfa2;
-
+		
 			painter.setBrush(brush);
 		switch (_operation) {
 			case (Operation::addBuilding): break;
 			case (Operation::addCamera): 
-
-				painter.drawPie(QRect(_xStart, _yStart, _xMouse - _xStart, _yMouse - _yStart),
-					alfa1 * 16, alfa2 * 16);
+				painter.drawPie(QRect(100, 100, 400, 100), 30 * 16, -60 * 16);
+				/*painter.drawPie(QRect(_xStart, _yStart, _xMouse - _xStart, _yMouse - _yStart),
+					angleInDegrees * 16, angleInDegrees * 16);*/
 				break;
 			case (Operation::addPedestrian):
 				pen.setColor(QColor(255, 255, 0, 128));

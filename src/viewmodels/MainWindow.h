@@ -78,6 +78,7 @@ protected:
  //   void addTruck();
     void about();
     void timerEventDatabase();
+	void saveToDatabaseCallback();
     void timerEventPos();
 
 private:

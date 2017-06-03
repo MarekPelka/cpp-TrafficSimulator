@@ -11,6 +11,7 @@
 #include <QGraphicsItem>
 #include <QString>
 #include <QtWidgets>
+#include <thread>
 
 typedef std::shared_ptr<Node> PNode;
 
@@ -150,6 +151,11 @@ void MainWindow::timerEventPos() {
 }
 
 void MainWindow::timerEventDatabase() {
+	std::thread(&MainWindow::saveToDatabaseCallback, this).detach();
+	
+}
+
+void MainWindow::saveToDatabaseCallback() {
 	CameraController *camC = CameraController::getInstance();
 	camC->updateObservations();
 	if (camC->insertType) {
