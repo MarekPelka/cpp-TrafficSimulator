@@ -101,8 +101,6 @@ private:
     QAction *addCarAct;
     QAction *addTruckAct;
     QAction *aboutAct;
-    //label with info about current state of insert
-    QLabel *infoLabel;
 
  //   //start and end positions for vehicle adding and flag
  //   Position startPos;

@@ -27,12 +27,6 @@ MainWindow::MainWindow(QWidget *parent) :
 	//setWindowIcon(QIcon("images/Traffic-50.png"));
 	scene = new CityScene(this);
 	setCentralWidget(scene);
-
-	infoLabel = new QLabel("Status label!",this);
-	infoLabel->setAlignment(Qt::AlignBottom);
-	infoLabel->setFrameStyle(QFrame::StyledPanel | QFrame::Sunken);
-	infoLabel->setStyleSheet("QLabel { color : white; }");
-	infoLabel->setGeometry(QRect(20, 30, 80, LABEL_HEIGHT));
 }
 
 MainWindow::~MainWindow() {

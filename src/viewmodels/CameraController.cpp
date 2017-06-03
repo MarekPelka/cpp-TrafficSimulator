@@ -19,6 +19,8 @@ CameraController::CameraController() {
 
 void CameraController::DescCameraController() {
     if (instance) {
+        buildings.clear();
+        cameras.clear();
         delete instance;
     }
 }

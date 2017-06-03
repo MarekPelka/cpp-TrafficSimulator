@@ -8,12 +8,41 @@ CityScene::CityScene(QWidget *parent) : QWidget(parent) {
 	setPalette(pal);
 	setMouseTracking(true);
 	setFocusPolicy(Qt::StrongFocus);
+
+    infoLabel = new QLabel("Status", this);
+    infoLabel->setAlignment(Qt::AlignBottom);
+    infoLabel->setFrameStyle(QFrame::StyledPanel | QFrame::Sunken);
+    infoLabel->setStyleSheet("QLabel { color : white; }");
+    infoLabel->setGeometry(QRect(20, 20, 80, LABEL_HEIGHT));
 }
 
 CityScene::~CityScene() {}
 
 void CityScene::setOperation(Operation o) {
 	_operation = o;
+    switch (o) {
+        case (Operation::addBuilding):
+            infoLabel->setText("Budynek");
+            break;
+        case (Operation::addCamera):
+            infoLabel->setText("Kamera");
+            break;
+        case (Operation::addPedestrian):
+            infoLabel->setText("Pieszy");
+            break;
+        case (Operation::addCar):
+            infoLabel->setText(QStringLiteral("Samochód"));
+            break;
+        case (Operation::addTruck):
+            infoLabel->setText(QStringLiteral("Ciê¿arówka"));
+            break;
+        case (Operation::addStreet):
+            infoLabel->setText("Ulica");
+            break;
+        case (Operation::toggleParking):
+            infoLabel->setText("Parking");
+            break;
+    }
 }
 
 void CityScene::mousePressEvent(QMouseEvent * event) {

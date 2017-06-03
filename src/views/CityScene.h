@@ -1,9 +1,11 @@
 #pragma once
 #include <QWidget>
+#include <QLabel>
 #include <QGraphicsScene>
 #include <QGraphicsTextItem>
 #include <QMouseEvent>
 #include <QPainter>
+#include <QString>
 #include "../src/Enums.h"
 #include "../src/viewmodels/GraphicFab.h"
 
@@ -26,7 +28,8 @@ public:
 	void keyPressEvent(QKeyEvent * event) override;
 
 	void refresh();
-
+    //label with info about current state of insert
+    QLabel *infoLabel;
 private:
 	void paintGrid(QPainter & painter);
 	void putToGrid();
