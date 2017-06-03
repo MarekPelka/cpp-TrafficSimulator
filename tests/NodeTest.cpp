@@ -1,5 +1,5 @@
 #include "../src/models/Node.cpp"
-
+#include "../src/models/Street.h"
 #include <boost/test/unit_test.hpp>
 
 BOOST_AUTO_TEST_CASE(StreetsIn) {

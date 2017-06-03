@@ -6,8 +6,8 @@
 #include <QMouseEvent>
 #include <QPainter>
 #include <QString>
-#include "../src/Enums.h"
-#include "../src/viewmodels/GraphicFab.h"
+#include "../Enums.h"
+#include "../viewmodels/GraphicFab.h"
 
 class CityScene : public QWidget { //public QGraphicsScene, 
 	Q_OBJECT
