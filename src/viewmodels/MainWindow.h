@@ -15,7 +15,7 @@
 #include <memory>
 #include "../models/Position.h"
 #include "../models/Vehicle.h"
-#include "../CityScene.h"
+#include "../views/CityScene.h"
 
 namespace Ui {
     class MainWindow;
