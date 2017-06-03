@@ -5,6 +5,11 @@ Street::Street() {
 	pedOnStreet = std::vector<PPedestrian>();
 }
 
+Street::~Street() {
+    vehOnStreet.clear();
+    pedOnStreet.clear();
+}
+
 Street::Street(PNode nodeFrom, PNode nodeTo, bool sidewalk) {
 	this->nodeFrom = nodeFrom;
 	this->nodeTo = nodeTo;

@@ -32,6 +32,15 @@ CameraPopup::CameraPopup()
     setStyleSheet("background-color: white");
 }
 
+CameraPopup::~CameraPopup() {
+    if (instance) {
+        delete directionLineEdit;
+        delete angleLineEdit;
+        delete buttonOk;
+        delete instance;
+    }
+}
+
 void CameraPopup::CameraPopupShow(Position pos) {
     position = pos;
     this->show();

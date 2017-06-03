@@ -12,7 +12,16 @@ CameraController* CameraController::getInstance() {
     return instance;
 }
 
-CameraController::CameraController() {}
+CameraController::CameraController() {
+    buildings = {};
+    cameras = {};
+}
+
+void CameraController::DescCameraController() {
+    if (instance) {
+        delete instance;
+    }
+}
 
 void CameraController::addCamera(Camera camera) {
     cameras.push_back(camera);

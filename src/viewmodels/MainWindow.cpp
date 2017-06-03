@@ -28,7 +28,7 @@ MainWindow::MainWindow(QWidget *parent) :
 	scene = new CityScene(this);
 	setCentralWidget(scene);
 
-	infoLabel = new QLabel("Status label!");
+	infoLabel = new QLabel("Status label!",this);
 	infoLabel->setAlignment(Qt::AlignBottom);
 	infoLabel->setFrameStyle(QFrame::StyledPanel | QFrame::Sunken);
 	infoLabel->setStyleSheet("QLabel { color : white; }");
@@ -36,8 +36,7 @@ MainWindow::MainWindow(QWidget *parent) :
 }
 
 MainWindow::~MainWindow() {
-	killTimer(timerId);
-	CameraPopup::getInstance()->setParent(nullptr);
+	//CameraPopup::getInstance()->setParent(nullptr);
 	delete ui;
 }
 
@@ -64,7 +63,7 @@ void MainWindow::createActions() {
 
 	exitAct = new QAction(tr("&Koniec"), this);
 	exitAct->setShortcuts(QKeySequence::Close);
-	connect(exitAct, &QAction::triggered, this, &QWidget::close);
+	connect(exitAct, &QAction::triggered, this, &MainWindow::close);
 
 	addStreetAct = new QAction(tr("&Ulica"), this);
 	addStreetAct->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_S));
@@ -127,7 +126,6 @@ void MainWindow::createMenus() {
 
 void MainWindow::start() {
 	//timer for vehicle movement
-	//timerId = startTimer(1000 / FPS);
 	timerPosition = new QTimer(this);
 	connect(timerPosition, SIGNAL(timeout()), this, SLOT(timerEventPos()));
 	timerPosition->start(1000 / FPS);
@@ -171,6 +169,18 @@ void MainWindow::randomMovment() {
 
 void MainWindow::care() {
 	careForOthers = !careForOthers;
+}
+
+void MainWindow::close() {
+    timerPosition->stop();
+    timerDatabase->stop();
+    CameraController::getInstance()->DescCameraController();
+    SqlConnector::getInstance()->DescSqlConnector();
+    ParkingController::getInstance()->DescParkingController();
+
+    CityController::getInstance()->DescCityController();
+    MovementController::getInstance()->DescMovementController();
+    QWidget::close();
 }
 
 void MainWindow::scenario1() {

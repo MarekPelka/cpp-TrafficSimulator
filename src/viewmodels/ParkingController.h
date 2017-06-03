@@ -16,6 +16,8 @@
 #include <math.h> 
 class ParkingController {
 public:
+    //destructor
+    void DescParkingController();
     ///singleton getInstance method
     static ParkingController* getInstance();
     /**generate random spawning vehicles between random parkings

@@ -50,7 +50,6 @@ public:
 
 private:
     Ui::MainWindow *ui;
-    int timerId;
 	CityScene *scene;
     //QGraphicsItemGroup * streetGroup;
     //QGraphicsItemGroup * parkingGroup;
@@ -70,6 +69,7 @@ protected:
     void scenario2();
  	  void randomMovment();
 	  void care();
+      void close();
  //   void addStreet();
  //   void addParking();
  //   void addCamera();

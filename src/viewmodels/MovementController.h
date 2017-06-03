@@ -21,6 +21,8 @@ typedef std::shared_ptr<Pedestrian> PPedestrian;
 
 class MovementController {
 public:
+    ///destructor
+    void DescMovementController();
     /**add vehicle object to proper street collection vehOnStreet
     * \param vehicle
     */

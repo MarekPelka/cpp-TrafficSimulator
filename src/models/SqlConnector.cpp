@@ -11,6 +11,12 @@ SqlConnector* SqlConnector::getInstance() {
 
 SqlConnector::SqlConnector() {}
 
+void SqlConnector::DescSqlConnector() {
+    if (instance) {
+        delete instance;
+    }
+}
+
 bool SqlConnector::connect() {
     if(!QFile::exists("cam_observations.db")){
         return false;

@@ -4,6 +4,10 @@
 
 int Camera::counter = 0;
 
+Camera::~Camera() {
+    observation.clear();
+}
+
 Camera::Camera() : id(++counter) {
 }
 

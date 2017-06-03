@@ -88,8 +88,6 @@ private:
 	* \param place in queue
 	*/
 	void move(Street * const s, int time, int place);
-    ///method updating object color depend on object speed
-	std::list<int> vehicleColor(double veh_speed);
     /** predict direction of object with start end positions
     * \param start position
     * \param end position

@@ -9,9 +9,17 @@ CityController* CityController::getInstance() {
 }
 
 CityController::CityController() {
-
 	streets = {};
 	nodes = {};
+}
+
+void CityController::DescCityController() {
+    if (instance) {
+        streets.clear();
+        nodes.clear();
+        parkings.clear();
+        delete instance;
+    }
 }
 
 bool CityController::isInIntervalX(Position point, PStreet range) {

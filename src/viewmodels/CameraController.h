@@ -19,6 +19,8 @@
 
 class CameraController {
 public:
+    ///destructor
+    void DescCameraController();
     ///singleton getInstance method
     static CameraController* getInstance();
     /**add camera object to cameras list

@@ -26,6 +26,8 @@ typedef std::shared_ptr<Street> PStreet;
 class CityController {
 
 public:
+    ///destructor
+    void DescCityController();
     ///singleton getInstance method
 	static CityController* getInstance();
 	static bool isInIntervalX(Position point, PStreet range);

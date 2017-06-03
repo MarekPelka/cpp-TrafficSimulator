@@ -282,44 +282,8 @@ Direction Vehicle::getOrientation() {
 }
 
 Vehicle::~Vehicle() {
-	type = NOTHING;
+    type = NOTHING;
 }
-
-//std::list<int> Vehicle::vehicleColor(double veh_speed) {
-//	//scaling
-//	veh_speed *= 100;
-//	veh_speed += 30;
-//
-//	int r, g, b;
-//	double d = 256 / 20;
-//
-//	if (veh_speed < 0) { //nadfiolet
-//		r = g = b = 0;
-//	} else if (veh_speed < 20) {
-//		r = static_cast <int> (255 - d * veh_speed);
-//		g = 0;
-//		b = 255;
-//	} else if (veh_speed < 40) {
-//		r = 0;
-//		g = static_cast <int> (d * (veh_speed - 20));
-//		b = 255;
-//	} else if (veh_speed < 60) {
-//		r = 0;
-//		g = 255;
-//		b = static_cast <int> (255 - d * (veh_speed - 40));
-//	} else if (veh_speed < 80) {
-//		r = static_cast <int> (d * (veh_speed - 60));
-//		g = 255;
-//		b = 0;
-//	} else if (veh_speed < 100) {
-//		r = 255;
-//		g = static_cast <int> (255 - d * (veh_speed - 80));
-//		b = 0;
-//	} else { //podczerwieñ
-//		r = g = b = 0;
-//	}
-//	return std::list<int>{r, g, b};
-//}
 
 Direction Vehicle::getPredictedDirection(Position start, Position end) {
 	if (start.x == end.x) {

@@ -14,6 +14,8 @@
 
 class SqlConnector {
 public:
+    ///destructor
+    void DescSqlConnector();
     ///singleton getInstance method
     static SqlConnector* getInstance();
     /** connect to sqlite database

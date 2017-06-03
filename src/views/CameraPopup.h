@@ -22,6 +22,8 @@ class CameraPopup : public QWidget
     Q_OBJECT
 
 public:
+    ///destructor
+    ~CameraPopup();
     /// constructor with given position
     void CameraPopupShow(Position position);
     ///set pointer to main application window

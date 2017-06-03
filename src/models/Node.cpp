@@ -1,6 +1,10 @@
 #include "Node.h"
 int Node::all_Nodes = 0;
 
+Node::~Node() {
+    streetsIn.clear();
+}
+
 Node::Node(int x, int y) {
     position = Position(x, y);
     number = all_Nodes++;

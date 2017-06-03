@@ -12,7 +12,16 @@ MovementController* MovementController::getInstance() {
 }
 
 MovementController::MovementController() {
-	vehiclesToSwitch = std::list<PVehicle>();
+    vehiclesToSwitch = {};
+    pedestriansToSwitch = {};
+}
+
+void MovementController::DescMovementController() {
+    if (instance) {
+        vehiclesToSwitch.clear();
+        pedestriansToSwitch.clear();
+        delete instance;
+    }
 }
 
 std::list<PVehicle> * MovementController::getVehiclesToSwitch() {

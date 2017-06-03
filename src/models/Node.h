@@ -18,6 +18,8 @@
 class Street;
 class Node {
 public:
+    ///default destructor
+    ~Node();
     ///default constructor
     Node();
     /** constructor with parameter

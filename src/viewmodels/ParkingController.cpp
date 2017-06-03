@@ -12,6 +12,12 @@ ParkingController * ParkingController::getInstance() {
     return instance;
 }
 
+void ParkingController::DescParkingController() {
+    if (instance) {
+        delete instance;
+    }
+}
+
 void ParkingController::randomSpawnVehicle(double probability) {
     CityController * cityC = CityController::getInstance();
     MovementController *moveC = MovementController::getInstance();
