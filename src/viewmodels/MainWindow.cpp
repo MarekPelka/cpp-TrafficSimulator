@@ -128,6 +128,8 @@ void MainWindow::start() {
 }
 
 void MainWindow::timerEventPos() {
+    if (end_flag)
+        return;
 	MovementController *moveC = MovementController::getInstance();
 	moveC->updatePositions(int(1000 / FPS), careForOthers);
 
@@ -141,10 +143,11 @@ void MainWindow::timerEventPos() {
 
 void MainWindow::timerEventDatabase() {
 	std::thread(&MainWindow::saveToDatabaseCallback, this).detach();
-	
 }
 
 void MainWindow::saveToDatabaseCallback() {
+    if (end_flag)
+        return;
 	CameraController *camC = CameraController::getInstance();
 	camC->updateObservations();
 	if (camC->insertType) {
@@ -163,12 +166,15 @@ void MainWindow::care() {
 }
 
 void MainWindow::close() {
+    end_flag = true;
     if(timerPosition)
         if(timerPosition->isActive())
             timerPosition->stop();
     if (timerDatabase)
         if (timerDatabase->isActive())
             timerDatabase->stop();
+
+    std::this_thread::sleep_for(std::chrono::seconds(1));
 
     CameraController::getInstance()->DescCameraController();
     SqlConnector::getInstance()->DescSqlConnector();
