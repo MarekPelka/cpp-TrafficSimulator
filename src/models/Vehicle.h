@@ -32,6 +32,8 @@ public:
 	Vehicle(VehicleType type, std::list<PNode> nodes);
     ///return object position
 	Position getPosition();
+    ///set object position
+    void setPosition(Position &pos);
     ///return object type
 	VehicleType getType();
     ///return list of nodes that vehicle will go through 

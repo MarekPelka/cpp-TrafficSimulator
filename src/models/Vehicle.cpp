@@ -241,10 +241,6 @@ double Vehicle::getSpeed() {
 	return speed;
 }
 
-//std::list<int> * Vehicle::getColor() {
-//	return &color;
-//}
-
 std::shared_ptr<Street> Vehicle::getStreetToSwitch() {
 	return streetToSwitch;
 }
@@ -255,6 +251,10 @@ void Vehicle::setStreetToSwitch(std::shared_ptr<Street> t) {
 
 Position Vehicle::getPosition() {
 	return position;
+}
+
+void Vehicle::setPosition(Position& pos) {
+    position = pos;
 }
 
 VehicleType Vehicle::getType() {
