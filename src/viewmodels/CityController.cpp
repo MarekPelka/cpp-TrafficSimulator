@@ -412,10 +412,7 @@ std::list<PNode> CityController::nodesPath(Position start, Position end) {
 	
 	if (s == NULL || e == NULL)
 		return nodes;
-	for (std::list<PNode> w : cityC->getWay(s)) {
-		if (w.back() == e)
-			nodes = w;
-	}
+	nodes = findWay(s, e);
 	return nodes;
 }
 
