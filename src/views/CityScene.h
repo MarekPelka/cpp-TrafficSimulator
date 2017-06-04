@@ -18,18 +18,21 @@
 #include "../Enums.h"
 #include "../viewmodels/GraphicFab.h"
 
-class CityScene : public QWidget { //public QGraphicsScene, 
+class CityScene : public QWidget { 
 	Q_OBJECT
 public:
+	/*!
+	* \brief The Operation enum.
+	* \details Enum class describing what is selected.
+	*/
 	enum class Operation { addIntersection, 
 	addBuilding, addCamera, addPedestrian, addStreet, addCar, addTruck, toggleParking, DELETE, nothing
-	};
+	};//For future use
 
 	explicit CityScene(QWidget *parent = 0);
 	~CityScene();
 
 	void setOperation(Operation o);
-
 	void mousePressEvent(QMouseEvent * event) override;
 	void mouseReleaseEvent(QMouseEvent * event) override;
 	void mouseMoveEvent(QMouseEvent * event) override;
@@ -37,7 +40,6 @@ public:
 	void keyPressEvent(QKeyEvent * event) override;
 
 	void refresh();
-    //label with info about current state of insert
     QLabel *infoLabel;
 private:
 	void paintGrid(QPainter & painter);

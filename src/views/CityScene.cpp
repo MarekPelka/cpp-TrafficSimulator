@@ -9,7 +9,7 @@ CityScene::CityScene(QWidget *parent) : QWidget(parent) {
 	setMouseTracking(true);
 	setFocusPolicy(Qt::StrongFocus);
 
-    infoLabel = new QLabel("Status", this);
+    infoLabel = new QLabel(" ", this);
     infoLabel->setAlignment(Qt::AlignBottom);
     infoLabel->setFrameStyle(QFrame::StyledPanel | QFrame::Sunken);
     infoLabel->setStyleSheet("QLabel { color : white; }");
@@ -61,9 +61,6 @@ void CityScene::mouseReleaseEvent(QMouseEvent * event) {
 	auto node = CityController::getInstance()->findNode(Position(_x, _y));
 	switch (_operation) {
 		case (Operation::addIntersection):
-			//if(_xStart == _x &&
-			//	_yStart == _y)
-			//	CityController::getInstance()->
 			break;
 		case (Operation::addBuilding):
 			if (!CityController::getInstance()->checkIfIntersectStreet(Position(_x - FULL_STREET_WIDTH, _y - FULL_STREET_WIDTH))) {
@@ -72,7 +69,7 @@ void CityScene::mouseReleaseEvent(QMouseEvent * event) {
 			}
 			break;
 		case (Operation::addCamera): 
-			CameraController::getInstance()->addCamera(Camera(Position(_xStart, _yStart), 60, Street::getPredictedDirection(Position(_xStart, _yStart), Position(_xMouse, _yMouse))));
+			CameraController::getInstance()->addCamera(Camera(Position(_xStart, _yStart), 60, Street::getPredictedDirection(Position(_xStart, _yStart), Position(_xGrid, _yGrid))));
 			break;
 		case (Operation::addPedestrian): break;
 		case (Operation::addStreet):
@@ -148,20 +145,29 @@ void CityScene::paintEvent(QPaintEvent * event) {
 	painter.setBrush(secondColor);
 	QFont font = painter.font();
 	font.setPointSize(18);
-
+	QPolygon polygon;
+	//QLine line(_xStart, _yStart, _xGrid, _yGrid);
 	if (isDrawing) {
 		painter.drawText(QPoint(_xMouse + 20, _yMouse + 20), string);
 		painter.drawText(QPoint(_x + 20, _y + 20), string);
 		QPen pen(QColor(128, 128, 128, 128));
 		QBrush brush(QColor(255, 255, 255, 128));
-		
-			painter.setBrush(brush);
+		QPoint ss = QPoint(_xStart, _yStart);
+		QPoint ee = QPoint(_xGrid, _yGrid);
+		QLineF line = QLineF(ss, ee);
+		painter.setBrush(brush);
 		switch (_operation) {
 			case (Operation::addBuilding): break;
 			case (Operation::addCamera): 
-				painter.drawPie(QRect(100, 100, 400, 100), 30 * 16, -60 * 16);
-				/*painter.drawPie(QRect(_xStart, _yStart, _xMouse - _xStart, _yMouse - _yStart),
-					angleInDegrees * 16, angleInDegrees * 16);*/
+				if (_xStart - _xGrid < 0) //left
+					polygon << ss << QPoint(_xGrid - line.length() / 4, _yGrid - line.length() * sqrt(3) / 4) << ee << QPoint(_xGrid - line.length() / 4, _yGrid + line.length() * sqrt(3) / 4);
+				else if (_xStart - _xGrid > 0) //right
+					polygon << ss << QPoint(_xGrid + line.length() / 4, _yGrid - line.length() * sqrt(3) / 4) << ee << QPoint(_xGrid + line.length() / 4, _yGrid + line.length() * sqrt(3) / 4);
+				else if (_yStart - _yGrid < 0) //down
+					polygon << ss << QPoint(_xGrid - line.length() * sqrt(3) / 4, _yGrid - line.length() / 4) << ee << QPoint(_xGrid + line.length() * sqrt(3) / 4, _yGrid - line.length() / 4);
+				else if (_yStart - _yGrid > 0) //up
+					polygon << ss << QPoint(_xGrid - line.length() * sqrt(3) / 4, _yGrid + line.length() / 4) << ee << QPoint(_xGrid + line.length() * sqrt(3) / 4, _yGrid + line.length() / 4);
+				painter.drawPolygon(polygon);
 				break;
 			case (Operation::addPedestrian):
 				pen.setColor(QColor(255, 255, 0, 128));

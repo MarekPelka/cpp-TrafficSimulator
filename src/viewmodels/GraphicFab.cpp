@@ -127,11 +127,35 @@ void GraphicFab::getBuildingsGraphics(QPainter &painter) {
 }
 
 void GraphicFab::getCamerasGraphics(QPainter &painter) {
-	for (auto cam : CameraController::getInstance()->getCameras()) {
-		QRect cam(cam.getPosition().x, cam.getPosition().y, CAMERA_SIZE, CAMERA_SIZE);
+	for (auto camera : CameraController::getInstance()->getCameras()) {
+		QRect cam(camera.getPosition().x - CAMERA_SIZE/2, camera.getPosition().y - CAMERA_SIZE / 2, CAMERA_SIZE, CAMERA_SIZE);
 		painter.setPen(QPen(QColor(0, 0, 0), 1, Qt::SolidLine));
 		painter.setBrush(QBrush(QColor(255, 0, 0)));
 		painter.drawEllipse(cam);
+		painter.setPen(Qt::NoPen);
+		painter.setBrush(QBrush(QColor(255, 255, 255, 64)));
+		QPolygon polygon;
+		if (camera.getDirection() == W) //left
+			polygon << QPoint(camera.getPosition().x, camera.getPosition().y)
+			<< QPoint(camera.getPosition().x - sqrt(CAMERA_PRECISION) * 3 / 4, camera.getPosition().y - sqrt(CAMERA_PRECISION) * sqrt(3) / 4)
+			<< QPoint(camera.getPosition().x - sqrt(CAMERA_PRECISION), camera.getPosition().y)
+			<< QPoint(camera.getPosition().x - sqrt(CAMERA_PRECISION) * 3 / 4, camera.getPosition().y + sqrt(CAMERA_PRECISION) * sqrt(3) / 4);
+		else if (camera.getDirection() == E) //right
+			polygon << QPoint(camera.getPosition().x, camera.getPosition().y)
+			<< QPoint(camera.getPosition().x + sqrt(CAMERA_PRECISION) * 3 / 4, camera.getPosition().y - sqrt(CAMERA_PRECISION) * sqrt(3) / 4)
+			<< QPoint(camera.getPosition().x + sqrt(CAMERA_PRECISION), camera.getPosition().y)
+			<< QPoint(camera.getPosition().x + sqrt(CAMERA_PRECISION) * 3 / 4, camera.getPosition().y + sqrt(CAMERA_PRECISION) * sqrt(3) / 4);
+		else if (camera.getDirection() == S) //down
+			polygon << QPoint(camera.getPosition().x, camera.getPosition().y)
+			<< QPoint(camera.getPosition().x - sqrt(CAMERA_PRECISION) * sqrt(3) / 4, camera.getPosition().y + sqrt(CAMERA_PRECISION) * 3 / 4)
+			<< QPoint(camera.getPosition().x, camera.getPosition().y + sqrt(CAMERA_PRECISION))
+			<< QPoint(camera.getPosition().x + sqrt(CAMERA_PRECISION) * sqrt(3) / 4, camera.getPosition().y + sqrt(CAMERA_PRECISION) * 3 / 4);
+		else if (camera.getDirection() == N) //up
+			polygon << QPoint(camera.getPosition().x, camera.getPosition().y)
+			<< QPoint(camera.getPosition().x - sqrt(CAMERA_PRECISION) * sqrt(3) / 4, camera.getPosition().y - sqrt(CAMERA_PRECISION) * 3 / 4)
+			<< QPoint(camera.getPosition().x, camera.getPosition().y - sqrt(CAMERA_PRECISION))
+			<< QPoint(camera.getPosition().x + sqrt(CAMERA_PRECISION) * sqrt(3) / 4, camera.getPosition().y - sqrt(CAMERA_PRECISION) * 3 / 4);
+		painter.drawPolygon(polygon);
 	}
 }
 
