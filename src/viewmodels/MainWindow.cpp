@@ -119,7 +119,6 @@ void MainWindow::createMenus() {
 }
 
 void MainWindow::start() {
-	//timer for vehicle movement
 	timerPosition = new QTimer(this);
 	connect(timerPosition, SIGNAL(timeout()), this, SLOT(timerEventPos()));
 	timerPosition->start(1000 / FPS);
@@ -131,8 +130,6 @@ void MainWindow::start() {
 void MainWindow::timerEventPos() {
 	MovementController *moveC = MovementController::getInstance();
 	moveC->updatePositions(int(1000 / FPS), careForOthers);
-	//this->updateVehiclesViews();
-	//this->updatePedestriansViews();
 
 	if (randomMovement) {
 		ParkingController::getInstance()->randomSpawnVehicle(FPS);
@@ -172,6 +169,7 @@ void MainWindow::close() {
     if (timerDatabase)
         if (timerDatabase->isActive())
             timerDatabase->stop();
+
     CameraController::getInstance()->DescCameraController();
     SqlConnector::getInstance()->DescSqlConnector();
     ParkingController::getInstance()->DescParkingController();

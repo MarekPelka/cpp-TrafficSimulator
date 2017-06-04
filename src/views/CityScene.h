@@ -1,4 +1,13 @@
-#pragma once
+/**
+* \class CityScene
+* \ingroup viewmodels
+* \details class controlling main board of application and user input
+* \author Marek Pelka
+*/
+
+#ifndef CITYSCENE_H
+#define CITYSCENE_H
+
 #include <QWidget>
 #include <QLabel>
 #include <QGraphicsScene>
@@ -41,3 +50,4 @@ private:
 	const double GAP = FULL_STREET_WIDTH * 2;
 	bool isDrawing = false;
 };
+#endif

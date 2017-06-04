@@ -30,59 +30,49 @@ class MainWindow : public QMainWindow {
     Q_OBJECT
 
 public:
+    ///constructor
     explicit MainWindow(QWidget *parent = 0);
+    ///destructor for ui
     ~MainWindow();
-
-	void refreshVehicles();
-	void refreshPedestrians();
-
-
-
-
-    //void updateVehiclesViews();
-    //void updatePedestriansViews();
-
-    //void paintStreets();
-    //void paintParkings();
-    //void paintIntersections();
-    //void cameraPopupHide(Position pos, int angle, QString direction);
-    //std::list<PNode> nodesPath(Position start, Position end);
-
 private:
+    ///qt gui main component
     Ui::MainWindow *ui;
+    ///qt scene
 	CityScene *scene;
-    //QGraphicsItemGroup * streetGroup;
-    //QGraphicsItemGroup * parkingGroup;
-    //QGraphicsItemGroup * nodeGroup;
-    //QGraphicsItemGroup * vehicleGroup;
-    //QGraphicsItemGroup * pedestrianGroup;
 protected:
-    //void mousePressEvent(QMouseEvent *event) override;
+    ///qt timer for updating moving object positions
     QTimer * timerPosition = nullptr;
+    ///qt timer for inserting to database observations
     QTimer * timerDatabase = nullptr;
-    //dropdown menu
+    ///qt dropdown menu event handler
     void contextMenuEvent(QContextMenuEvent *event) override;
 
     private slots:
+    ///timers start
     void start();
+    ///first scenario, simple city with few parkings and streets
     void scenario1();
+    ///second scenario showing vehicle movement without collision
     void scenario2();
- 	  void randomMovment();
-	  void care();
-      void close();
- //   void addStreet();
- //   void addParking();
- //   void addCamera();
- //   void addBuilding();
- //   void addCar();
- //   void addTruck();
+    ///toggle on/off random spawning moving objects
+    void randomMovment();
+    ///toggle movement with/without collisions
+    void care();
+    ///close application
+    void close();
+    ///open window with authors data
     void about();
+    ///event firing on timerDatabase, iserting cameras observations to database/file
     void timerEventDatabase();
+    ///callback for database insertion
 	void saveToDatabaseCallback();
+    ///event firing on timerPosition, updating objects positions and spawning new objects
     void timerEventPos();
 
 private:
+    ///creating actions for dropdown menus
     void createActions();
+    ///creating dropdown menus
     void createMenus();
     QMenu *fileMenu;
     QMenu *objectsMenu;
@@ -102,14 +92,10 @@ private:
     QAction *addTruckAct;
     QAction *aboutAct;
 
- //   //start and end positions for vehicle adding and flag
- //   Position startPos;
- //   Position endPos;
- //   bool click = false;
+    ///flag for random spawning objects
     bool randomMovement = false;
+    ///flag for collision free traffic
 	bool careForOthers = true;
- //   bool checkClosest(Node node, Position position);
- //   bool checkIfIntersectStreet(Position position);
 };
 
 #endif // MAINWINDOW_H

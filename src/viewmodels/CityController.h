@@ -1,5 +1,5 @@
 /**
-* \class GraphicFab
+* \class CityController
 * \ingroup viewmodels
 * \details class controlling city
 * \author Marek Pelka
