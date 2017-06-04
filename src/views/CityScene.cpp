@@ -46,6 +46,11 @@ void CityScene::setOperation(Operation o) {
 }
 
 void CityScene::mousePressEvent(QMouseEvent * event) {
+	if (event->button() == Qt::RightButton) {
+		_operation = Operation::nothing;
+		infoLabel->setText("");
+	}
+		
 	isDrawing = true;
 	_xGrid = _xMouse = event->x();
 	_yGrid = _yMouse = event->y();
