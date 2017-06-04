@@ -26,7 +26,8 @@ void CameraController::DescCameraController() {
 }
 
 void CameraController::addCamera(Camera camera) {
-    cameras.push_back(camera);
+	if(camera.getDirection != NONE)
+		cameras.push_back(camera);
 }
 
 void CameraController::deleteCamera(Camera camera) {
