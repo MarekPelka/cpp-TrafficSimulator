@@ -158,9 +158,11 @@ bool CityController::handleCrossStreets(Position start, Position end, bool twoWa
 			node = createNode(inter.second);
 			createStreet(node, inter.first->getNodes().second, twoWay);
 			inter.first->alterEnd(node);
+			node->addStreetIn(inter.first->getDirection(), inter.first);
 		} else if(std::find(intersectingNodes.begin(), intersectingNodes.end(), node) != intersectingNodes.end()) {
 			createStreet(node, inter.first->getNodes().second, twoWay);
 			inter.first->alterEnd(node);
+			node->addStreetIn(inter.first->getDirection(), inter.first);
 		}
 		intersectingNodes.push_back(node);
 	}
@@ -192,30 +194,6 @@ bool CityController::handleCrossStreets(Position start, Position end, bool twoWa
 
  }
 	return true;
-	//std::list<PNode> crossingNodes = handleExistingCrossStreets(map);
-	/*if (s == nullptr && e == nullptr)
-		return false;
-	int size = 0;
-	for (auto c : map) {
-		if (c.second == start || c.second == end)
-			size++;
-		else
-			return false;
-	}
-	if (map.size() <= size)
-		return true;
-	else
-		return false;*/
-	/*if (crossingNodes.back() == nullptr)
-		return false;
-
-
-	if (s == nullptr)
-		s = createNode(start);
-	if (e == nullptr)
-		e = createNode(end);
-
-	return handleNewCrossStreets(s, e, twoWay, crossingNodes);*/
 }
 
 std::list<PNode> CityController::handleExistingCrossStreets(std::map<PStreet, Position> map) {
