@@ -1,7 +1,6 @@
 #include "../src/models/Building.cpp"
 #include "../src/models/SqlConnector.cpp"
 #include "../src/viewmodels/CameraController.cpp"
-#include "../src/viewmodels/MovementController.cpp"
 
 #include <boost/test/unit_test.hpp>
 

@@ -97,6 +97,8 @@ private:
     bool randomMovement = false;
     ///flag for collision free traffic
 	bool careForOthers = true;
+    ///on end flag
+    bool end_flag = false;
 };
 
 #endif // MAINWINDOW_H
