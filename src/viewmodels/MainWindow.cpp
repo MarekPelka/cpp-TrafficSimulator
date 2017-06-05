@@ -75,7 +75,7 @@ void MainWindow::createActions() {
 	addBuildingAct->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_B));
 	connect(addBuildingAct, &QAction::triggered, this, [=] () {scene->setOperation(CityScene::Operation::addBuilding); });
 
-	deletingAct = new QAction(tr("&Usuñ"), this);
+	deletingAct = new QAction(tr("&Usuwanie"), this);
 	deletingAct->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_D));
 	connect(deletingAct, &QAction::triggered, this, [=] () {scene->setOperation(CityScene::Operation::remove); });
 

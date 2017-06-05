@@ -514,13 +514,14 @@ void CityController::deleteStuff(Position p) {
 			else
 				iter++;
 		}
+		parkings.remove(node);
 		for (auto iter = nodes.begin(); iter != nodes.end();) {
 			if (*iter == node)
 				iter = nodes.erase(iter);
 			else
 				iter++;
 		}
-		//getNodes().remove(node);
+		
 	}
 }
 
