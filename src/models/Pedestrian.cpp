@@ -29,6 +29,8 @@ Pedestrian::Pedestrian(std::list<PNode> nods)
 
 void Pedestrian::move(Street * const s, int time, int place)
 {
+	if (place < 0 || s == nullptr)
+		return;
     int offset = FULL_STREET_WIDTH - PED_OFFSET;
     if (nodes.size() != 0) {
         isMoving = true;
@@ -186,7 +188,7 @@ bool Pedestrian::updatePosition(Street * const s, int time, int place)
     }
     else {
         //vehicle still moving
-        move(s, time, 0);
+        move(s, time, place);
         return true;
     }
 }

@@ -138,6 +138,7 @@ void CityScene::mouseMoveEvent(QMouseEvent * event) {
 }
 
 void CityScene::paintEvent(QPaintEvent * event) {
+	event->accept();
 	QPainter painter(this);
 	painter.setRenderHint(QPainter::Antialiasing, true);
 	paintGrid(painter);
@@ -213,8 +214,6 @@ void CityScene::paintEvent(QPaintEvent * event) {
 		}
 	}
 }
-
-void CityScene::keyPressEvent(QKeyEvent * event) {}
 
 void CityScene::refresh() {
 	update();

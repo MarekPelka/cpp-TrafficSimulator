@@ -52,10 +52,6 @@ public:
 	* \param QKeyEvent
 	*/
 	void paintEvent(QPaintEvent * event) override;
-	/**Handler for keybord events
-	* \param QKeyEvent
-	*/
-	void keyPressEvent(QKeyEvent * event) override;
 	///refresh allowing other classes to update interface
 	void refresh();
 
