@@ -124,7 +124,7 @@ bool CityController::addStreet(Position start, Position end, bool twoWay) {
 	if (isStreetsOverlap(start, end) && e != nullptr) return false;
 
 	std::map<PStreet, Position> cross = isStreetsCross(start, end);
-	if (cross.empty()) {
+	if (cross.empty() || handleCrossStreets(start, end, twoWay, cross)) {
 		if (s == nullptr)
 			s = createNode(start);
 		if (e == nullptr)
@@ -132,10 +132,9 @@ bool CityController::addStreet(Position start, Position end, bool twoWay) {
 		createStreet(s, e, twoWay);
 		return true;
 	} else {
-		if (handleCrossStreets(start, end, twoWay, cross))
-			return true;
-		else
-			return false;
+		return false;
+
+			//return false;
 	}
 }
 
@@ -150,9 +149,21 @@ bool CityController::handleCrossStreets(Position start, Position end, bool twoWa
 	PNode s = findNode(start);
 	PNode e = findNode(end);
 
-	std::list<PNode> crossingNodes = handleExistingCrossStreets(map);
-		
-	if (crossingNodes.back() == nullptr)
+	//std::list<PNode> crossingNodes = handleExistingCrossStreets(map);
+	if (s == nullptr && e == nullptr)
+		return false;
+	int size = 0;
+	for (auto c : map) {
+		if (c.second == start || c.second == end)
+			size++;
+		else
+			return false;
+	}
+	if (map.size() <= size)
+		return true;
+	else
+		return false;
+	/*if (crossingNodes.back() == nullptr)
 		return false;
 
 
@@ -161,7 +172,7 @@ bool CityController::handleCrossStreets(Position start, Position end, bool twoWa
 	if (e == nullptr)
 		e = createNode(end);
 
-	return handleNewCrossStreets(s, e, twoWay, crossingNodes);
+	return handleNewCrossStreets(s, e, twoWay, crossingNodes);*/
 }
 
 std::list<PNode> CityController::handleExistingCrossStreets(std::map<PStreet, Position> map) {
@@ -245,32 +256,32 @@ std::map<PStreet, Position> CityController::isStreetsCross(Position start, Posit
 		int computedDir2 = d + 3;
 		if (ccStreetDir == computedDir1 % 4 || ccStreetDir == computedDir2 % 4) {
 			if (d == N) {
-				if (s->getStartEndPositions().first.y < start.y &&
-					s->getStartEndPositions().first.y > end.y) {
+				if (s->getStartEndPositions().first.y <= start.y &&
+					s->getStartEndPositions().first.y >= end.y) {
 					if (isInIntervalX(start, s)) {
 						output[s] = Position(start.x, s->getStartEndPositions().first.y);
 					}
 				} else
 					continue;
 			} else if (d == E) {
-				if (s->getStartEndPositions().first.x < end.x &&
-					s->getStartEndPositions().first.x > start.x) {
+				if (s->getStartEndPositions().first.x <= end.x &&
+					s->getStartEndPositions().first.x >= start.x) {
 					if (isInIntervalY(start, s)) {
 						output[s] = Position(s->getStartEndPositions().first.x, start.y);
 					}
 				} else
 					continue;
 			} else if (d == W) {
-				if (s->getStartEndPositions().first.x < start.x &&
-					s->getStartEndPositions().first.x > end.x) {
+				if (s->getStartEndPositions().first.x <= start.x &&
+					s->getStartEndPositions().first.x >= end.x) {
 					if (isInIntervalY(start, s)) {
 						output[s] = Position(s->getStartEndPositions().first.x, start.y);
 					}
 				} else
 					continue;
 			} else if (d == S) {
-				if (s->getStartEndPositions().first.y < end.y &&
-					s->getStartEndPositions().first.y > start.y) {
+				if (s->getStartEndPositions().first.y <= end.y &&
+					s->getStartEndPositions().first.y >= start.y) {
 					if (isInIntervalX(start, s)) {
 						output[s] = Position(start.x, s->getStartEndPositions().first.y);
 					}
@@ -455,6 +466,32 @@ void CityController::clearController() {
 	streets.clear();
 	nodes.clear();
 	parkings.clear();
+}
+
+void CityController::deleteStuff(Position p) {
+	PNode node = findNode(p);
+	if (node == nullptr) {
+		for (auto iter = streets.begin(); iter != streets.end();) {
+			if (isInIntervalX(p, *iter) && isInIntervalY(p, *iter))
+				iter = streets.erase(iter);
+			else
+				iter++;
+		}
+	} else {
+		for (auto iter = streets.begin(); iter != streets.end();) {
+			if (&*iter->get()->getNodes().first == node.get() || &*iter->get()->getNodes().second == node.get())
+				iter = streets.erase(iter);
+			else
+				iter++;
+		}
+		for (auto iter = nodes.begin(); iter != nodes.end();) {
+			if (*iter == node)
+				iter = nodes.erase(iter);
+			else
+				iter++;
+		}
+		//getNodes().remove(node);
+	}
 }
 
 bool CityController::downgradeFromParking(PNode n) {

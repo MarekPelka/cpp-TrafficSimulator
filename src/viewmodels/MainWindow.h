@@ -88,6 +88,7 @@ private:
     QAction *addParkingAct;
     QAction *addCameraAct;
     QAction *addBuildingAct;
+	QAction *deletingAct;
     QAction *addCarAct;
     QAction *addTruckAct;
     QAction *aboutAct;

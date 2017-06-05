@@ -26,7 +26,7 @@ public:
 	* \details Enum class describing what is selected.
 	*/
 	enum class Operation { addIntersection, 
-	addBuilding, addCamera, addPedestrian, addStreet, addCar, addTruck, toggleParking, DELETE, nothing
+	addBuilding, addCamera, addPedestrian, addStreet, addCar, addTruck, toggleParking, remove, nothing
 	};//For future use
 	///default constructor
 	explicit CityScene(QWidget *parent = 0);

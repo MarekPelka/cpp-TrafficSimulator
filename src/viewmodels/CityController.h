@@ -108,6 +108,7 @@ public:
     ///clearing controller
 	void clearController();
 
+	void deleteStuff(Position p);
 private:
     ///default constructor
 	CityController();

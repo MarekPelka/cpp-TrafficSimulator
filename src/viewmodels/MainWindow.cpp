@@ -76,6 +76,10 @@ void MainWindow::createActions() {
 	addBuildingAct->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_B));
 	connect(addBuildingAct, &QAction::triggered, this, [=] () {scene->setOperation(CityScene::Operation::addBuilding); });
 
+	deletingAct = new QAction(tr("&Usuñ"), this);
+	deletingAct->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_D));
+	connect(deletingAct, &QAction::triggered, this, [=] () {scene->setOperation(CityScene::Operation::remove); });
+
 	addCarAct = new QAction(QStringLiteral("&Samochód"), this);
 	addCarAct->setShortcut(QKeySequence(Qt::SHIFT + Qt::Key_C));
 	connect(addCarAct, &QAction::triggered, this, [=] () {scene->setOperation(CityScene::Operation::addCar); });
@@ -103,6 +107,7 @@ void MainWindow::createMenus() {
 	objectsMenu->addAction(addParkingAct);
 	objectsMenu->addAction(addCameraAct);
 	objectsMenu->addAction(addBuildingAct);
+	objectsMenu->addAction(deletingAct);
 	objectsMenu->addSeparator();
 
 	vehiclesMenu = menuBar()->addMenu(tr("&Pojazdy"));

@@ -39,6 +39,9 @@ void CityScene::setOperation(Operation o) {
         case (Operation::addStreet):
             infoLabel->setText("Ulica");
             break;
+		case (Operation::remove):
+			infoLabel->setText("Usuwanie!");
+			break;
         case (Operation::toggleParking):
             infoLabel->setText("Parking");
             break;
@@ -100,7 +103,12 @@ void CityScene::mouseReleaseEvent(QMouseEvent * event) {
 			else
 				CityController::getInstance()->upgradeToParking(node);
 			break;
-		case (Operation::DELETE): break;
+		case (Operation::remove): 
+			_xGrid = _xMouse = event->x();
+			_yGrid = _yMouse = event->y();
+			putToGrid();
+			CityController::getInstance()->deleteStuff(Position(_x, _y));
+			break;
 		case (Operation::nothing): break;
 		default:
 			break;
@@ -198,7 +206,7 @@ void CityScene::paintEvent(QPaintEvent * event) {
 				painter.drawLine(_xStart, _yStart, _x, _y);
 				break;
 			case (Operation::toggleParking): break;
-			case (Operation::DELETE): break;
+			case (Operation::remove): break;
 			case (Operation::nothing): break;
 			default:
 				break;
