@@ -41,6 +41,7 @@ public:
     Direction getDirection();
     ///clear object observations
     void clearObservation();
+    ///update camera observations
     void updateObservation();
     ///return list of observtions
     std::list<std::pair<int,int>> getView();
@@ -68,6 +69,7 @@ public:
     */
     double getDistanceBetweenPoints(Position p1, Position p2);
 
+    ///return object position
 	Position getPosition();
     ///unique camera identifier
     int id;

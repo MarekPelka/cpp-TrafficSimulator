@@ -21,7 +21,7 @@
 class CityScene : public QWidget { 
 	Q_OBJECT
 public:
-	/*!
+	/*
 	* \brief The Operation enum.
 	* \details Enum class describing what is selected.
 	*/

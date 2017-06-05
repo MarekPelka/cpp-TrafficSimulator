@@ -1,8 +1,7 @@
 #include "Pedestrian.h"
 #include "../viewmodels/CityController.h"
 
-Pedestrian::Pedestrian(std::list<PNode> nods)
-{
+Pedestrian::Pedestrian(std::list<PNode> nods) {
     int offset = FULL_STREET_WIDTH - PED_OFFSET;
     Position temp = nods.front()->getPosition();
     nods.pop_front();
@@ -27,8 +26,7 @@ Pedestrian::Pedestrian(std::list<PNode> nods)
     }
 }
 
-void Pedestrian::move(Street * const s, int time, int place)
-{
+void Pedestrian::move(Street * const s, int time, int place) {
 	if (place < 0 || s == nullptr)
 		return;
     int offset = FULL_STREET_WIDTH - PED_OFFSET;
@@ -165,23 +163,19 @@ void Pedestrian::setStreetToSwitch(std::shared_ptr<Street> t) {
     streetToSwitch = t;
 }
 
-Position Pedestrian::getPosition()
-{
+Position Pedestrian::getPosition() {
     return position;
 }
 
-Direction Pedestrian::getOrientation()
-{
+Direction Pedestrian::getOrientation() {
     return orientation;
 }
 
-std::list<Node> Pedestrian::getNodes()
-{
+std::list<Node> Pedestrian::getNodes() {
     return nodes;
 }
 
-bool Pedestrian::updatePosition(Street * const s, int time, int place)
-{
+bool Pedestrian::updatePosition(Street * const s, int time, int place) {
     if (isMoving == false && nodes.size() == 0) {
         //pedestrian to delete
         return false;
@@ -193,8 +187,7 @@ bool Pedestrian::updatePosition(Street * const s, int time, int place)
     }
 }
 
-bool Pedestrian::operator==(const Pedestrian & p)
-{
+bool Pedestrian::operator==(const Pedestrian & p) {
     return position == p.position;
 }
 

@@ -1,5 +1,5 @@
 /**
-* set of enums and constant variables used in whole project
+* set of enums and constant variables used in project
 * \author Michal Krzeminski
 * \author Marek Pelka
 */
@@ -9,7 +9,7 @@
 
 ///enum orientation on screen using geographic directions
 enum Direction { N, E, S, W, NONE};
-//enum vehicle type car or truck
+///enum vehicle type car or truck
 enum VehicleType {CAR, TRUCK, NOTHING};
 
 ///car properties

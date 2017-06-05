@@ -107,7 +107,7 @@ public:
 	std::map<PStreet, Position> isStreetsCross(Position start, Position end);
     ///clearing controller
 	void clearController();
-
+    ///event to delete object behind given position
 	void deleteStuff(Position p);
 private:
     ///default constructor
