@@ -83,7 +83,7 @@ void MovementController::updatePositions(int interval, bool evenCare) {
 			threadsVC.push_back(std::thread(&MovementController::updatePositionCallback, this, s, interval, evenCare));
 		}
 	}
-	for (int i = 0; i < threadsVC.size(); ++i) {
+	for (size_t i = 0; i < threadsVC.size(); ++i) {
 		threadsVC.at(i).join();
 	}
 

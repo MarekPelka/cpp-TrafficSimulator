@@ -45,6 +45,9 @@ void CityScene::setOperation(Operation o) {
         case (Operation::toggleParking):
             infoLabel->setText("Parking");
             break;
+		default:
+			infoLabel->setText("");
+			break;
     }
 }
 
