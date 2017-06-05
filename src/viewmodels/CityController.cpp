@@ -124,7 +124,7 @@ bool CityController::addStreet(Position start, Position end, bool twoWay) {
 	if (isStreetsOverlap(start, end) && e != nullptr) return false;
 
 	std::map<PStreet, Position> cross = isStreetsCross(start, end);
-	if (cross.empty() || handleCrossStreets(start, end, twoWay, cross)) {
+	if (cross.empty()) {
 		if (s == nullptr)
 			s = createNode(start);
 		if (e == nullptr)
@@ -132,7 +132,7 @@ bool CityController::addStreet(Position start, Position end, bool twoWay) {
 		createStreet(s, e, twoWay);
 		return true;
 	} else {
-		return false;
+		return handleCrossStreets(start, end, twoWay, cross);
 
 			//return false;
 	}
@@ -146,11 +146,45 @@ PNode CityController::createNode(Position p) {
 
 bool CityController::handleCrossStreets(Position start, Position end, bool twoWay, std::map<PStreet, Position> map) {
 
-	PNode s = findNode(start);
-	PNode e = findNode(end);
+	PNode s = findAndCreateNode(start);
+	PNode e = findAndCreateNode(end);
 
+	std::list<PNode> intersectingNodes = {};
+
+	for (auto inter : map) {
+		PNode node = findAndCreateNode(inter.second);
+		addStreet(node->getPosition(), inter.first->getStartEndPositions().second);
+		inter.first->alterEnd(node);
+		intersectingNodes.push_back(node);
+	}
+	intersectingNodes.push_back(s);
+	intersectingNodes.push_back(e);
+	intersectingNodes = sortNodeList(intersectingNodes);
+	auto iter = intersectingNodes.begin();
+	if (iter == intersectingNodes.end()) {
+		return true;
+	} else if (*iter == s) {
+		++iter;
+		while (iter != intersectingNodes.end()) {
+			PNode a = *std::prev(iter);
+			PNode b = *iter;
+			addStreet(a->getPosition(), b->getPosition());
+			++iter;
+		}
+	} else if (*iter == e) {
+		std::list<PNode>::reverse_iterator rit = intersectingNodes.rbegin();
+		++rit;
+		while (rit != intersectingNodes.rend()) {
+			PNode a = *std::prev(rit);
+			PNode b = *rit;
+			addStreet(a->getPosition(), b->getPosition());
+			++rit;
+		}
+
+ }
+	return true;
 	//std::list<PNode> crossingNodes = handleExistingCrossStreets(map);
-	if (s == nullptr && e == nullptr)
+	/*if (s == nullptr && e == nullptr)
 		return false;
 	int size = 0;
 	for (auto c : map) {
@@ -162,7 +196,7 @@ bool CityController::handleCrossStreets(Position start, Position end, bool twoWa
 	if (map.size() <= size)
 		return true;
 	else
-		return false;
+		return false;*/
 	/*if (crossingNodes.back() == nullptr)
 		return false;
 
