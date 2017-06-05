@@ -1,10 +1,14 @@
-#	cpp-TrafficSimulator
+﻿#	cpp-TrafficSimulator
 ##	Installation
 ###	Windows 10
 ####	Required programs:
 - Compiled BOOST libraries located in `C:/Boost/boost_1_63_0`;
 - `SCONS`
 - Qt compiler located in `C:/Qt/5.8/msvc2015_64`;
+- sqlite3 for database lookup
+
+Before compiling project run copyDlls.bat to copy qt dlls used in project
+
 ###	Linux ubuntu 16.04
 ####	Packages installation and building project:
 - If boost libraries not installed:
@@ -18,6 +22,10 @@
 - Qt compilator installation:
 	```
 	sudo apt-get install qt5-default
+	```
+- SQLite installation:
+	```
+	sudo apt install sqlite3
 	```
 - To build full project with tests:
 	```

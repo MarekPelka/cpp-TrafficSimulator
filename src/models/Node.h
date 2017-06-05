@@ -2,7 +2,6 @@
 * \class Node
 * \ingroup models
 * \details class representing crossroads and parkings
-* \author Michal Krzeminski
 * \author Marek Pelka
 */
 

@@ -1,8 +1,8 @@
 /**
-* \class GraphicFab
+* \class CameraController
 * \ingroup viewmodels
 * \details class controlling cameras
-* \author Marek Pelka
+* \author Micha³ Krzeminski
 */
 
 #ifndef CAMERACONTROLLER_H

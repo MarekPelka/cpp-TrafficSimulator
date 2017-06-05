@@ -54,8 +54,7 @@ bool CityController::isStreetExist(PNode start, PNode end) {
 
 bool CityController::checkIfIntersectStreet(Position p) {
 	for (auto street : CityController::getInstance()->getStreets()) {
-		//TODO if street twoway check two edges of street (main line +- STREET_WIDTH)
-		//TODO if street not twoway check correct edge and main line
+
 		int offset = STREET_WIDTH;
 		if (street->hasSidewalk()) {
 			offset += SIDEWALK_WIDTH;
@@ -133,8 +132,6 @@ bool CityController::addStreet(Position start, Position end, bool twoWay) {
 		return true;
 	} else {
 		return handleCrossStreets(start, end, twoWay, cross);
-
-			//return false;
 	}
 }
 
@@ -230,7 +227,6 @@ std::list<PNode> CityController::handleExistingCrossStreets(std::map<PStreet, Po
 }
 
 bool CityController::handleNewCrossStreets(PNode s, PNode e, bool twoWay, std::list<PNode> crossingNodes) {
-	//Another possibility, if you like using the BOOST_FOREACH macro is to use the BOOST_REVERSE_FOREACH macro introduced in Boost 1.36.0.
 	if (Street::getPredictedDirection(s->getPosition(), e->getPosition()) == E || Street::getPredictedDirection(s->getPosition(), e->getPosition()) == S) {
 
 		createStreet(s, crossingNodes.front(), twoWay);
@@ -428,11 +424,6 @@ std::list<PNode> CityController::findNeighbors(PNode n) {
 		if (s->getNodes().first == n)
 			neighborNodes.push_back(s->getNodes().second);
 
-	/*auto nodeConnections = std::find_if(streets.begin(), streets.end(),[n](Street * m) -> bool { return m->getNodes().first == n; });
-	for (auto it = nodeConnections; it != streets.end(); ++it) {
-		Street * s = *it;
-		neighborNodes.push_back(s->getNodes().second);
-	}*/
 	return neighborNodes;
 }
 

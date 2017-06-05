@@ -20,8 +20,7 @@ int Node::getNumber() {
     return number;
 }
 
-std::map<int, std::weak_ptr<Street>> Node::getStreetsIn()
-{
+std::map<int, std::weak_ptr<Street>> Node::getStreetsIn() {
 	return streetsIn;
 }
 
@@ -33,7 +32,6 @@ void Node::setIsParking(bool p) {
     this->_parking = p;
 }
 
-void Node::addStreetIn(Direction d, std::weak_ptr<Street> PWStreet)
-{
+void Node::addStreetIn(Direction d, std::weak_ptr<Street> PWStreet) {
 	streetsIn.insert(std::make_pair(d, PWStreet));
 }

@@ -59,7 +59,7 @@ void Camera::updateObservation() {
                 double distsqr = getDistanceBetweenPoints(position, veh->getPosition());
 
                 int accuracy = 100;
-                //prawo odwrotnych kwadratów CAMERA_PRECISION/(d^2)
+                //CAMERA_PRECISION/(d^2)
                 double distNoisiness = (CAMERA_PRECISION / distsqr) * accuracy;
                 double result = rand() % accuracy;
                 if (result < distNoisiness) {
@@ -81,7 +81,6 @@ double Camera::getAngleBetweenPoints(Position p1, Position p2) {
 bool Camera::checkIfInZone(double angl) {
     double border1 = 0, border2 = 0;
     switch (direction) {
-        //N replace with S, E replaced with W
     case S: {
         border1 = 90 + (angle / 2);
         border2 = 90 - (angle / 2);

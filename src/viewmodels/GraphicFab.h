@@ -1,8 +1,7 @@
 /**
 * \class GraphicFab
 * \ingroup viewmodels
-* \details class creating qt graphical objects used in rendering views
-* \author Micha³ Krzemiñski
+* \details class used in rendering graphical views
 * \author Marek Pelka
 */
 
@@ -14,44 +13,39 @@
 #include "CityController.h"
 #include "MovementController.h"
 #include "CameraController.h"
+
 class GraphicFab {
 public:
     /**generate graphics for intersections
-    * \param cityCon city controller
-    * \return QGraphicsItem* list
     */
     static void getIntersectionsGraphics(QPainter &painter);
     /**generate graphics for parkings
-    * \param cityCon city controller
-    * \return QGraphicsItem* list
     */
     static void getParkingGraphics(QPainter &painter);
     /**generate graphics for streets
-    * \param cityCon city controller
-    * \return QGraphicsItem* list
     */
     static void getStreetsGraphics(QPainter &painter);
     /**generate graphics for vehicles
-    * \param moveCon moving objects controller
-    * \return QGraphicsRectItem* list
     */
     static void getVehiclesGraphics(QPainter &painter);
     /**generate graphics for pedestrians
-    * \param moveCon moving objects controller
-    * \return QGraphicsEllipseItem* list
     */
     static void getPedestriansGraphics(QPainter &painter);
-
+    /**generate graphics for buildings
+    */
 	static void getBuildingsGraphics(QPainter & painter);
-
+    /**generate graphics for cameras
+    */
 	static void getCamerasGraphics(QPainter & painter);
-
+    /**generate vehicle color
+    */
 	static QColor getVehicleColor(double speed);
 
 private:
     ///default constructor
     GraphicFab() {};
-	
+    /**generate graphics for sidewalk
+    */
 	static void setSidewalkPainter(QPainter &painter);
 };
 #endif

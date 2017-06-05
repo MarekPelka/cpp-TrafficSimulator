@@ -63,6 +63,7 @@ public:
 	void addPedestrianToStreet(Pedestrian p);
     ///update positions all movable objects assigned to this object
 	bool updatePositions(int interval, bool evenCare);
+    ///move moving object to next street on its path
 	bool swichStreet(std::weak_ptr<Street> s, int spaceNeeded);
     ///equal to operator
 	bool operator==(const Street &v);

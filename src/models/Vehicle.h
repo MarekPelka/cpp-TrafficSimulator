@@ -57,6 +57,7 @@ public:
 	bool getToSwitch();
     ///set state of object to switch street
 	void setToSwitch(bool t);
+    ///return object speed
 	double getSpeed();
 	//std::list<int> * getColor();
     ///return pointer to street to which object will be switched

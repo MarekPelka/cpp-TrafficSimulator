@@ -23,13 +23,12 @@ MainWindow::MainWindow(QWidget *parent) :
 	createMenus();
 
 	setWindowTitle(QStringLiteral("Symulator ruchu miejskiego"));
-	//setWindowIcon(QIcon("images/Traffic-50.png"));
+	setWindowIcon(QIcon("images/Traffic-50.png"));
 	scene = new CityScene(this);
 	setCentralWidget(scene);
 }
 
 MainWindow::~MainWindow() {
-	//CameraPopup::getInstance()->setParent(nullptr);
 	delete ui;
 }
 

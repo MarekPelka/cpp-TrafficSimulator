@@ -33,10 +33,9 @@ std::list<PPedestrian> * MovementController::getPedestriansToSwitch() {
 }
 
 void MovementController::addVehicle(Vehicle vehicle) {
-	if (auto spt = vehicle.getNodes().front().getStreetsIn().at(vehicle.getOrientation()).lock()) { // Has to be copied into a shared_ptr before usage	
+	if (auto spt = vehicle.getNodes().front().getStreetsIn().at(vehicle.getOrientation()).lock()) {
 		spt->addVehicleToStreet(vehicle);
 	}
-	//vehicles.push_back(vehicle);
 }
 
 void MovementController::addVehicleToSwitch(Vehicle vehicle) {
@@ -48,7 +47,7 @@ void MovementController::addPedestrianToSwitch(Pedestrian ped) {
 }
 
 void MovementController::addPedestrian(Pedestrian ped) {
-	if (auto spt = ped.getNodes().front().getStreetsIn().at(ped.getOrientation()).lock()) { // Has to be copied into a shared_ptr before usage	
+	if (auto spt = ped.getNodes().front().getStreetsIn().at(ped.getOrientation()).lock()) {
 		spt->addPedestrianToStreet(ped);
 	}
 }
@@ -73,7 +72,6 @@ std::list<PPedestrian> MovementController::getPedestrians() {
 
 void MovementController::updatePositions(int interval, bool evenCare) {
 
-	//boost::thread_group threads;
 	std::vector<std::thread> threadsVC;
 
 	for (PStreet s : CityController::getInstance()->getStreets()) {

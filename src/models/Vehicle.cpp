@@ -47,7 +47,7 @@ void Vehicle::move(Street * const s, int time, int place) {
 			int brakingDistance = static_cast <int> (pow(speed, 2) / 2 / CAR_SLOWDOWN);
 			int roadTT = nodes.front().getPosition().x == position.x ? abs(nodes.front().getPosition().y - position.y) : abs(nodes.front().getPosition().x - position.x);
 			if (roadTT < DRIVE_UP) {
-				//DOJECHA£ DO SKRZYZOWANIA I POWINIEN STAC
+				//arrive to crossroad an should stay
 			} else if (roadTT - brakingDistance < DRIVE_UP) {
 				//SLOW DOWN
 				speed -= slowdown * time / 1000;
@@ -58,23 +58,12 @@ void Vehicle::move(Street * const s, int time, int place) {
 				//TOP SPEED
 				speed = MAX_SPEED;
 			}
-			//POLICZENIE PRZESUNIÊCIA
+			//calculating shift
 		} else { //Not first vehicle
 			Vehicle vehInFront = *s->getVehicles()->at(place - 1);
 			int distanceFromVehInFront = static_cast <int> (this->speed / 2 + 1);
 			int brakingOffset = DRIVE_UP;
-			//auto myIter = std::next(s->getVehicles().begin(), place - 1);
 
-			/*for (auto iter = s->getVehicles().begin(); iter != myIter;) {
-				if (iter->getType() == CAR) {
-					brakingOffset += CAR_LENGTH;
-				}
-				else {
-					brakingOffset += TRUCK_LENGTH;
-				}
-				++iter;
-				brakingOffset += CAR_SPACING;
-			}*/
 			int p = 0;
 			for (auto vh : *s->getVehicles()) {
 				brakingOffset += CAR_SPACING;
@@ -93,10 +82,10 @@ void Vehicle::move(Street * const s, int time, int place) {
 			int roadTT = nodes.front().getPosition().x == position.x ? abs(nodes.front().getPosition().y - position.y) : abs(nodes.front().getPosition().x - position.x);
 			int carInFrontRoadTT = nodes.front().getPosition().x == vehInFront.getPosition().x ? abs(nodes.front().getPosition().y - vehInFront.getPosition().y) : abs(nodes.front().getPosition().x - vehInFront.getPosition().x);
 			if (roadTT <= brakingOffset) {
-				//DOJECHA£ DO SAMOCHODU PRZED I POWINIEN STAC
+				//arrive to car before him and sholud stay
 				speed = 0;
 			} else if (roadTT - brakingDistance <= brakingOffset) {
-				//ZWALNIE PRZED SAMYM SAMOCHODEM
+				//slowdown before another object
 				speed -= slowdown * time / 1000;
 			} else if (carInFrontRoadTT + distanceFromVehInFront + DRIVE_OFFSET < roadTT) {
 				//THIS too FAR
@@ -153,11 +142,6 @@ void Vehicle::move(Street * const s, int time, int place) {
 			if (nodes.size() > 1) {
 				Node nextNode = *std::next(nodes.begin(), 1);
 				Direction nextDirection = getPredictedDirection(nodes.front().getPosition(), nextNode.getPosition());
-				//auto nextIter = nextNode.getStreetsIn().find(nextDirection);
-				//if (*s == *nextNode.getStreetsIn().at(nextDirection).lock().get()) {
-				//	nodes.pop_front();
-				//	return;
-				//}
 
 				std::weak_ptr<Street> nextStreet = nextNode.getStreetsIn().at(nextDirection);
 				if (s->swichStreet(nextStreet, this->length + CAR_SPACING)) {
@@ -272,7 +256,6 @@ bool Vehicle::updatePosition(Street * const s, int time, int place) {
 	} else {
 		//vehicle still moving
 		move(s, time, place);
-		//color = vehicleColor(speed);
 		return true;
 	}
 }
@@ -309,7 +292,7 @@ void Vehicle::calculateSpeed(int d, int time, Vehicle inFront) {
 
 	if (d > 0) {
 		if (this->speed > inFront.speed) {
-			//speed = speed;
+			//nt;
 		} else if (this->speed < inFront.speed) {
 			speed += acceleration * time / 1000;
 		} else {
