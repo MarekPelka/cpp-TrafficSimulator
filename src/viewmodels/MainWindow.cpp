@@ -94,8 +94,10 @@ void MainWindow::createActions() {
 void MainWindow::createMenus() {
 	fileMenu = menuBar()->addMenu(tr("&Plik"));
 	fileMenu->addAction(startAct);
+	fileMenu->addSeparator();
 	fileMenu->addAction(scenario1Act);
 	fileMenu->addAction(scenario2Act);
+	fileMenu->addSeparator();
 	fileMenu->addAction(randomMovmentAct);
 	fileMenu->addAction(careForOthersAct);
 	fileMenu->addSeparator();
@@ -106,6 +108,7 @@ void MainWindow::createMenus() {
 	objectsMenu->addAction(addParkingAct);
 	objectsMenu->addAction(addCameraAct);
 	objectsMenu->addAction(addBuildingAct);
+	objectsMenu->addSeparator();
 	objectsMenu->addAction(deletingAct);
 	objectsMenu->addSeparator();
 
