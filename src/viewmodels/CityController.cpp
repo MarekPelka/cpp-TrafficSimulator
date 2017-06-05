@@ -26,8 +26,8 @@ bool CityController::isInIntervalX(Position point, PStreet range) {
 
 	int upper = range->getStartEndPositions().first.x > range->getStartEndPositions().second.x ? range->getStartEndPositions().first.x : range->getStartEndPositions().second.x;
 	int lower = range->getStartEndPositions().first.x < range->getStartEndPositions().second.x ? range->getStartEndPositions().first.x : range->getStartEndPositions().second.x;
-	if (abs(point.x - lower) <= (upper - lower))
-		if (point.x >= lower)
+	if (abs(point.x - lower) < (upper - lower))
+		if (point.x > lower)
 			return true;
 	return false;
 }
@@ -35,8 +35,8 @@ bool CityController::isInIntervalX(Position point, PStreet range) {
 bool CityController::isInIntervalY(Position point, PStreet range) {
 	int upper = range->getStartEndPositions().first.y > range->getStartEndPositions().second.y ? range->getStartEndPositions().first.y : range->getStartEndPositions().second.y;
 	int lower = range->getStartEndPositions().first.y < range->getStartEndPositions().second.y ? range->getStartEndPositions().first.y : range->getStartEndPositions().second.y;
-	if (abs(point.y - lower) <= (upper - lower))
-		if (point.y >= lower)
+	if (abs(point.y - lower) < (upper - lower))
+		if (point.y > lower)
 			return true;
 	return false;
 }
@@ -152,14 +152,23 @@ bool CityController::handleCrossStreets(Position start, Position end, bool twoWa
 	std::list<PNode> intersectingNodes = {};
 
 	for (auto inter : map) {
-		PNode node = findAndCreateNode(inter.second);
-		addStreet(node->getPosition(), inter.first->getStartEndPositions().second);
-		inter.first->alterEnd(node);
+		
+		PNode node = findNode(inter.second);
+		if (node == nullptr) {
+			node = createNode(inter.second);
+			createStreet(node, inter.first->getNodes().second, twoWay);
+			inter.first->alterEnd(node);
+		} else if(std::find(intersectingNodes.begin(), intersectingNodes.end(), node) != intersectingNodes.end()) {
+			createStreet(node, inter.first->getNodes().second, twoWay);
+			inter.first->alterEnd(node);
+		}
 		intersectingNodes.push_back(node);
 	}
 	intersectingNodes.push_back(s);
 	intersectingNodes.push_back(e);
+	intersectingNodes.unique();
 	intersectingNodes = sortNodeList(intersectingNodes);
+
 	auto iter = intersectingNodes.begin();
 	if (iter == intersectingNodes.end()) {
 		return true;
@@ -168,7 +177,7 @@ bool CityController::handleCrossStreets(Position start, Position end, bool twoWa
 		while (iter != intersectingNodes.end()) {
 			PNode a = *std::prev(iter);
 			PNode b = *iter;
-			addStreet(a->getPosition(), b->getPosition());
+			createStreet(a, b, twoWay);
 			++iter;
 		}
 	} else if (*iter == e) {
@@ -177,7 +186,7 @@ bool CityController::handleCrossStreets(Position start, Position end, bool twoWa
 		while (rit != intersectingNodes.rend()) {
 			PNode a = *std::prev(rit);
 			PNode b = *rit;
-			addStreet(a->getPosition(), b->getPosition());
+			createStreet(a, b, twoWay);
 			++rit;
 		}
 
@@ -331,6 +340,8 @@ std::map<PStreet, Position> CityController::isStreetsCross(Position start, Posit
 
 void CityController::createStreet(PNode start, PNode end, bool twoWay) {
 
+	if (start == end)
+		return;
 	PStreet s = std::make_shared<Street>(start, end, true);
 	streets.push_back(s);
 	end->addStreetIn(s->getDirection(), s);
@@ -470,11 +481,18 @@ void CityController::filterList(std::list<PNode> *list) {
 }
 
 bool CityController::isStreetsOverlap(Position start, Position end) {
-	PNode startNode = std::make_shared<Node>(start);
-	PNode endNode = std::make_shared<Node>(end);
+	PNode startNode = findNode(start);
+	PNode endNode = findNode(end);
+	if(startNode == nullptr)
+		startNode = std::make_shared<Node>(start);
+	if(endNode == nullptr)
+		endNode = std::make_shared<Node>(end);
+	
 	PStreet temp = std::make_shared<Street>(startNode, endNode, true);
 	if (Street::getPredictedDirection(start, end) == N || Street::getPredictedDirection(start, end) == S)
 		for (PStreet s : streets) {
+			if (s->getNodes().first == endNode && s->getNodes().second == startNode)
+				return false;
 			if (s->getStartEndPositions().first == end && s->getStartEndPositions().second == start)
 				return false;
 			else if (s->getDirection() == N || s->getDirection() == S)
