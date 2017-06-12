@@ -29,7 +29,7 @@ BOOST_AUTO_TEST_CASE(addVehaddPedtoSwitch) {
 
     moveC->addVehicleToSwitch(veh);
     moveC->addPedestrianToSwitch(bob);
-    BOOST_REQUIRE(moveC->getVehiclesToSwitch()->size() == 1);
-    BOOST_REQUIRE(moveC->getPedestriansToSwitch()->size() == 1);
+    BOOST_REQUIRE_EQUAL(moveC->getVehiclesToSwitch()->size(),1);
+    BOOST_REQUIRE_EQUAL(moveC->getPedestriansToSwitch()->size(), 1);
     moveC->clearController();
 }

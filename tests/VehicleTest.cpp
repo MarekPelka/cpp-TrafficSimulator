@@ -11,7 +11,7 @@ BOOST_AUTO_TEST_CASE(checkslowdown) {
     PNode end = std::make_shared<Node>(pos3);
     std::list<PNode> nodes = { start ,end };
     Vehicle veh(CAR, nodes);
-    BOOST_CHECK_EQUAL(veh.checkSlowdown(veh.getPosition()), true);
+    BOOST_CHECK(veh.checkSlowdown(veh.getPosition()));
 }
 
 BOOST_AUTO_TEST_CASE(checkmaxspeed) {

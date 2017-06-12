@@ -10,12 +10,12 @@ BOOST_AUTO_TEST_CASE(addCamAndBuild) {
     Camera camera2(Position(200, 200), 30, W);
     camC->addCamera(camera);
     camC->addCamera(camera2);
-    BOOST_REQUIRE(camC->getCameras().size() == 2);
+    BOOST_REQUIRE_EQUAL(camC->getCameras().size(), 2);
     Building building(Position(0, 0));
     Building building2(Position(1000, 1000));
     camC->addBuilding(building);
     camC->addBuilding(building2);
-    BOOST_REQUIRE(camC->getBuildings().size() == 2);
+    BOOST_REQUIRE_EQUAL(camC->getBuildings().size(), 2);
     camC->clearController();
 }
 
@@ -26,13 +26,13 @@ BOOST_AUTO_TEST_CASE(deleteCamAndBuild) {
     camC->addCamera(camera);
     camC->addCamera(camera2);
     camC->deleteCamera(camera);
-    BOOST_REQUIRE(camC->getCameras().size() == 1);
+    BOOST_REQUIRE_EQUAL(camC->getCameras().size(), 1);
     Building building(Position(0, 0));
     Building building2(Position(1000, 1000));
     camC->addBuilding(building);
     camC->addBuilding(building2);
     camC->deleteBuilding(building2);
-    BOOST_REQUIRE(camC->getBuildings().size() == 1);
+    BOOST_REQUIRE_EQUAL(camC->getBuildings().size(), 1);
     camC->clearController();
 }
 
@@ -43,7 +43,7 @@ BOOST_AUTO_TEST_CASE(IfBuilding) {
     Position pos(0, 0);
     Position posFalse(50, 50);
     Position posTrue(0, 50);
-    BOOST_CHECK_EQUAL(camC->checkIfBuilding(pos,posTrue), true);
+    BOOST_CHECK(camC->checkIfBuilding(pos,posTrue));
     BOOST_CHECK_EQUAL(camC->checkIfBuilding(pos, posFalse), false);
 }
 
@@ -55,6 +55,6 @@ BOOST_AUTO_TEST_CASE(lineintersections) {
     Position q2(100, 50);
     Position r1(0, 0);
     Position r2(0, 100);
-    BOOST_CHECK_EQUAL(camC->LineIntersectsLine(p1, p2, q1, q2), true);
+    BOOST_CHECK(camC->LineIntersectsLine(p1, p2, q1, q2));
     BOOST_CHECK_EQUAL(camC->LineIntersectsLine(p1, p2, r1, r2), false);
 }

@@ -12,7 +12,7 @@ BOOST_AUTO_TEST_CASE(switchingStreets) {
     Pedestrian bob(nodes);
     bob.setToSwitch(true);
     bob.setStreetToSwitch(std::make_shared<Street>(street2));
-    BOOST_CHECK_EQUAL(bob.getToSwitch(), true);
+    BOOST_CHECK(bob.getToSwitch());
 }
 
 BOOST_AUTO_TEST_CASE(updatePosition) {

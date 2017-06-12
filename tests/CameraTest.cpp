@@ -78,7 +78,7 @@ BOOST_AUTO_TEST_CASE(getDistanceBetweenPoints) {
     Camera camera(pos1, 120, N);
     double distance = camera.getDistanceBetweenPoints(pos1, pos2);
     BOOST_TEST_MESSAGE("Distance to power: " << distance);
-    BOOST_REQUIRE(distance == 25);
+    BOOST_REQUIRE_EQUAL(distance, 25);
 }
 
 BOOST_AUTO_TEST_CASE(getAngleBetweenPoints) {
@@ -99,6 +99,6 @@ BOOST_AUTO_TEST_CASE(checkIfInZone) {
     Camera camera(pos1, 120, N);
     BOOST_CHECK_EQUAL(camera.checkIfInZone(camera.getAngleBetweenPoints(pos1, posOut)), false);
     BOOST_CHECK_EQUAL(camera.checkIfInZone(camera.getAngleBetweenPoints(pos1, posOut2)), false);
-    BOOST_CHECK_EQUAL(camera.checkIfInZone(camera.getAngleBetweenPoints(pos1, posIn)), true);
-    BOOST_CHECK_EQUAL(camera.checkIfInZone(camera.getAngleBetweenPoints(pos1, posIn2)), true);
+    BOOST_CHECK(camera.checkIfInZone(camera.getAngleBetweenPoints(pos1, posIn)));
+    BOOST_CHECK(camera.checkIfInZone(camera.getAngleBetweenPoints(pos1, posIn2)));
 }
