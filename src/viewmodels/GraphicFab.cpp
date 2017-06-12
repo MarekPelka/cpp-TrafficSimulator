@@ -160,35 +160,36 @@ void GraphicFab::getCamerasGraphics(QPainter &painter) {
 }
 
 QColor GraphicFab::getVehicleColor(double speed) {
+    //rescaling
 	speed *= 100;
 	speed += 30;
 
 	int r, g, b;
-	double d = 256 / 20;
+	double d = (max_rgb+1) / 20;
 
-	if (speed < 0) { //nadfiolet
+	if (speed < 0) { //ultraviolet
 		r = g = b = 0;
-	} else if (speed < 20) {
-		r = static_cast <int> (255 - d * speed);
+	} else if (speed < violet) {
+		r = static_cast <int> (max_rgb - d * speed);
 		g = 0;
-		b = 255;
-	} else if (speed < 40) {
+		b = max_rgb;
+	} else if (speed < dark_blue) {
 		r = 0;
-		g = static_cast <int> (d * (speed - 20));
-		b = 255;
-	} else if (speed < 60) {
+		g = static_cast <int> (d * (speed - violet));
+		b = max_rgb;
+	} else if (speed < cyan) {
 		r = 0;
-		g = 255;
-		b = static_cast <int> (255 - d * (speed - 40));
-	} else if (speed < 80) {
-		r = static_cast <int> (d * (speed - 60));
-		g = 255;
+		g = max_rgb;
+		b = static_cast <int> (max_rgb - d * (speed - dark_blue));
+	} else if (speed < light_green) {
+		r = static_cast <int> (d * (speed - cyan));
+		g = max_rgb;
 		b = 0;
-	} else if (speed < 100) {
-		r = 255;
-		g = static_cast <int> (255 - d * (speed - 80));
+	} else if (speed < yellow) {
+		r = max_rgb;
+		g = static_cast <int> (max_rgb - d * (speed - light_green));
 		b = 0;
-	} else { //podczerwieñ
+	} else { //infrared
 		r = g = b = 0;
 	}
 	return QColor(r, g, b);

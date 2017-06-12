@@ -19,7 +19,6 @@ typedef std::shared_ptr<Node> PNode;
 
 class Vehicle : MovingObject {
 public:
-	~Vehicle();
     /** constructor with parameters
     * \param type car or truck
     * \param nodes list of nodes that vehicle will go through

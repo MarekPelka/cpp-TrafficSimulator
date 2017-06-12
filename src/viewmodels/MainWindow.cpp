@@ -156,7 +156,7 @@ void MainWindow::saveToDatabaseCallback() {
         return;
 	CameraController *camC = CameraController::getInstance();
 	camC->updateObservations();
-	if (camC->insertType) {
+	if (camC->getInsertType()) {
 		camC->writeToDatabase();
 	} else {
 		camC->writeToFile("CameraObservations.txt");
@@ -239,7 +239,7 @@ void MainWindow::scenario2() {
 	cityC->addStreet(p4, p3);
 	std::list<PNode> nodes = CityController::getInstance()->nodesPath(p4, p1);
 	if (!nodes.empty()) {
-		for (int i = 0; i < 20; i++) {
+		for (int i = 0; i < 20; ++i) {
 			Vehicle car(CAR, nodes);
 			MovementController::getInstance()->addVehicle(car);
 		}

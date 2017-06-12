@@ -23,8 +23,6 @@ typedef std::shared_ptr<Pedestrian> PPedestrian;
 
 class Street {
 public:
-    ///destructor
-    ~Street();
     ///default constructor
 	Street();
     /** constructor with parameters

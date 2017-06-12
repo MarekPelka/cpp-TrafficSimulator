@@ -57,10 +57,12 @@ public:
     void writeToFile(std::string name);
     ///write cameras observations to database cam_observations.db
     void writeToDatabase();
-    ///flag to specify if write to file or database
-    bool insertType = false;
+    ///return insertType
+    bool getInsertType();
 
 private:
+    ///flag to specify if write to file or database
+    bool insertType = false;
     ///default constructor
     CameraController();
     ///singleton instance pointer

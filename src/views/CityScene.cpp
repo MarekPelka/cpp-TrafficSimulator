@@ -19,7 +19,7 @@ CityScene::CityScene(QWidget *parent) : QWidget(parent) {
 CityScene::~CityScene() {}
 
 void CityScene::setOperation(Operation o) {
-	_operation = o;
+	operation = o;
     switch (o) {
         case (Operation::addBuilding):
             infoLabel->setText("Budynek");
@@ -53,38 +53,38 @@ void CityScene::setOperation(Operation o) {
 
 void CityScene::mousePressEvent(QMouseEvent * event) {
 	if (event->button() == Qt::RightButton) {
-		_operation = Operation::nothing;
+		operation = Operation::nothing;
 		infoLabel->setText("");
 	}
 		
 	isDrawing = true;
-	_xGrid = _xMouse = event->x();
-	_yGrid = _yMouse = event->y();
+	xGrid = xMouse = event->x();
+	yGrid = yMouse = event->y();
 	putToGrid();
-	_xStart = _x;
-	_yStart = _y;
+	xStart = x;
+	yStart = y;
 	update();
 }
 
 void CityScene::mouseReleaseEvent(QMouseEvent * event) {
 	isDrawing = false;
-	auto nodes = CityController::getInstance()->nodesPath(Position(_xStart, _yStart), Position(_x, _y));
-	auto node = CityController::getInstance()->findNode(Position(_x, _y));
-	switch (_operation) {
+	auto nodes = CityController::getInstance()->nodesPath(Position(xStart, yStart), Position(x, y));
+	auto node = CityController::getInstance()->findNode(Position(x, y));
+	switch (operation) {
 		case (Operation::addIntersection):
 			break;
 		case (Operation::addBuilding):
-			if (!CityController::getInstance()->checkIfIntersectStreet(Position(_x - FULL_STREET_WIDTH, _y - FULL_STREET_WIDTH))) {
-				Building building(Position(_x - FULL_STREET_WIDTH, _y - FULL_STREET_WIDTH));
+			if (!CityController::getInstance()->checkIfIntersectStreet(Position(x - FULL_STREET_WIDTH, y - FULL_STREET_WIDTH))) {
+				Building building(Position(x - FULL_STREET_WIDTH, y - FULL_STREET_WIDTH));
 				CameraController::getInstance()->addBuilding(building);
 			}
 			break;
 		case (Operation::addCamera): 
-			CameraController::getInstance()->addCamera(Camera(Position(_xStart, _yStart), 60, Street::getPredictedDirection(Position(_xStart, _yStart), Position(_xGrid, _yGrid))));
+			CameraController::getInstance()->addCamera(Camera(Position(xStart, yStart), 60, Street::getPredictedDirection(Position(xStart, yStart), Position(xGrid, yGrid))));
 			break;
 		case (Operation::addPedestrian): break;
 		case (Operation::addStreet):
-			CityController::getInstance()->addStreet(Position(_xStart, _yStart), Position(_x, _y));
+			CityController::getInstance()->addStreet(Position(xStart, yStart), Position(x, y));
 			break;
 		case (Operation::addCar):
 			if (nodes.size() > 1) {
@@ -107,10 +107,10 @@ void CityScene::mouseReleaseEvent(QMouseEvent * event) {
 				CityController::getInstance()->upgradeToParking(node);
 			break;
 		case (Operation::remove): 
-			_xGrid = _xMouse = event->x();
-			_yGrid = _yMouse = event->y();
+			xGrid = xMouse = event->x();
+			yGrid = yMouse = event->y();
 			putToGrid();
-			CityController::getInstance()->deleteStuff(Position(_x, _y));
+			CityController::getInstance()->deleteStuff(Position(x, y));
 			break;
 		case (Operation::nothing): break;
 		default:
@@ -122,15 +122,15 @@ void CityScene::mouseReleaseEvent(QMouseEvent * event) {
 void CityScene::mouseMoveEvent(QMouseEvent * event) {
 
 	if (isDrawing) {
-		_xGrid = _xMouse = event->x();
-		_yGrid = _yMouse = event->y();
-		switch (_operation) {
+		xGrid = xMouse = event->x();
+		yGrid = yMouse = event->y();
+		switch (operation) {
 			case (Operation::addCamera):
 			case (Operation::addStreet):
-				if (abs(_xStart - _xMouse) > abs(_yStart - _yMouse))
-					_yGrid = _yStart;
+				if (abs(xStart - xMouse) > abs(yStart - yMouse))
+					yGrid = yStart;
 				else
-					_xGrid = _xStart;
+					xGrid = xStart;
 				break;
 			default:
 				break;
@@ -155,59 +155,59 @@ void CityScene::paintEvent(QPaintEvent * event) {
 	GraphicFab::getParkingGraphics(painter);
 	
 	QString string = QString("%1, %2")
-		.arg(_x)
-		.arg(_y);
+		.arg(x)
+		.arg(y);
 	QColor secondColor(240, 255, 255);
 	painter.setPen(secondColor);
 	painter.setBrush(secondColor);
 	QFont font = painter.font();
 	font.setPointSize(18);
 	QPolygon polygon;
-	//QLine line(_xStart, _yStart, _xGrid, _yGrid);
+	//QLine line(xStart, yStart, xGrid, yGrid);
 	if (isDrawing) {
-		painter.drawText(QPoint(_xMouse + 20, _yMouse + 20), string);
-		painter.drawText(QPoint(_x + 20, _y + 20), string);
+		painter.drawText(QPoint(xMouse + 20, yMouse + 20), string);
+		painter.drawText(QPoint(x + 20, y + 20), string);
 		QPen pen(QColor(128, 128, 128, 128));
 		QBrush brush(QColor(255, 255, 255, 128));
-		QPoint ss = QPoint(_xStart, _yStart);
-		QPoint ee = QPoint(_xGrid, _yGrid);
+		QPoint ss = QPoint(xStart, yStart);
+		QPoint ee = QPoint(xGrid, yGrid);
 		QLineF line = QLineF(ss, ee);
 		painter.setBrush(brush);
-		switch (_operation) {
+		switch (operation) {
 			case (Operation::addBuilding): break;
 			case (Operation::addCamera): 
-				if (_xStart - _xGrid < 0) //left
-					polygon << ss << QPoint(_xGrid - line.length() / 4, _yGrid - line.length() * sqrt(3) / 4) << ee << QPoint(_xGrid - line.length() / 4, _yGrid + line.length() * sqrt(3) / 4);
-				else if (_xStart - _xGrid > 0) //right
-					polygon << ss << QPoint(_xGrid + line.length() / 4, _yGrid - line.length() * sqrt(3) / 4) << ee << QPoint(_xGrid + line.length() / 4, _yGrid + line.length() * sqrt(3) / 4);
-				else if (_yStart - _yGrid < 0) //down
-					polygon << ss << QPoint(_xGrid - line.length() * sqrt(3) / 4, _yGrid - line.length() / 4) << ee << QPoint(_xGrid + line.length() * sqrt(3) / 4, _yGrid - line.length() / 4);
-				else if (_yStart - _yGrid > 0) //up
-					polygon << ss << QPoint(_xGrid - line.length() * sqrt(3) / 4, _yGrid + line.length() / 4) << ee << QPoint(_xGrid + line.length() * sqrt(3) / 4, _yGrid + line.length() / 4);
+				if (xStart - xGrid < 0) //left
+					polygon << ss << QPoint(xGrid - line.length() / 4, yGrid - line.length() * sqrt(3) / 4) << ee << QPoint(xGrid - line.length() / 4, yGrid + line.length() * sqrt(3) / 4);
+				else if (xStart - xGrid > 0) //right
+					polygon << ss << QPoint(xGrid + line.length() / 4, yGrid - line.length() * sqrt(3) / 4) << ee << QPoint(xGrid + line.length() / 4, yGrid + line.length() * sqrt(3) / 4);
+				else if (yStart - yGrid < 0) //down
+					polygon << ss << QPoint(xGrid - line.length() * sqrt(3) / 4, yGrid - line.length() / 4) << ee << QPoint(xGrid + line.length() * sqrt(3) / 4, yGrid - line.length() / 4);
+				else if (yStart - yGrid > 0) //up
+					polygon << ss << QPoint(xGrid - line.length() * sqrt(3) / 4, yGrid + line.length() / 4) << ee << QPoint(xGrid + line.length() * sqrt(3) / 4, yGrid + line.length() / 4);
 				painter.drawPolygon(polygon);
 				break;
 			case (Operation::addPedestrian):
 				pen.setColor(QColor(255, 255, 0, 128));
 				pen.setWidth(PEDESTRIAN_SIZE);
 				painter.setPen(pen);
-				painter.drawLine(_xStart, _yStart, _x, _y);
+				painter.drawLine(xStart, yStart, x, y);
 				break;
 			case (Operation::addStreet):
 				pen.setWidth(2 * STREET_WIDTH);
 				painter.setPen(pen);
-				painter.drawLine(_xStart, _yStart, _x, _y);
+				painter.drawLine(xStart, yStart, x, y);
 				break;
 			case (Operation::addCar):
 				pen.setColor(QColor(255, 0, 0, 128));
 				pen.setWidth(STREET_WIDTH - VECH_OFFSET);
 				painter.setPen(pen);
-				painter.drawLine(_xStart, _yStart, _x, _y);
+				painter.drawLine(xStart, yStart, x, y);
 				break;
 			case (Operation::addTruck):
 				pen.setColor(QColor(255, 0, 0, 128));
 				pen.setWidth(STREET_WIDTH - VECH_OFFSET);
 				painter.setPen(pen);
-				painter.drawLine(_xStart, _yStart, _x, _y);
+				painter.drawLine(xStart, yStart, x, y);
 				break;
 			case (Operation::toggleParking): break;
 			case (Operation::remove): break;
@@ -234,6 +234,6 @@ void CityScene::paintGrid(QPainter &painter) {
 }
 
 void CityScene::putToGrid() {
-	_x = GAP * round(_xGrid / GAP);
-	_y = GAP * round(_yGrid / GAP);
+	x = GAP * round(xGrid / GAP);
+	y = GAP * round(yGrid / GAP);
 }

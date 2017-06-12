@@ -264,10 +264,6 @@ Direction Vehicle::getOrientation() {
 	return orientation;
 }
 
-Vehicle::~Vehicle() {
-    type = NOTHING;
-}
-
 Direction Vehicle::getPredictedDirection(Position start, Position end) {
 	if (start.x == end.x) {
 		if (start.y > end.y) {

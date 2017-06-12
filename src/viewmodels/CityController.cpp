@@ -496,21 +496,21 @@ void CityController::deleteStuff(Position p) {
 			if (isInIntervalX(p, *iter) && isInIntervalY(p, *iter))
 				iter = streets.erase(iter);
 			else
-				iter++;
+				++iter;
 		}
 	} else {
 		for (auto iter = streets.begin(); iter != streets.end();) {
 			if (&*iter->get()->getNodes().first == node.get() || &*iter->get()->getNodes().second == node.get())
 				iter = streets.erase(iter);
 			else
-				iter++;
+				++iter;
 		}
 		parkings.remove(node);
 		for (auto iter = nodes.begin(); iter != nodes.end();) {
 			if (*iter == node)
 				iter = nodes.erase(iter);
 			else
-				iter++;
+				++iter;
 		}
 		
 	}

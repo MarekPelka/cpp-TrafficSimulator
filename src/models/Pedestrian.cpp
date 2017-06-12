@@ -194,18 +194,18 @@ bool Pedestrian::operator==(const Pedestrian & p) {
 
 Direction Pedestrian::predictDirection(Position start, Position end) {
     double angleRad = atan2(end.y - start.y, end.x - start.x);
-    angleRad *= 180 / M_PI;
+    angleRad *= 2 * right_angle / M_PI;
 
-    if (-45 <= angleRad && angleRad < 45) {
+    if (-(right_angle/2) <= angleRad && angleRad < right_angle/2) {
         return E;
     }
-    else if (45 <= angleRad && angleRad < 135) {
+    else if (right_angle/2 <= angleRad && angleRad < 135) {
         return S;
     }
-    else if ((135 <= angleRad && angleRad <= 180) || (-180 < angleRad && angleRad < -135)) {
+    else if ((1.5 * right_angle <= angleRad && angleRad <= 2 * right_angle) || (-(2 * right_angle) < angleRad && angleRad < -(1.5 * right_angle))) {
         return W;
     }
-    else if (-135 <= angleRad && angleRad < -45) {
+    else if (-(1.5 * right_angle) <= angleRad && angleRad < -(right_angle/2)) {
         return N;
     }
     return NONE;

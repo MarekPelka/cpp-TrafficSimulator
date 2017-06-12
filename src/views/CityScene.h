@@ -58,22 +58,22 @@ public:
 private:
 	///Paints grid on the inteface
 	void paintGrid(QPainter & painter);
-	///Aligns _x and _y to grid
+	///Aligns x and y to grid
 	void putToGrid();
 	///Position snapped to cross aligned to grid
-	int _x, _y;
+	int x, y;
 	///Current mouse position
-	int _xMouse, _yMouse;
+	int xMouse, yMouse;
 	///Start position of drawing
-	int _xStart, _yStart;
+	int xStart, yStart;
 	///Position snaped to cross
-	int _xGrid, _yGrid;
+	int xGrid, yGrid;
 	///Const for spaceing between grid points 
 	const double GAP = FULL_STREET_WIDTH * 2;
 	///Is mouse down
 	bool isDrawing = false;
 	///Currently selected operation
-	Operation _operation = Operation::nothing;
+	Operation operation = Operation::nothing;
 	///Label with currently selected operation
 	QLabel *infoLabel;
 };

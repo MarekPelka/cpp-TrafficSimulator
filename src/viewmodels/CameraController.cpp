@@ -100,6 +100,10 @@ void CameraController::writeToDatabase() {
     }
 }
 
+bool CameraController::getInsertType() {
+    return insertType;
+}
+
 bool CameraController::checkIfBuilding(Position p1, Position p2) {
     for (auto building : getBuildings()) {
         //extending lines with 1px to cover corners

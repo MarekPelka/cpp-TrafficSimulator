@@ -72,4 +72,21 @@ const int DRIVE_UP = 3;
 const int CAR_SPACING = 3;
 /// accuracy of traling cars
 const int DRIVE_OFFSET = 0;
+
+/// angle 90 degrees
+const int right_angle = 90;
+
+///colors:
+///max rgb value
+const int max_rgb = 255;
+///violet
+const int violet = 20;
+///dark blue
+const int dark_blue = 40;
+///cyan
+const int cyan = 60;
+///light green
+const int light_green = 80;
+///yellow
+const int yellow = 100;
 #endif

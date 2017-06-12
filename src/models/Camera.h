@@ -17,8 +17,6 @@
 
 class Camera {
 public:
-    ///default destructor
-    ~Camera();
     ///default constructor
     Camera();
     /** constructor with parameter

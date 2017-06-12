@@ -1,17 +1,13 @@
 #include "Node.h"
 int Node::all_Nodes = 0;
 
-Node::~Node() {
-    streetsIn.clear();
-}
-
 Node::Node(int x, int y) {
     position = Position(x, y);
-    number = all_Nodes++;
+    number = ++all_Nodes;
 }
 Node::Node(Position p) {
     position = p;
-    number = all_Nodes++;
+    number = ++all_Nodes;
 }
 Position Node::getPosition() {
     return position;

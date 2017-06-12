@@ -4,17 +4,13 @@
 
 int Camera::counter = 0;
 
-Camera::~Camera() {
-    observation.clear();
-}
-
 Camera::Camera() : id(++counter) {
 }
 
 Camera::Camera(Position pos) {
     id = ++counter;
     position = pos;
-    angle = 360; //omni-directional characteristic
+    angle = 4 * right_angle; //omni-directional characteristic
     direction = NONE;
 }
 
@@ -75,20 +71,20 @@ void Camera::updateObservation() {
 
 double Camera::getAngleBetweenPoints(Position p1, Position p2) {
     double angleRad = atan2(p2.y - p1.y, p2.x - p1.x);
-    return angleRad * 180 / M_PI;
+    return angleRad * 2 * right_angle / M_PI;
 }
 
 bool Camera::checkIfInZone(double angl) {
     double border1 = 0, border2 = 0;
     switch (direction) {
     case S: {
-        border1 = 90 + (angle / 2);
-        border2 = 90 - (angle / 2);
+        border1 = right_angle + (angle / 2);
+        border2 = right_angle - (angle / 2);
         break;
     }
     case N: {
-        border1 = -90 + (angle / 2);
-        border2 = -90 - (angle / 2);
+        border1 = -right_angle + (angle / 2);
+        border2 = -right_angle - (angle / 2);
         break;
     }
     case W: {
@@ -97,8 +93,8 @@ bool Camera::checkIfInZone(double angl) {
         break;
     }
     case E: {
-        border1 = 180 + (angle / 2);
-        border2 = 180 - (angle / 2);
+        border1 = 2 * right_angle + (angle / 2);
+        border2 = 2 * right_angle - (angle / 2);
         break;
     }
     case NONE: {
