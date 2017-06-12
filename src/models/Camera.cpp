@@ -47,8 +47,10 @@ void Camera::clearObservation() {
 
 void Camera::updateObservation() {
     MovementController *moveC = MovementController::getInstance();
-    std::list<PVehicle> vehicles = moveC->getVehicles();
+    std::list<PVehicle> vehicles;
+    vehicles = moveC->getVehicles();
     for (auto veh : vehicles) {
+        if (veh) {
         double angl = getAngleBetweenPoints(position, veh->getPosition());
         if (checkIfInZone(angl)) {
             if (CameraController::getInstance()->checkIfBuilding(position, veh->getPosition())) {
@@ -65,6 +67,8 @@ void Camera::updateObservation() {
                     //veh lost due to noises
                 }
             }
+        }
+
         }
     }
 }

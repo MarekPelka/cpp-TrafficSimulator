@@ -94,7 +94,12 @@ void CameraController::writeToDatabase() {
         std::list<std::pair<int, int>> temp = it->getView();
         if (!temp.empty()) {
             for (auto iter = temp.begin(); iter != temp.end(); ++iter) {
-                SqlConnector::getInstance()->insert(it->id, std::ctime(&t), iter->first, iter->second);
+                try {
+                    SqlConnector::getInstance()->insert(it->id, std::ctime(&t), iter->first, iter->second);
+                }
+                catch (...) {
+                    //do nothing
+                }
             }
         }
     }
